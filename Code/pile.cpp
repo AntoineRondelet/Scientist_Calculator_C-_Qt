@@ -26,7 +26,7 @@ void Pile::pop(){
 
 
 void Pile::affiche() const{
-    system("clear"); //-> Probleme avec le terminal Qt et "cls"
+    //system("clear"); //-> Probleme avec le terminal Qt et "cls"
     cout<<"********************************************* \n";
     cout<<"M : "<<message<<"\n";
     cout<<"---------------------------------------------\n";
@@ -47,5 +47,20 @@ Litterale& Pile::top() const {
     if (nb==0) throw CalculatriceException("Erreur Pile::top(): Aucune litterale sur la pile");
     return tab_item[nb-1].getLitterale();
 }
+
+//SINGLETON
+Pile::Handler Pile::handler;
+
+Pile& Pile::getInstance() {
+    if(handler.instance == nullptr)
+        handler.instance = new Pile;
+    return *handler.instance;
+}
+
+void Pile::libererInstance() {
+    delete handler.instance;
+    handler.instance=nullptr;
+}
+
 
 

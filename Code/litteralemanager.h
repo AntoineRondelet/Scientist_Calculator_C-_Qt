@@ -6,6 +6,23 @@
 #include "reel.h"
 
 class LitteraleManager {
+
+    //Debut singleton
+    LitteraleManager(const LitteraleManager& m){}
+    LitteraleManager& operator=(const LitteraleManager& m){}
+    ~LitteraleManager();
+
+
+    class Handler {
+    public:
+        LitteraleManager* instance;
+        Handler():instance(0){}
+        ~Handler() {delete instance;}
+    };
+
+    static Handler handler;
+    //Fin singleton
+
     Litterale** tab_lits; //tableau de pointeurs de Litterales -> on les allouera dynamiquement
     unsigned int nb;
     unsigned int nbMax;
@@ -19,11 +36,14 @@ public:
     Litterale* addLitteraleRationnelle(int num, int den);
     //Litterale& addLitterale(int v); --> A Faire
 
+
+    void parcoursLitMan() const;
+
     void removeLitterale(Litterale& e);
 
-    //LitteraleManager& operator=(const LitteraleManager& m);
-
-    ~LitteraleManager();
+    //Singleton
+    static LitteraleManager& getInstance();
+    static void libererInstance();
 };
 
 

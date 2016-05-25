@@ -10,10 +10,14 @@
 #include "litterale.h"
 #include "pile.h"
 #include "controleur.h"
+#include "operateur.h"
 #include <iostream>
 #include <stdlib.h>
 #include <QTextStream>
 #include <QString>
+#include <QMap>
+#include <QMapIterator>
+
 
 using namespace std;
 
@@ -36,6 +40,10 @@ int main(int argc, char *argv[])
     Reel r5(7.62);
     Reel r6(78.29);
 
+    LitteraleNombre& li1 = e2;
+    LitteraleNombre& li2 = e1;
+
+
     Item it;
 
     try {
@@ -50,16 +58,37 @@ int main(int argc, char *argv[])
       cout << ref2.toString() << endl;
       cout << ref3.toString() << endl;
       cout << ref4.toString() << endl;
+      Litterale& ref10 = li1+li2;
+      cout << ref10.toString() << endl;
+
+
 
       //bool test = isEntier("345");
       //cout << "Res: " << test << endl;
 
-      LitteraleManager manager;
-      Pile stack;
+      /*QMap <string, string> testQmap;
+      testQmap.insert("+", "operateur");
+      testQmap.insert("SOUS", "operateur");
+      testQmap.insert("DIV", "operateur");
+      testQmap.insert("X11", "variable");
+
+
+      QMap<string, string>::const_iterator i = testQmap.constBegin();
+      while (i != testQmap.constEnd()) {
+          cout << i.key() << ": " << i.value() << endl;
+          ++i;
+      }*/
+
+
+
+      /* ------ TEST DE L'EXECUTION ------- */
+      LitteraleManager& manager = LitteraleManager::getInstance();
+      Pile& stack = Pile::getInstance();
       Controleur controleur(manager,stack);
 
       Controleur control(manager, stack);
       control.executer();
+
 
       /*cout << "ENTIER MATCHING" << endl;
       isEntier("-5");
@@ -94,7 +123,7 @@ int main(int argc, char *argv[])
       cout << "Entier ajouté au manager :" << ent.toString() << endl;
       manager.removeLitterale(ent);*/
 
-      /*Pile maStack;
+      /*Pile& maStack = Pile::getInstance();
       maStack.affiche();
       maStack.push(ref1);
       maStack.affiche();
@@ -102,7 +131,23 @@ int main(int argc, char *argv[])
       maStack.affiche();
       maStack.push(ref2);
       maStack.affiche();
-      maStack.pop();
+
+      LitteraleManager& monMan = LitteraleManager::getInstance();
+      Entier e(3);
+      Litterale& litte = e;
+      Entier ent2(7);
+      Litterale& litte2 = ent2;
+      Litterale* ptr = monMan.addLitteraleEntiere(e.getValeur());
+      monMan.addLitteraleReelle(ent2.getValeur());
+
+      monMan.parcoursLitMan();*/
+
+
+
+      //Litterale& test = maStack.top();
+      //cout << "TOP: " << test.toString();
+      /*Operateur op("ADD");
+      op.executerOp();
       maStack.affiche();*/
     }
     catch (CalculatriceException& e) {

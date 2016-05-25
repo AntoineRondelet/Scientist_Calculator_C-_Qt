@@ -26,6 +26,15 @@ LitteraleManager::LitteraleManager(const LitteraleManager& m):
 }
 */
 
+/*
+Litterale* LitteraleManager::addLitterale(int v){
+    if (nb==nbMax) agrandissementCapacite();
+    tab_lits[nb++]=new Entier(v);
+    return tab_lits[nb-1];
+}
+*/
+
+
 Litterale* LitteraleManager::addLitteraleEntiere(int v){
     if (nb==nbMax) agrandissementCapacite();
     tab_lits[nb++]=new Entier(v);
@@ -62,6 +71,16 @@ void LitteraleManager::removeLitterale(Litterale& e){
     nb--;
 }
 
+
+void LitteraleManager::parcoursLitMan() const {
+    unsigned int i=0;
+    while(i<nb) {
+        cout << tab_lits[i] << endl;
+        i++;
+    }
+}
+
+
 LitteraleManager::~LitteraleManager(){
     for(unsigned int i=0; i<nb; i++) delete tab_lits[i]; //car on a alloué dynamiquement nos Litterales
     delete[] tab_lits;
@@ -84,3 +103,18 @@ LitteraleManager& LitteraleManager::operator=(const LitteraleManager& m){
     return *this;
 }
 */
+
+
+//SINGLETON
+LitteraleManager::Handler LitteraleManager::handler;
+
+LitteraleManager& LitteraleManager::getInstance() {
+    if(handler.instance == nullptr)
+        handler.instance = new LitteraleManager;
+    return *handler.instance;
+}
+
+void LitteraleManager::libererInstance() {
+    delete handler.instance;
+    handler.instance=nullptr;
+}

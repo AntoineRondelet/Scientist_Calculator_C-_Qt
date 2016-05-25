@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     pile.cpp \
     litteralemanager.cpp \
     controleur.cpp \
-    operateur.cpp
+    operateur.cpp \
+    identificateurtable.cpp
 
 HEADERS  += mainwindow.h \
     reel.h \
@@ -41,7 +42,8 @@ HEADERS  += mainwindow.h \
     pile.h \
     litteralemanager.h \
     controleur.h \
-    operateur.h
+    operateur.h \
+    identificateurtable.h
 
 FORMS    += mainwindow.ui
 
