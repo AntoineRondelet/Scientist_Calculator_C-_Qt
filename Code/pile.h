@@ -4,10 +4,11 @@
 #include <QProcess> // Pour faire QProcess::execute("clear"); <-> system("clear")
 #include "item.h"
 #include "litterale.h"
+#include <QStack>
 
 
 
-class Pile {
+class Pile/*: public QStack<Litterale> */{ //FAIRE HERITER PILE DE QSTACK !!! /!\. -> ca va alleger le code -> on la fait heriter, comme ca on peut quand meme faire un singleton !
 
     //Debut singleton
     Pile(const Pile& p){}
@@ -34,7 +35,7 @@ class Pile {
 public:
     Pile():tab_item(0),nbAffiche(4),nb(0),nbMax(0),message(""){} //on initialise les attributs dans l'ordre dans lequel ils sont déclarés, sinon -> Warning du compilateur
 
-    void push(Litterale& e);
+    void push(Litterale& e); //--> a voir ce qu'on fait des attributs si on fait l'heritage
     void pop();
     bool estVide() const { return nb==0; }
     void affiche() const;

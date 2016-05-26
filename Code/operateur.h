@@ -7,22 +7,14 @@
 #include <QMap>
 #include <QMapIterator>
 
-
+enum Op_type{PILE, NUMERIC, OTHER}; //PILE <-> operateur sur la pile, NUMERIC
 
 class Operateur {
     string Opname;
+    //Op_type type_operateur;
 public:
     Operateur(const string& s): Opname(s){} //Obligé de passer une string ! c'est logique si on imagine une commande
-    void executerOp() const;
-    //bool isOperateur() const; --> On utilise la fonction adaptée de QMap
-
-    /*
-    ADD
-    SOUS
-    DIV
-    MOD
-    ...
-    */
+    Litterale* executerOp() const;
 };
 
 

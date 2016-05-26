@@ -194,6 +194,7 @@ Reel* isReel(const string& c, Controleur& cont) {
     return nullptr;
 }
 
+//Utiliser les smarts pointers. shared_ptr
 
 Rationnel* isRationnel(const string& c, Controleur& cont) {
     QRegularExpression regexRationnel("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$");

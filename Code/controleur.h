@@ -3,12 +3,18 @@
 
 #include "pile.h"
 #include "litteralemanager.h"
+#include <QString>
 
 class Controleur {
     LitteraleManager& litManag;
     Pile& pileAff;
+
+    static QMap<string,string> operator_map; //On fait de notre QMap un attribut statique -> un seul pour toutes les instances.
+
 public:
-    Controleur(LitteraleManager& m, Pile& v):litManag(m), pileAff(v){}
+    Controleur(LitteraleManager& m, Pile& v):litManag(m), pileAff(v) {}
+
+    Litterale* isOperateurNumerique(const string& c, Controleur& cont);
 
     void commande(const string& c);
     void executer();
