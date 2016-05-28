@@ -16,13 +16,19 @@
 void Controleur::commande(const string& src)
 {
     Litterale* number = analyser->reconnaitre(src);
-    if(number == nullptr) {
+    if(number == nullptr) { //On a pas de litteraleNombre donc on teste si c'est un operateur
         Operator *op = getOperateur(src);
-        if(!op)
-            CALCULATRICE_EXCEPTION("Entrée inconnue");
-        Litterale** stockage_temp_litterales = op->chargerOperande();
-        Litterale* resultat = op->execute(stockage_temp_litterales);
-        pileAff.push(resultat);
+        if(!op) {
+            pileAff.setMessage("Entrée inconnue");
+        }
+        else {
+            Litterale** stockage_temp_litterales = op->chargerOperande();
+            if (stockage_temp_litterales != nullptr){
+            //On execute l'operateur que si on a dépilé suffisament d'elements de la pile (donc si stockage_temp_litterales != nullptr)
+                Litterale* resultat = op->execute(stockage_temp_litterales);
+                pileAff.push(resultat);
+            }
+        }
     }
     else {
         pileAff.push(number);
@@ -35,6 +41,7 @@ void Controleur::commande(const string& src)
 void Controleur::boucleExcecution(){
     string c; //Utiliser la commande suivante pour spliter une QSring et recuperer chaque terme: QString splitThis("Hello Marcus.-I am Stian.-Try this.-");QStringList splitted = splitThis.split("-");
     do {
+        //pileAff.setMessage(""); //On remet le message a zero a chaque iteration
         pileAff.affiche();
         cout<<"?-";
         cin>>c;

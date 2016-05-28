@@ -28,7 +28,11 @@ SOURCES += main.cpp\
     operator.cpp \
     binaryoperator.cpp \
     add.cpp \
-    mult.cpp
+    mult.cpp \
+    unaryoperator.cpp \
+    neg.cpp \
+    div.cpp \
+    num.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -45,11 +49,13 @@ HEADERS  += mainwindow.h \
     operator.h \
     binaryoperator.h \
     add.h \
-    mult.h
+    mult.h \
+    unaryoperator.h \
+    neg.h \
+    div.h \
+    num.h
 
 FORMS    += mainwindow.ui
 
 
 CONFIG += console
-
-

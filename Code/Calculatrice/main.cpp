@@ -7,6 +7,8 @@
 #include "rationnel.h"
 #include "analyser.h"
 #include "controleur.h"
+#include "calculatriceexception.h"
+
 
 #include<QStringList>
 
@@ -24,9 +26,15 @@ int main(int argc, char *argv[])
     return a.exec();
     */
 
-    Pile& stack = Pile::getInstance();
-    Controleur controle(stack);
-    controle.boucleExcecution();
+    try {
+        Pile& stack = Pile::getInstance();
+        Controleur controle(stack);
+        controle.boucleExcecution();
+    }
+    catch (CalculatriceException &e) {
+        std::cout << e.what();
+    }
+
 
 
 

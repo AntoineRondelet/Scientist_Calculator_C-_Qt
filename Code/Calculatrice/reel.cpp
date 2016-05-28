@@ -111,22 +111,40 @@ LitteraleNombre& Reel::division(const LitteraleNombre& lit) const {
                         CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                     }
                     else {
-                        Reel* res= new Reel(value/ptEntier->getValeur());
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        //On traite le cas ou on tente la division par zero
+                        if (ptEntier->getValeur() == 0){
+                            CALCULATRICE_EXCEPTION("Erreur: Division par zero");
+                        }
+                        else {
+                            Reel* res= new Reel(value/ptEntier->getValeur());
+                            LitteraleNombre& ref = *res;
+                            return ref;
+                        }
                     }
             }
             else {
-                //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
-                Reel* res= new Reel(value/(static_cast<float>(ptRationnel->getNumerateur())/ptRationnel->getDenominateur()));
-                LitteraleNombre& ref = *res;
-                return ref;
+                //On traite le cas ou on tente la division par zero
+                if (ptRationnel->getNumerateur() == 0){
+                    CALCULATRICE_EXCEPTION("Erreur: Division par zero");
+                }
+                else {
+                    //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
+                    Reel* res= new Reel(value/(static_cast<float>(ptRationnel->getNumerateur())/ptRationnel->getDenominateur()));
+                    LitteraleNombre& ref = *res;
+                    return ref;
+                }
             }
     }
     else {
-        Reel* res= new Reel(value/ptReel->value);
-        LitteraleNombre& ref = *res;
-        return ref;
+        //On traite le cas ou on tente la division par zero
+        if (ptReel->getValue() == 0){
+            CALCULATRICE_EXCEPTION("Erreur: Division par zero");
+        }
+        else {
+            Reel* res= new Reel(value/ptReel->value);
+            LitteraleNombre& ref = *res;
+            return ref;
+        }
     }
 }
 
