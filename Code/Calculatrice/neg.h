@@ -7,7 +7,7 @@
 class Neg: public UnaryOperator {
 public:
     Neg(): UnaryOperator(){}
-    Litterale* execute(Litterale** litterals) const override;
+    Litterale* execute(QVector<Litterale*> litterals) const override;
 };
 
 

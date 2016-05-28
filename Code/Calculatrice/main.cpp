@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
     return a.exec();
     */
 
+    //MAIN
     try {
         Pile& stack = Pile::getInstance();
         Controleur controle(stack);

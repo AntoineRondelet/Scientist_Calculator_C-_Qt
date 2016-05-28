@@ -1,13 +1,13 @@
-#ifndef NUM_H
-#define NUM_H
+#ifndef DEN_H
+#define DEN_H
 
 #include "unaryoperator.h"
 
-class Num: public UnaryOperator {
+class Den: public UnaryOperator {
 public:
-    Num(): UnaryOperator(){}
+    Den(): UnaryOperator(){}
     Litterale* execute(QVector<Litterale*> litterals) const override;
 };
 
 
-#endif // NUM_H
+#endif // DEN_H

@@ -4,6 +4,7 @@
 #include "litterale.h"
 #include "litteralenombre.h"
 #include <QString>
+#include <QVector>
 #include <QMap>
 #include <QMapIterator>
 #include <memory>
@@ -13,8 +14,8 @@ class Operator {
     //Donc comme pas besoin d'vaoir d'attribut -> pas besoin d'avoir une enum ou une map pour stocker le nom des operateurs possibles
 public:
     Operator(){}
-    virtual Litterale** chargerOperande() const = 0; //S'occupe du depilement des Litterales sur lesquelles portent l'operation
-    virtual Litterale* execute(Litterale** litterals) const = 0; //fait l'operantion créer et renvoie un ptr sur une litterale
+    virtual QVector<Litterale*> chargerOperande() const = 0; //S'occupe du depilement des Litterales sur lesquelles portent l'operation
+    virtual Litterale* execute(QVector<Litterale*> litterals) const = 0; //fait l'operantion créer et renvoie un ptr sur une litterale
     virtual ~Operator(){}
 };
 

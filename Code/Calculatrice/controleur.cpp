@@ -22,8 +22,8 @@ void Controleur::commande(const string& src)
             pileAff.setMessage("Entrée inconnue");
         }
         else {
-            Litterale** stockage_temp_litterales = op->chargerOperande();
-            if (stockage_temp_litterales != nullptr){
+            QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
+            if (stockage_temp_litterales.empty() == false){
             //On execute l'operateur que si on a dépilé suffisament d'elements de la pile (donc si stockage_temp_litterales != nullptr)
                 Litterale* resultat = op->execute(stockage_temp_litterales);
                 pileAff.push(resultat);

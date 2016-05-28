@@ -39,11 +39,12 @@ Litterale* createReel(QRegularExpressionMatch matched_exp) {
 
 
 
+
 //On initialise notre analyser (qui est un module du controleur -> composition)
 void Analyser::init() {
     m_matchers.insert("^-?[[:digit:]]+$", createInteger);
     m_matchers.insert("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$", createRationnel);
-    m_matchers.insert("^(-?)[[:digit:]]*(\\\.)?([[:digit:]]*)$", createReel);
+    m_matchers.insert("^(-?)[[:digit:]]*(\\\.)([[:digit:]]*)$", createReel);
 }
 
 

@@ -32,7 +32,9 @@ SOURCES += main.cpp\
     unaryoperator.cpp \
     neg.cpp \
     div.cpp \
-    num.cpp
+    num.cpp \
+    sous.cpp \
+    den.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -53,9 +55,13 @@ HEADERS  += mainwindow.h \
     unaryoperator.h \
     neg.h \
     div.h \
-    num.h
+    num.h \
+    sous.h \
+    den.h
 
 FORMS    += mainwindow.ui
 
 
 CONFIG += console
+
+
