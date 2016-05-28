@@ -25,35 +25,9 @@ int main(int argc, char *argv[])
     */
 
     Pile& stack = Pile::getInstance();
-    /*stack.affiche();
-    Entier e(5);
-    Reel re(5.873);
-    Rationnel rat(5, 4);
-
-    //Litterale* lit1 = &e;
-    Litterale* lit2 = &re;
-    Litterale* lit3 = &rat;
-
-    stack.push(&e);
-    stack.push(lit2);
-    stack.push(lit3);
-
-    stack.affiche();*/
-
     Controleur controle(stack);
-    //controle.executer();
-    cout << "EXECUTE" << endl;
-    controle.execute("13/23");
+    controle.boucleExcecution();
 
-    /*
-    Analyser an;
-
-    QMap <string, int> mapTest;
-    mapTest.insert("salut", 2);
-    mapTest.insert("salut2", 1);
-
-    cout << "voila -> " << mapTest.key(1) << endl;
-    */
 
 
 

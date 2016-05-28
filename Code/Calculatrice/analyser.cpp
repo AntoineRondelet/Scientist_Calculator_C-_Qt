@@ -43,7 +43,7 @@ Litterale* createReel(QRegularExpressionMatch matched_exp) {
 void Analyser::init() {
     m_matchers.insert("^-?[[:digit:]]+$", createInteger);
     m_matchers.insert("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$", createRationnel);
-    m_matchers.insert("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$", createReel);
+    m_matchers.insert("^(-?)[[:digit:]]*(\\\.)?([[:digit:]]*)$", createReel);
 }
 
 

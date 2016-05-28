@@ -24,7 +24,11 @@ SOURCES += main.cpp\
     calculatriceexception.cpp \
     controleur.cpp \
     analyser.cpp \
-    entieranalyser.cpp
+    entieranalyser.cpp \
+    operator.cpp \
+    binaryoperator.cpp \
+    add.cpp \
+    mult.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -37,7 +41,11 @@ HEADERS  += mainwindow.h \
     calculatriceexception.h \
     controleur.h \
     analyser.h \
-    entieranalyser.h
+    entieranalyser.h \
+    operator.h \
+    binaryoperator.h \
+    add.h \
+    mult.h
 
 FORMS    += mainwindow.ui
 

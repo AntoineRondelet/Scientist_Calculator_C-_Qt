@@ -13,17 +13,14 @@ class Controleur {
     Analyser* analyser;
 public:
     Controleur(Pile& v):pileAff(v), analyser(new Analyser()){
+        //On initialise la map qui contient nos regex et nos fonctions de construction
         analyser->init();
     }
 
-    //void commande(const string& c);
-    //void executer();
+    void boucleExcecution();
+    void commande(const string& src);
 
-    void execute(const string& src);
-
-    friend Entier* isEntier(const string& c, Controleur& cont);
-    //friend Reel* isReel(const string& c, Controleur& cont);
-    //friend Rationnel* isRationnel(const string& c, Controleur& cont);
+    ~Controleur(){delete analyser;} //On a une composition
 };
 
 //void splitEntry(const string& c); //Fonction qui permet de recuperer chaque "mot" dans la "phrase" saisie par le user
