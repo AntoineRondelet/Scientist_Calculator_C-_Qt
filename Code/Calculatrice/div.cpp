@@ -2,29 +2,23 @@
 
 //A VOIR POUR LES EXCEPTIONS !!
 
-Litterale* Div::execute(QVector<Litterale*> litterals) const {
-
+void Div::execute(QVector<Litterale*> litterals) const {
     LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
     LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 
-    try {
-        Litterale& res = (*operande1) / (*operande2);
-        // On libere la memoire du tableau
+    if (operande1!=nullptr && operande2!=nullptr){
+        Litterale& res = (*operande2) / (*operande1); //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme
+
+        //On delete le tableau qu'on a récupéré en argument
         for (unsigned int i = 0; i < Nb_a_depiler; i++) {
             delete litterals[i];
         }
-        //On oublie pas de delete le tableau qu'on a récupéré en argument
-        return &res;
-    }
-    catch (CalculatriceException &e){
+        //On empilele resultat
         Pile* stack = &Pile::getInstance();
-        stack->setMessage(e.what());
+        stack->push(&res);
     }
-    // On libere la memoire du tableau
-    for (unsigned int i = 0; i < Nb_a_depiler; i++) {
-        delete litterals[i];
+    else {
+        this->reChargerOperande(litterals);
     }
-    //On oublie pas de delete le tableau qu'on a récupéré en argument
-    return nullptr;
 }
 

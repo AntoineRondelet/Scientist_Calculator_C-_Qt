@@ -7,7 +7,7 @@
 class Div: public BinaryOperator {
 public:
     Div(): BinaryOperator(){}
-    Litterale* execute(QVector<Litterale*> litterals) const override;
+    void execute(QVector<Litterale*> litterals) const override;
 };
 
 

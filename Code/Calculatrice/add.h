@@ -7,7 +7,7 @@
 class Add: public BinaryOperator {
 public:
     Add(): BinaryOperator(){}
-    Litterale* execute(QVector<Litterale*> litterals) const override;
+    void execute(QVector<Litterale*> litterals) const override;
 };
 
 

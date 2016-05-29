@@ -11,6 +11,7 @@ protected:
 public:
     UnaryOperator(): Operator(), Nb_a_depiler(1){} //Nb_a_depiler vaut tjrs 1 ici on est dans le cas d'un operateur unaire
     QVector<Litterale*> chargerOperande() const override; //On renvoie un tableau des litterales depilées
+    void reChargerOperande(QVector<Litterale*> litterals) const override;
 };
 
 #endif // UNARYOPERATOR_H

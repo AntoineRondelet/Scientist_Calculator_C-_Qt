@@ -6,7 +6,7 @@
 class Den: public UnaryOperator {
 public:
     Den(): UnaryOperator(){}
-    Litterale* execute(QVector<Litterale*> litterals) const override;
+    void execute(QVector<Litterale*> litterals) const override;
 };
 
 

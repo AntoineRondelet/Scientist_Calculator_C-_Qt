@@ -6,7 +6,7 @@
 class Num: public UnaryOperator {
 public:
     Num(): UnaryOperator(){}
-    Litterale* execute(QVector<Litterale*> litterals) const override;
+    void execute(QVector<Litterale*> litterals) const override;
 };
 
 

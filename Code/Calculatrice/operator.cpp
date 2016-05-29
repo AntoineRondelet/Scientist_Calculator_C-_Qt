@@ -8,12 +8,14 @@
 #include "neg.h"
 #include "num.h"
 #include "den.h"
+#include "drop.h"
 
 
 
 
 Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque sorte
-    //On teste tous les operateurs binaires d'abord
+
+    //---------- Operateurs Binaires ----------- //
     if(str == "+") {
         return new Add;
     }
@@ -26,7 +28,7 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "-") {
         return new Sous;
     }
-    //on teste ensuite les operateurs unaires (on fait ca juste pour s'y retrouver)
+    //---------- Operateurs Unaires ----------- //
     else if(str == "NEG") {
         return new Neg;
     }
@@ -36,6 +38,11 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "DEN") {
         return new Den;
     }
+    else if(str == "DROP") {
+        return new Drop;
+    }
+
+    //---------- Si on a pas reconnu un operateur ----------- //
     cout << "Operateur inconnu ! " << endl;
     return nullptr;
 }

@@ -15,7 +15,8 @@ class Operator {
 public:
     Operator(){}
     virtual QVector<Litterale*> chargerOperande() const = 0; //S'occupe du depilement des Litterales sur lesquelles portent l'operation
-    virtual Litterale* execute(QVector<Litterale*> litterals) const = 0; //fait l'operantion créer et renvoie un ptr sur une litterale
+    virtual void reChargerOperande(QVector<Litterale*> litterals) const = 0;
+    virtual void execute(QVector<Litterale*> litterals) const = 0; //fait l'operantion créer et renvoie un ptr sur une litterale
     virtual ~Operator(){}
 };
 

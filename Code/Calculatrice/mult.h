@@ -7,7 +7,7 @@
 class Mult: public BinaryOperator {
 public:
     Mult(): BinaryOperator(){}
-    Litterale* execute(QVector<Litterale*> litterals) const override;
+    void execute(QVector<Litterale*> litterals) const override;
 };
 
 

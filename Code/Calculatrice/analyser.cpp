@@ -41,11 +41,19 @@ Litterale* createReel(QRegularExpressionMatch matched_exp) {
 Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE ATOME !! " << endl;
     QString matched = matched_exp.captured(0);
-    Litterale* ptAtome = new Atome(matched);
-    if (ptAtome ==  0) {
-        CALCULATRICE_EXCEPTION("Erreur de construction de l'atome");
+    //on refait tourner une regex pour s'assurer que l'atome n'a pas le nom d'un programme deja existant
+    QRegularExpression regexOperateur("NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO"); //C'est pas tres propre ! il faudrait trouver un moyen de faire cela de facon plus propre
+    QRegularExpressionMatch str_match_op = regexOperateur.match(matched);
+    if(str_match_op.hasMatch()) {
+        return nullptr; //on veut creer un atome qui a le meme identificateur qu'un programme
     }
-    return ptAtome;
+    else {
+        Litterale* ptAtome = new Atome(matched);
+        if (ptAtome ==  0) {
+            CALCULATRICE_EXCEPTION("Erreur de construction de l'atome");
+        }
+        return ptAtome;
+    }
 }
 
 
@@ -56,7 +64,7 @@ void Analyser::init() {
     m_matchers.insert("^-?[[:digit:]]+$", createInteger);
     m_matchers.insert("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$", createRationnel);
     m_matchers.insert("^(-?)[[:digit:]]*(\\\.)([[:digit:]]*)$", createReel);
-    //m_matchers.insert("^[A-Z]([A-Z0-9]*)$", createAtome);
+    m_matchers.insert("^[A-Z]([A-Z0-9]*)$", createAtome); //On fera un 2e traitement dans create atome pour ne pas créer un atome de meme nom qu'un operateur
 }
 
 

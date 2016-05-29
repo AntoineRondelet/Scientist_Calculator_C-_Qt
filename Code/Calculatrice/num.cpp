@@ -4,21 +4,22 @@
 #include "rationnel.h"
 
 
+void Num::execute(QVector<Litterale*> litterals) const {
+    Pile* stack = &Pile::getInstance();
+    Rationnel* operande_rationnelle = dynamic_cast<Rationnel *>(litterals[0]);
+    Entier* operandeEntier = dynamic_cast<Entier *>(litterals[0]);
 
-Litterale* Num::execute(QVector<Litterale*> litterals) const {
-    if(Rationnel* operande_rationnelle = dynamic_cast<Rationnel *>(litterals[0])) {
+    if(operande_rationnelle) {
         Entier* res= new Entier(operande_rationnelle->getNumerateur());
         LitteraleNombre& ref = *res;
+        stack->push(res);
         delete litterals[0];
-        return &ref;
-    }
-    else if (Entier* operande_entiere = dynamic_cast<Entier *>(litterals[0])) {
-        return litterals[0];
     }
     else {
-        Pile* stack = &Pile::getInstance();
-        stack->setMessage("Erreur: Operande du mauvais type");
+        if (!operandeEntier)
+            stack->setMessage("Erreur: Operande du mauvais type");
         //On réeimpile la littérale
-        return litterals[0];
+        this->reChargerOperande(litterals);
     }
 }
+

@@ -36,7 +36,10 @@ SOURCES += main.cpp\
     sous.cpp \
     den.cpp \
     atome.cpp \
-    sto.cpp
+    sto.cpp \
+    binaryoperatortemplate.cpp \
+    drop.cpp \
+    expression.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -61,11 +64,13 @@ HEADERS  += mainwindow.h \
     sous.h \
     den.h \
     atome.h \
-    sto.h
+    sto.h \
+    binaryoperatortemplate.h \
+    drop.h \
+    expression.h
 
 FORMS    += mainwindow.ui
 
 
 CONFIG += console
-
 
