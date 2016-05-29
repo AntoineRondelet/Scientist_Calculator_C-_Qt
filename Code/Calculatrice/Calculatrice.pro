@@ -39,7 +39,10 @@ SOURCES += main.cpp\
     sto.cpp \
     binaryoperatortemplate.cpp \
     drop.cpp \
-    expression.cpp
+    expression.cpp \
+    programme.cpp \
+    complexe.cpp \
+    operateurcomplexe.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -67,7 +70,10 @@ HEADERS  += mainwindow.h \
     sto.h \
     binaryoperatortemplate.h \
     drop.h \
-    expression.h
+    expression.h \
+    programme.h \
+    complexe.h \
+    operateurcomplexe.h
 
 FORMS    += mainwindow.ui
 

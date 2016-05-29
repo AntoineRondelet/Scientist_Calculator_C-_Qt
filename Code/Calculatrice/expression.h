@@ -1,11 +1,11 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
+#include "litterale.h"
 
-class Expression
-{
+class Expression: public Litterale {
 public:
-    Expression();
+    Expression(): Litterale(){}
 };
 
 #endif // EXPRESSION_H

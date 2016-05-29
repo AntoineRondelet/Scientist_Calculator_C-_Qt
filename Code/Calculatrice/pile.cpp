@@ -8,7 +8,8 @@ void Pile::affiche() const{
     cout<<"M : "<<message.toStdString()<<"\n";
     cout<<"---------------------------------------------\n";
     for(int i=nbAffiche; i>0; i--) {
-        if (i<= this->size()) cout<<i<<": "<<this->value(this->size()-i)->toString()<<"\n";
+        //A changer ! ici on affiche des std::string -> il faudra supprimer le .toStdString() et affciher des QString dans l'appli
+        if (i<= this->size()) cout<<i<<": "<<this->value(this->size()-i)->toString().toStdString()<<"\n";
         else cout<<i<<": \n";
     }
     cout<<"---------------------------------------------\n";

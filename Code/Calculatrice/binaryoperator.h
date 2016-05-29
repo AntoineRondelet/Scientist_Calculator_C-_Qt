@@ -5,6 +5,7 @@
 #include "litteralenombre.h"
 #include "calculatriceexception.h"
 #include "pile.h"
+#include "litteralenum.h"
 
 
 class BinaryOperator: public Operator {

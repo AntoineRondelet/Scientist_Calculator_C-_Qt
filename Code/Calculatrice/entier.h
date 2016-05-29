@@ -11,7 +11,7 @@ public:
     Entier(int val=0): Rationnel(val, 1), valeur(val){}
     int getValeur() const {return valeur;}
 
-    string toString() const override;
+    QString toString() const override;
     Entier* clone() const override;
 
     LitteraleNombre& addition(const LitteraleNombre& lit) const override;
@@ -19,10 +19,10 @@ public:
     LitteraleNombre& multiplication(const LitteraleNombre& lit) const override;
     LitteraleNombre& division(const LitteraleNombre& lit) const override;
 
-    Entier& operator=(const LitteraleNombre& lit) override;
+    Entier& operator=(const LitteraleNum& lit) override;
 };
 
-inline Entier& Entier::operator=(const LitteraleNombre& lit) {
+inline Entier& Entier::operator=(const LitteraleNum& lit) {
    const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
    if (ptEntier == 0) {
        CALCULATRICE_EXCEPTION("ERREUR operator=(): Dynamic_cast vers entier impossible");

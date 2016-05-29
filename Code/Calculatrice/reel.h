@@ -17,7 +17,7 @@ public:
 
   float getValue() const {return value;}
 
-  string toString() const override;
+  QString toString() const override;
   Reel* clone() const override;
 
   //Le fat d'implementer ces methodes -> pas besoin de faire les operator correspondants --> DP template method
@@ -26,10 +26,10 @@ public:
   LitteraleNombre& multiplication(const LitteraleNombre& lit) const override;
   LitteraleNombre& division(const LitteraleNombre& lit) const override;
 
-  Reel& operator=(const LitteraleNombre& lit) override;
+  Reel& operator=(const LitteraleNum& lit) override;
 };
 
-inline Reel& Reel::operator=(const LitteraleNombre& lit) {
+inline Reel& Reel::operator=(const LitteraleNum& lit) {
   const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
   if (ptReel == 0) {
       CALCULATRICE_EXCEPTION("ERREUR operator=(): Dynamic_cast vers reel impossible");

@@ -11,7 +11,6 @@ void Num::execute(QVector<Litterale*> litterals) const {
 
     if(operande_rationnelle) {
         Entier* res= new Entier(operande_rationnelle->getNumerateur());
-        LitteraleNombre& ref = *res;
         stack->push(res);
         delete litterals[0];
     }

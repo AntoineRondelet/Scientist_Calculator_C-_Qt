@@ -38,6 +38,7 @@ Litterale* createReel(QRegularExpressionMatch matched_exp) {
 }
 
 
+//ESSAYER: Ici pour eviter la grande enumeration des operateurs dans la 2e regex -> on peut penser a stocker les operateurs deja defini dans un QVector, a itérer sur ce QVector -> stocker chaque QString contenue dans un truc comme stringstream, qu'on conveti en string pour construire la regex
 Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE ATOME !! " << endl;
     QString matched = matched_exp.captured(0);

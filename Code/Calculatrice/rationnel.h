@@ -20,7 +20,7 @@ public:
     int getDenominateur() const {return denominateur;}
 
 
-    string toString() const override;
+    QString toString() const override;
     Rationnel* clone() const override;
 
     //Le fait d'implementer ces methodes -> pas besoin de faire les operator correspondants --> DP template method
@@ -29,12 +29,12 @@ public:
     LitteraleNombre& multiplication(const LitteraleNombre& lit) const override;
     LitteraleNombre& division(const LitteraleNombre& lit) const override;
 
-    Rationnel& operator=(const LitteraleNombre& lit) override;
+    Rationnel& operator=(const LitteraleNum& lit) override;
   };
 
 
 
- inline Rationnel& Rationnel::operator=(const LitteraleNombre& lit) {
+ inline Rationnel& Rationnel::operator=(const LitteraleNum& lit) {
     const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
     if (ptRationnel == 0) {
         CALCULATRICE_EXCEPTION("ERREUR: dynamic_cast vers rationnel impossible");

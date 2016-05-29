@@ -151,9 +151,9 @@ LitteraleNombre& Reel::division(const LitteraleNombre& lit) const {
 
 
 
-string Reel::toString() const {
-    stringstream s;
-    s<<value;
-    return s.str();
+QString Reel::toString() const {
+    QString s;
+    s.setNum(value);
+    return s;
 }
 

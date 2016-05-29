@@ -12,8 +12,7 @@ class LitteraleNombre: public Litterale {
 public:
     LitteraleNombre(): Litterale(){}
 
-    //virtual string toString() const = 0;
-    virtual LitteraleNombre& operator=(const LitteraleNombre& lit) = 0;
+    //virtual string toString() const = 0; -> au niveau de Litterale
 
     //Ici ce sont des LitteraleNombres car les complexes qui ne sont pas des LitteraleNombresNum doivent aussi supporter ces opérations
     virtual LitteraleNombre& addition(const LitteraleNombre& litNum) const = 0;

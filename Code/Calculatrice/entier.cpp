@@ -151,9 +151,9 @@ LitteraleNombre& Entier::division(const LitteraleNombre& lit) const {
 
 
 
-string Entier::toString() const {
-    stringstream s;
-    s<<valeur;
-    return s.str();
+QString Entier::toString() const {
+    QString s;
+    s.setNum(valeur);
+    return s;
 }
 

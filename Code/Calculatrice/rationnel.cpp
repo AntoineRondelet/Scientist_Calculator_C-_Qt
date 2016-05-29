@@ -44,13 +44,16 @@ void Rationnel::simplification(){
 }
 
 
-string Rationnel::toString() const {
-    stringstream s;
-    if (denominateur != 1) s<<numerateur<<'/'<<denominateur;
-    else s<<numerateur;
-    return s.str();
-}
+QString Rationnel::toString() const {
+    QString s1, s2, s;
+    s1.setNum(numerateur);
+    s2.setNum(denominateur);
 
+    if (denominateur != 1)
+        s = s1 + '/' + s2;
+    else s = s1;
+    return s;
+}
 
 
 LitteraleNombre& Rationnel::addition(const LitteraleNombre& lit) const {

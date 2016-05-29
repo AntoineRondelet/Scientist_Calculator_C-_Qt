@@ -9,8 +9,8 @@ class Atome: public Litterale{
 private:
     QString name;
 public:
-    Atome(const QString& s) : name(s) {} //car un atome à un nom composé de lettres majuscules
-    string toString() const override;
+    Atome(const QString& s): Litterale(), name(s) {} //car un atome à un nom composé de lettres majuscules
+    QString toString() const override;
     Atome* clone() const override;
 };
 
