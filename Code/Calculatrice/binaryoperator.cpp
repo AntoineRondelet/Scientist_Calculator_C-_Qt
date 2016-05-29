@@ -37,6 +37,8 @@ QVector<Litterale*> BinaryOperator::chargerOperande() const{
 }
 */
 
+
+//Ici c'est plutot une methode de la classe BinaryOperatorNumeric qu'il faudra peut etre faire -> A VOIR
 QVector<Litterale*> BinaryOperator::chargerOperande() const{
     Pile* ptr_stack = &Pile::getInstance();
 
@@ -49,12 +51,14 @@ QVector<Litterale*> BinaryOperator::chargerOperande() const{
 
     for(unsigned int i=0; i < Nb_a_depiler; i++) {
         Litterale* lit_depilee = ptr_stack->pop();
+        cout << "V:" << lit_depilee->toString() << endl;
         LitteraleNombre* litTemp = dynamic_cast<LitteraleNombre *>(lit_depilee);
         if (litTemp != nullptr) {
             loaded_lit.push_back(lit_depilee);
         }
         else {
             ptr_stack->setMessage("Operandes du mauvais type");
+            ptr_stack->push(lit_depilee);
             //on dépile tout du QVector et on remet tout dans la pile
             while (loaded_lit.isEmpty() == false)
                 ptr_stack->push(loaded_lit.takeLast());
@@ -63,4 +67,3 @@ QVector<Litterale*> BinaryOperator::chargerOperande() const{
         }
     return loaded_lit;
 }
-

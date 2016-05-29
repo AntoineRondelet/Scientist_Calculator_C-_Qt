@@ -12,6 +12,7 @@ public:
     int getValeur() const {return valeur;}
 
     string toString() const override;
+    Entier* clone() const override;
 
     LitteraleNombre& addition(const LitteraleNombre& lit) const override;
     LitteraleNombre& soustraction(const LitteraleNombre& lit) const override;
@@ -32,6 +33,8 @@ inline Entier& Entier::operator=(const LitteraleNombre& lit) {
    }
  }
 
+
+inline Entier* Entier::clone() const {return new Entier(*this);}
 
 #endif // ENTIER_H
 

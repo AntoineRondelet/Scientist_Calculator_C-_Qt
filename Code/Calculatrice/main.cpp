@@ -5,6 +5,7 @@
 #include "reel.h"
 #include "entier.h"
 #include "rationnel.h"
+#include "atome.h"
 #include "analyser.h"
 #include "controleur.h"
 #include "calculatriceexception.h"
@@ -26,7 +27,7 @@ int main(int argc, char *argv[])
     return a.exec();
     */
 
-    //MAIN
+
     try {
         Pile& stack = Pile::getInstance();
         Controleur controle(stack);
@@ -35,11 +36,6 @@ int main(int argc, char *argv[])
     catch (CalculatriceException &e) {
         std::cout << e.what();
     }
-
-
-
-
-
 
 
     return 0;

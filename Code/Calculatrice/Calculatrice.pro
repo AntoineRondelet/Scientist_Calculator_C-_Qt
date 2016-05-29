@@ -34,7 +34,9 @@ SOURCES += main.cpp\
     div.cpp \
     num.cpp \
     sous.cpp \
-    den.cpp
+    den.cpp \
+    atome.cpp \
+    sto.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -57,7 +59,9 @@ HEADERS  += mainwindow.h \
     div.h \
     num.h \
     sous.h \
-    den.h
+    den.h \
+    atome.h \
+    sto.h
 
 FORMS    += mainwindow.ui
 

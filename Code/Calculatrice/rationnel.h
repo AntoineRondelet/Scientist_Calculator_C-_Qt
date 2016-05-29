@@ -21,6 +21,7 @@ public:
 
 
     string toString() const override;
+    Rationnel* clone() const override;
 
     //Le fait d'implementer ces methodes -> pas besoin de faire les operator correspondants --> DP template method
     LitteraleNombre& addition(const LitteraleNombre& lit) const override;
@@ -43,7 +44,10 @@ public:
       this->denominateur = ptRationnel->denominateur;
       return *this;
     }
-  }
+}
+
+
+inline Rationnel* Rationnel::clone() const {return new Rationnel(*this);}
 
 
 #endif // RATIONNEL_H

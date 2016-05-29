@@ -5,7 +5,7 @@
 //Les fonctions qui construisent les objets apres que les regex aient matchées
 
 Litterale* createInteger(QRegularExpressionMatch matched_exp) {
-    cout << "ON EST DANS CREATEINTEGER!! " << endl;
+    cout << "ON EST DANS CREATE INTEGER!! " << endl;
     QString matched = matched_exp.captured(0);
     Litterale* ptEntier = new Entier(matched.toInt());
     if (ptEntier ==  0) {
@@ -16,7 +16,7 @@ Litterale* createInteger(QRegularExpressionMatch matched_exp) {
 
 
 Litterale* createRationnel(QRegularExpressionMatch matched_exp) {
-    cout << "ON EST DANS CREATERATIONNEL !! " << endl;
+    cout << "ON EST DANS CREATE RATIONNEL !! " << endl;
     QString numer = matched_exp.captured("numerateur");
     QString denom = matched_exp.captured("denominateur");
     Litterale* ptRationnel = new Rationnel(numer.toInt(), denom.toInt());
@@ -28,13 +28,24 @@ Litterale* createRationnel(QRegularExpressionMatch matched_exp) {
 
 
 Litterale* createReel(QRegularExpressionMatch matched_exp) {
-    cout << "ON EST DANS CREATERATIONNEL !! " << endl;
+    cout << "ON EST DANS CREATE REEL !! " << endl;
     QString matched = matched_exp.captured(0);
     Litterale* ptReel = new Reel(matched.toFloat());
     if (ptReel ==  0) {
         CALCULATRICE_EXCEPTION("Erreur de construction du reel");
     }
     return ptReel;
+}
+
+
+Litterale* createAtome(QRegularExpressionMatch matched_exp) {
+    cout << "ON EST DANS CREATE ATOME !! " << endl;
+    QString matched = matched_exp.captured(0);
+    Litterale* ptAtome = new Atome(matched);
+    if (ptAtome ==  0) {
+        CALCULATRICE_EXCEPTION("Erreur de construction de l'atome");
+    }
+    return ptAtome;
 }
 
 
@@ -45,6 +56,7 @@ void Analyser::init() {
     m_matchers.insert("^-?[[:digit:]]+$", createInteger);
     m_matchers.insert("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$", createRationnel);
     m_matchers.insert("^(-?)[[:digit:]]*(\\\.)([[:digit:]]*)$", createReel);
+    //m_matchers.insert("^[A-Z]([A-Z0-9]*)$", createAtome);
 }
 
 

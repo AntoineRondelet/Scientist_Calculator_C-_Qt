@@ -16,7 +16,9 @@ public:
   Reel(float v=0): LitteraleNum(), value(v){}
 
   float getValue() const {return value;}
+
   string toString() const override;
+  Reel* clone() const override;
 
   //Le fat d'implementer ces methodes -> pas besoin de faire les operator correspondants --> DP template method
   LitteraleNombre& addition(const LitteraleNombre& lit) const override;
@@ -37,6 +39,8 @@ inline Reel& Reel::operator=(const LitteraleNombre& lit) {
     return *this;
   }
 }
+
+inline Reel* Reel::clone() const {return new Reel(*this);}
 
 
 #endif // REEL_H
