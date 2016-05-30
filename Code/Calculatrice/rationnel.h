@@ -4,6 +4,7 @@
 #include <sstream>
 #include "litteralenum.h"
 #include "CalculatriceException.h"
+#include "complexe.h"
 
 
 using namespace std;
@@ -30,6 +31,8 @@ public:
     LitteraleNombre& division(const LitteraleNombre& lit) const override;
 
     Rationnel& operator=(const LitteraleNum& lit) override;
+
+    Complexe* toComplexe() const override;
   };
 
 

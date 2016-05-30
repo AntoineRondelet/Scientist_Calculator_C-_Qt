@@ -2,6 +2,7 @@
 #define ENTIER_H
 
 #include "rationnel.h"
+#include "complexe.h"
 
 
 class Entier: public Rationnel{ //On choisit de garder l'heritage Rationnel et Entier
@@ -20,6 +21,8 @@ public:
     LitteraleNombre& division(const LitteraleNombre& lit) const override;
 
     Entier& operator=(const LitteraleNum& lit) override;
+
+    Complexe* toComplexe() const override;
 };
 
 inline Entier& Entier::operator=(const LitteraleNum& lit) {

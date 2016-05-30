@@ -1,9 +1,11 @@
 #ifndef COMPLEXE_H
 #define COMPLEXE_H
 
-#include "litteralenombre.h"
 #include "calculatriceexception.h"
-#include "litteralenum.h"
+#include "litteralenombre.h"
+#include "function.h"
+
+class LitteraleNum;
 
 
 class Complexe: public LitteraleNombre{
@@ -24,8 +26,9 @@ public:
     LitteraleNombre& soustraction(const LitteraleNombre& lit) const override;
     LitteraleNombre& multiplication(const LitteraleNombre& lit) const override;
     LitteraleNombre& division(const LitteraleNombre& lit) const override;
-};
 
+    //~Complexe(){delete partEnt; delete partIm;} //--> MET LE BASARD DANS LA MEMOIRE /!\ PAS BON
+};
 
 
 #endif // COMPLEXE_H

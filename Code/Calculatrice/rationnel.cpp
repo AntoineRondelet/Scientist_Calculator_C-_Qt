@@ -257,3 +257,11 @@ LitteraleNombre& Rationnel::division(const LitteraleNombre& lit) const {
 
 
 
+
+Complexe* Rationnel::toComplexe() const {
+    const LitteraleNombre& re = *this;
+    const LitteraleNombre& im = *(new Rationnel(0));
+    Complexe* res = new Complexe(re,im);
+    return (res);
+}
+

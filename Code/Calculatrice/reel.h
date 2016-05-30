@@ -6,6 +6,7 @@
 #include <sstream>
 #include "litteralenum.h"
 #include "CalculatriceException.h"
+#include "complexe.h"
 
 using namespace std;
 
@@ -27,6 +28,8 @@ public:
   LitteraleNombre& division(const LitteraleNombre& lit) const override;
 
   Reel& operator=(const LitteraleNum& lit) override;
+
+  Complexe* toComplexe() const override;
 };
 
 inline Reel& Reel::operator=(const LitteraleNum& lit) {

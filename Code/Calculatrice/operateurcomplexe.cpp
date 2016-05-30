@@ -1,4 +1,9 @@
 #include "operateurcomplexe.h"
+#include "litteralenum.h"
+#include "rationnel.h"
+#include "reel.h"
+#include "entier.h"
+
 
 
 void OperateurComplexe::execute(QVector<Litterale*> litterals) const {

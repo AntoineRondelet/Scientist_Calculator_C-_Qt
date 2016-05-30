@@ -4,6 +4,7 @@
 
 #include "binaryoperator.h"
 #include "complexe.h"
+#include "function.h"
 
 
 class OperateurComplexe: public BinaryOperator {

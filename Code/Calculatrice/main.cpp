@@ -34,7 +34,10 @@ int main(int argc, char *argv[])
         controle.boucleExcecution();
     }
     catch (CalculatriceException &e) {
-        std::cout << e.what();
+        cout << e.what();
+    }
+    catch (...) {
+        cout << "On a catch" << endl;
     }
 
 

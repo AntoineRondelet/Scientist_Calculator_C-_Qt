@@ -25,7 +25,7 @@ public:
     LitteraleNombre& operator*(const LitteraleNombre& n){return this->multiplication(n);}
     LitteraleNombre& operator/(const LitteraleNombre& n){return this->division(n);}
 
-    virtual ~LitteraleNombre(){} //Destructeur virtuel --> Heritage
+    //virtual ~LitteraleNombre(){} //Destructeur virtuel --> Heritage
 };
 
 #endif // LitteraleNombre_H

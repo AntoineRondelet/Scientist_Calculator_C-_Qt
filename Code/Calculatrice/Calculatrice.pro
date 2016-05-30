@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     expression.cpp \
     programme.cpp \
     complexe.cpp \
-    operateurcomplexe.cpp
+    operateurcomplexe.cpp \
+    function.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -73,10 +74,12 @@ HEADERS  += mainwindow.h \
     expression.h \
     programme.h \
     complexe.h \
-    operateurcomplexe.h
+    operateurcomplexe.h \
+    function.h
 
 FORMS    += mainwindow.ui
 
 
 CONFIG += console
+
 

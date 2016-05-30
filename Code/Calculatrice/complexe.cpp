@@ -4,6 +4,7 @@
 #include "calculatriceexception.h"
 #include "reel.h"
 #include "rationnel.h"
+#include "litteralenum.h"
 
 
 
@@ -11,7 +12,7 @@ Complexe::Complexe(const LitteraleNombre& re, const LitteraleNombre& im) {
     const LitteraleNum* tmpRe = dynamic_cast<const LitteraleNum*>(&re);
     const LitteraleNum* tmpIm = dynamic_cast<const LitteraleNum*>(&im);
     if (tmpRe == 0 || tmpIm == 0) {
-        CALCULATRICE_EXCEPTION("Construction du complexe impossible (2 Nombres NonComplexe nécessaires !)");
+        CALCULATRICE_EXCEPTION("Construction du complexe impossible");
     } else {
         partEnt = tmpRe;
         partIm = tmpIm;
@@ -48,10 +49,14 @@ LitteraleNombre& Complexe::addition(const LitteraleNombre& lit) const {
                         if (ptReel ==  0) {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
-                        else {
-                            Complexe* res= new Complexe(partEnt->addition(*ptReel), *partIm);
+                        else {/*
+                            Complexe* res= new Complexe((*partEnt) + (*ptReel), *partIm);
                             LitteraleNombre& ref = *res;
-                            return ref;
+                            return ref;*/
+                            Complexe* refC = ptReel->toComplexe();
+                            Complexe* res = new Complexe((partEnt)->addition(*refC->getPartEnt()), (partIm)->addition(*refC->getPartIm()));
+                            LitteraleNombre& ref = *res;
+                            return(ref);
                         }
                 }
                 else {
@@ -72,6 +77,7 @@ LitteraleNombre& Complexe::addition(const LitteraleNombre& lit) const {
         return ref;
     }
 }
+
 
 LitteraleNombre& Complexe::soustraction(const LitteraleNombre& lit) const {
     //Complexe + Complexe = complexe
@@ -131,19 +137,19 @@ LitteraleNombre& Complexe::multiplication(const LitteraleNombre& lit) const {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
                         else {
-                            Complexe* res= new Complexe(partEnt->multiplication(*ptReel), *partIm);
+                            Complexe* res= new Complexe(partEnt->multiplication(*ptReel), partIm->multiplication(*ptReel));
                             LitteraleNombre& ref = *res;
                             return ref;
                         }
                 }
                 else {
-                    Complexe* res= new Complexe(partEnt->multiplication(*ptRationnel), *partIm);
+                    Complexe* res= new Complexe(partEnt->multiplication(*ptRationnel), partIm->multiplication(*ptRationnel));
                     LitteraleNombre& ref = *res;
                     return ref;
                 }
         }
         else {
-            Complexe* res= new Complexe(partEnt->multiplication(*ptEntier), *partIm);
+            Complexe* res= new Complexe(partEnt->multiplication(*ptEntier), partIm->multiplication(*ptEntier));
             LitteraleNombre& ref = *res;
             return ref;
         }
@@ -173,30 +179,50 @@ LitteraleNombre& Complexe::division(const LitteraleNombre& lit) const {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
                         else {
-                            Complexe* res= new Complexe(partEnt->division(*ptReel), *partIm);
-                            LitteraleNombre& ref = *res;
-                            return ref;
+                            if (ptReel->getValue() == 0){
+                               CALCULATRICE_EXCEPTION("ERREUR: Division par 0");
+                            }
+                            else {
+                                Complexe* res= new Complexe(partEnt->division(*ptReel), partIm->division(*ptReel));
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
                         }
                 }
                 else {
-                    Complexe* res= new Complexe(partEnt->division(*ptRationnel), *partIm);
-                    LitteraleNombre& ref = *res;
-                    return ref;
+                    if (ptRationnel->getNumerateur() == 0){
+                        CALCULATRICE_EXCEPTION("ERREUR: Division par 0");
+                    }
+                    else {
+                        Complexe* res= new Complexe(partEnt->division(*ptRationnel), partIm->division(*ptRationnel));
+                        LitteraleNombre& ref = *res;
+                        return ref;
+                    }
                 }
         }
         else {
-            Complexe* res= new Complexe(partEnt->division(*ptEntier), *partIm);
-            LitteraleNombre& ref = *res;
-            return ref;
+            if(ptEntier->getValeur() == 0){
+                CALCULATRICE_EXCEPTION("ERREUR: Division par 0");
+            }
+            else {
+                Complexe* res= new Complexe(partEnt->division(*ptEntier), partIm->division(*ptEntier));
+                LitteraleNombre& ref = *res;
+                return ref;
+            }
         }
     }
     else {
-        LitteraleNombre& tmpRe = ((partEnt->multiplication(*ptComplexe->getPartEnt())).addition(partIm->multiplication(*ptComplexe->getPartIm()))).division(((*ptComplexe->getPartEnt()).multiplication(*ptComplexe->getPartEnt())).addition(((*ptComplexe->getPartIm()).multiplication(*ptComplexe->getPartIm()))));
-        LitteraleNombre& tmpIm = ((partIm->multiplication(*ptComplexe->getPartEnt())).soustraction(partEnt->multiplication(*ptComplexe->getPartIm()))).division(((*ptComplexe->getPartEnt()).multiplication(*ptComplexe->getPartEnt())).addition(((*ptComplexe->getPartIm()).multiplication(*ptComplexe->getPartIm()))));
+        if (ptComplexe->getPartEnt() == 0 && ptComplexe->getPartIm() == 0){
+            CALCULATRICE_EXCEPTION("ERREUR: Division par 0");
+        }
+        else {
+            LitteraleNombre& tmpRe = ((partEnt->multiplication(*ptComplexe->getPartEnt())).addition(partIm->multiplication(*ptComplexe->getPartIm()))).division(((*ptComplexe->getPartEnt()).multiplication(*ptComplexe->getPartEnt())).addition(((*ptComplexe->getPartIm()).multiplication(*ptComplexe->getPartIm()))));
+            LitteraleNombre& tmpIm = ((partIm->multiplication(*ptComplexe->getPartEnt())).soustraction(partEnt->multiplication(*ptComplexe->getPartIm()))).division(((*ptComplexe->getPartEnt()).multiplication(*ptComplexe->getPartEnt())).addition(((*ptComplexe->getPartIm()).multiplication(*ptComplexe->getPartIm()))));
 
-        Complexe* res= new Complexe(tmpRe, tmpIm);
-        LitteraleNombre& ref = *res;
-        return ref;
+            Complexe* res= new Complexe(tmpRe, tmpIm);
+            LitteraleNombre& ref = *res;
+            return ref;
+        }
     }
 }
 
