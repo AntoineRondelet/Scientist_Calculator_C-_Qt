@@ -57,48 +57,56 @@ QString Rationnel::toString() const {
 
 
 LitteraleNombre& Rationnel::addition(const LitteraleNombre& lit) const {
-    const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
-    //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
-    if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
-        const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
-            if (ptReel == 0) {
-                const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
-                    if (ptEntier ==  0) {
-                        CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
-                    }
-                    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-                        Rationnel* res= new Rationnel(numerateur+ptEntier->getValeur()*denominateur, denominateur);
-                        res->simplification();
-                        if (res->denominateur== 1) {
-                            Entier* resultat = new Entier(res->numerateur);
-                            LitteraleNombre& ref = *resultat;
-                            return ref;
+    const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
+    if (ptComplexe == nullptr) {
+        const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
+        //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
+        if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
+            const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
+                if (ptReel == 0) {
+                    const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
+                        if (ptEntier ==  0) {
+                            CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
-                        else {
-                            LitteraleNombre& ref = *res;
-                            return ref;
+                        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+                            Rationnel* res= new Rationnel(numerateur+ptEntier->getValeur()*denominateur, denominateur);
+                            res->simplification();
+                            if (res->denominateur== 1) {
+                                Entier* resultat = new Entier(res->numerateur);
+                                LitteraleNombre& ref = *resultat;
+                                return ref;
+                            }
+                            else {
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
                         }
-                    }
+                }
+                else {
+                    //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
+                    Reel* res= new Reel(ptReel->getValue()+(static_cast<float>(numerateur)/denominateur));
+                    LitteraleNombre& ref = *res;
+                    return ref;
+                }
+        }
+        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+            Rationnel* res= new Rationnel(numerateur*ptRationnel->denominateur+ptRationnel->numerateur*denominateur, denominateur*ptRationnel->denominateur);
+            res->simplification();
+            if (res->denominateur== 1) {
+                Entier* resultat = new Entier(res->numerateur);
+                LitteraleNombre& ref = *resultat;
+                return ref;
             }
             else {
-                //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
-                Reel* res= new Reel(ptReel->getValue()+(static_cast<float>(numerateur)/denominateur));
                 LitteraleNombre& ref = *res;
                 return ref;
             }
+        }
     }
-    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-        Rationnel* res= new Rationnel(numerateur*ptRationnel->denominateur+ptRationnel->numerateur*denominateur, denominateur*ptRationnel->denominateur);
-        res->simplification();
-        if (res->denominateur== 1) {
-            Entier* resultat = new Entier(res->numerateur);
-            LitteraleNombre& ref = *resultat;
-            return ref;
-        }
-        else {
-            LitteraleNombre& ref = *res;
-            return ref;
-        }
+    else {
+        Complexe* temp = this->toComplexe();
+        LitteraleNombre& res= (*temp) + (*ptComplexe);
+        return res;
     }
 }
 
@@ -106,50 +114,57 @@ LitteraleNombre& Rationnel::addition(const LitteraleNombre& lit) const {
 
 
 
-
 LitteraleNombre& Rationnel::soustraction(const LitteraleNombre& lit) const {
-    const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
-    //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
-    if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
-        const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
-            if (ptReel == 0) {
-                const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
-                    if (ptEntier ==  0) {
-                        CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
-                    }
-                    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-                        Rationnel* res= new Rationnel(numerateur-ptEntier->getValeur()*denominateur, denominateur);
-                        res->simplification();
-                        if (res->denominateur== 1) {
-                            Entier* resultat = new Entier(res->numerateur);
-                            LitteraleNombre& ref = *resultat;
-                            return ref;
+    const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
+    if (ptComplexe == nullptr) {
+        const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
+        //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
+        if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
+            const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
+                if (ptReel == 0) {
+                    const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
+                        if (ptEntier ==  0) {
+                            CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
-                        else {
-                            LitteraleNombre& ref = *res;
-                            return ref;
+                        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+                            Rationnel* res= new Rationnel(numerateur-ptEntier->getValeur()*denominateur, denominateur);
+                            res->simplification();
+                            if (res->denominateur== 1) {
+                                Entier* resultat = new Entier(res->numerateur);
+                                LitteraleNombre& ref = *resultat;
+                                return ref;
+                            }
+                            else {
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
                         }
-                    }
+                }
+                else {
+                    //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
+                    Reel* res= new Reel(ptReel->getValue()-(static_cast<float>(numerateur)/denominateur));
+                    LitteraleNombre& ref = *res;
+                    return ref;
+                }
+        }
+        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+            Rationnel* res= new Rationnel(numerateur*ptRationnel->denominateur-ptRationnel->numerateur*denominateur, denominateur*ptRationnel->denominateur);
+            res->simplification();
+            if (res->denominateur== 1) {
+                Entier* resultat = new Entier(res->numerateur);
+                LitteraleNombre& ref = *resultat;
+                return ref;
             }
             else {
-                //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
-                Reel* res= new Reel(ptReel->getValue()-(static_cast<float>(numerateur)/denominateur));
                 LitteraleNombre& ref = *res;
                 return ref;
             }
+        }
     }
-    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-        Rationnel* res= new Rationnel(numerateur*ptRationnel->denominateur-ptRationnel->numerateur*denominateur, denominateur*ptRationnel->denominateur);
-        res->simplification();
-        if (res->denominateur== 1) {
-            Entier* resultat = new Entier(res->numerateur);
-            LitteraleNombre& ref = *resultat;
-            return ref;
-        }
-        else {
-            LitteraleNombre& ref = *res;
-            return ref;
-        }
+    else {
+        Complexe* temp = this->toComplexe();
+        LitteraleNombre& res= (*temp) - (*ptComplexe);
+        return res;
     }
 }
 
@@ -158,48 +173,56 @@ LitteraleNombre& Rationnel::soustraction(const LitteraleNombre& lit) const {
 
 
 LitteraleNombre& Rationnel::multiplication(const LitteraleNombre& lit) const {
-    const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
-    //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
-    if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
-        const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
-            if (ptReel == 0) {
-                const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
-                    if (ptEntier ==  0) {
-                        CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
-                    }
-                    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-                        Rationnel* res= new Rationnel(numerateur*ptEntier->getValeur(), denominateur);
-                        res->simplification();
-                        if (res->denominateur== 1) {
-                            Entier* resultat = new Entier(res->numerateur);
-                            LitteraleNombre& ref = *resultat;
-                            return ref;
+    const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
+    if (ptComplexe == nullptr) {
+        const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
+        //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
+        if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
+            const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
+                if (ptReel == 0) {
+                    const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
+                        if (ptEntier ==  0) {
+                            CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
-                        else {
-                            LitteraleNombre& ref = *res;
-                            return ref;
+                        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+                            Rationnel* res= new Rationnel(numerateur*ptEntier->getValeur(), denominateur);
+                            res->simplification();
+                            if (res->denominateur== 1) {
+                                Entier* resultat = new Entier(res->numerateur);
+                                LitteraleNombre& ref = *resultat;
+                                return ref;
+                            }
+                            else {
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
                         }
-                    }
+                }
+                else {
+                    //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
+                    Reel* res= new Reel(ptReel->getValue()*(static_cast<float>(numerateur)/denominateur));
+                    LitteraleNombre& ref = *res;
+                    return ref;
+                }
+        }
+        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+            Rationnel* res= new Rationnel(numerateur*ptRationnel->numerateur, denominateur*ptRationnel->denominateur);
+            res->simplification();
+            if (res->denominateur== 1) {
+                Entier* resultat = new Entier(res->numerateur);
+                LitteraleNombre& ref = *resultat;
+                return ref;
             }
             else {
-                //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
-                Reel* res= new Reel(ptReel->getValue()*(static_cast<float>(numerateur)/denominateur));
                 LitteraleNombre& ref = *res;
                 return ref;
             }
+        }
     }
-    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-        Rationnel* res= new Rationnel(numerateur*ptRationnel->numerateur, denominateur*ptRationnel->denominateur);
-        res->simplification();
-        if (res->denominateur== 1) {
-            Entier* resultat = new Entier(res->numerateur);
-            LitteraleNombre& ref = *resultat;
-            return ref;
-        }
-        else {
-            LitteraleNombre& ref = *res;
-            return ref;
-        }
+    else {
+        Complexe* temp = this->toComplexe();
+        LitteraleNombre& res= (*temp) * (*ptComplexe);
+        return res;
     }
 }
 
@@ -210,51 +233,58 @@ LitteraleNombre& Rationnel::multiplication(const LitteraleNombre& lit) const {
 
 
 LitteraleNombre& Rationnel::division(const LitteraleNombre& lit) const {
-    const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
-    //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
-    if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
-        const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
-            if (ptReel == 0) {
-                const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
-                    if (ptEntier ==  0) {
-                        CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
-                    }
-                    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-                        Rationnel* res= new Rationnel(numerateur, denominateur*ptEntier->getValeur());
-                        res->simplification();
-                        if (res->denominateur== 1) {
-                            Entier* resultat = new Entier(res->numerateur);
-                            LitteraleNombre& ref = *resultat;
-                            return ref;
+    const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
+    if (ptComplexe == nullptr) {
+        const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
+        //Ici on teste l'addition d'un Rationnel avec un Rationnel -> Il faudrait aussi pouvoir faire Rationnel+entier et Rationnel+rationnel
+        if (ptRationnel == 0) { // => lit n'est pas un Rationnel: On essaie de la convertir en Rationnel
+            const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
+                if (ptReel == 0) {
+                    const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
+                        if (ptEntier ==  0) {
+                            CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
-                        else {
-                            LitteraleNombre& ref = *res;
-                            return ref;
+                        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+                            Rationnel* res= new Rationnel(numerateur, denominateur*ptEntier->getValeur());
+                            res->simplification();
+                            if (res->denominateur== 1) {
+                                Entier* resultat = new Entier(res->numerateur);
+                                LitteraleNombre& ref = *resultat;
+                                return ref;
+                            }
+                            else {
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
                         }
-                    }
+                }
+                else {
+                    //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
+                    Reel* res= new Reel((static_cast<float>(numerateur)/denominateur)/ptReel->getValue());
+                    LitteraleNombre& ref = *res;
+                    return ref;
+                }
+        }
+        else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+            Rationnel* res= new Rationnel(numerateur*ptRationnel->denominateur, denominateur*ptRationnel->numerateur);
+            res->simplification();
+            if (res->denominateur== 1) {
+                Entier* resultat = new Entier(res->numerateur);
+                LitteraleNombre& ref = *resultat;
+                return ref;
             }
             else {
-                //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
-                Reel* res= new Reel((static_cast<float>(numerateur)/denominateur)/ptReel->getValue());
                 LitteraleNombre& ref = *res;
                 return ref;
             }
+        }
     }
-    else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
-        Rationnel* res= new Rationnel(numerateur*ptRationnel->denominateur, denominateur*ptRationnel->numerateur);
-        res->simplification();
-        if (res->denominateur== 1) {
-            Entier* resultat = new Entier(res->numerateur);
-            LitteraleNombre& ref = *resultat;
-            return ref;
-        }
-        else {
-            LitteraleNombre& ref = *res;
-            return ref;
-        }
+    else {
+        Complexe* temp = this->toComplexe();
+        LitteraleNombre& res= (*temp) * (*ptComplexe);
+        return res;
     }
 }
-
 
 
 

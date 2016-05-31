@@ -12,7 +12,9 @@
 #include "reel.h"
 #include "rationnel.h"
 #include "atome.h"
-#include"entieranalyser.h"
+#include "expression.h"
+
+//#include"entieranalyser.h"
 
 #include "litterale.h"
 

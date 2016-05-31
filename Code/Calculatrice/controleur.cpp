@@ -43,7 +43,7 @@ void Controleur::boucleExcecution(){
         //pileAff.setMessage(""); //On remet le message a zero a chaque iteration
         pileAff.affiche();
         cout<<"?-";
-        cin>>c;
+        getline(cin,c);
         if (c!="Q") commande(c);
     }while(c!="Q");
 }
