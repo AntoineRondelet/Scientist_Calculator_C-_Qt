@@ -59,18 +59,61 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     }
 }
 
-/*
+
 Litterale* createComplexe(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE COMPLEXE !! " << endl;
     QString re = matched_exp.captured("partRE");
     QString im = matched_exp.captured("partIM");
-    Litterale* ptComplexe = new Complexe(im.toInt(), denom.toInt());
-    if (ptRationnel ==  0) {
+    //On fait tourner nos regex des entiers, reels et rationnels sur les parties RE et IM du complexe
+
+    QRegularExpression entier("^-?[[:digit:]]+$");
+    QRegularExpression reel("^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$");
+    QRegularExpression rationnel("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$");
+
+    LitteraleNombre* pEnt;
+    LitteraleNombre* pIm;
+
+    QRegularExpressionMatch str_match = entier.match(re);
+    if(str_match.hasMatch()) {
+        pEnt = new Entier(re.toInt());
+    }
+    str_match = entier.match(im);
+    if(str_match.hasMatch()) {
+        pIm = new Entier(im.toInt());
+    }
+
+    str_match = reel.match(re);
+    if(str_match.hasMatch()) {
+        pEnt = new Reel(re.toFloat());
+    }
+    str_match = reel.match(im);
+    if(str_match.hasMatch()) {
+        pIm = new Reel(im.toFloat());
+    }
+
+    str_match = rationnel.match(re);
+    if(str_match.hasMatch()) {
+        QStringList reRationnel = re.split(QRegularExpression("/"));
+        QString numEnt = reRationnel.takeFirst();
+        QString denEnt = reRationnel.takeFirst();
+        pEnt = new Rationnel(numEnt.toInt(), denEnt.toInt());
+    }
+    str_match = rationnel.match(im);
+    if(str_match.hasMatch()) {
+        QStringList imRationnel = im.split(QRegularExpression("/"));
+        QString numIm = imRationnel.takeFirst();
+        QString denIm = imRationnel.takeFirst();
+        pIm = new Rationnel(numIm.toInt(), denIm.toInt());
+    }
+
+
+    Litterale* ptComplexe = new Complexe(*pEnt, *pIm);
+    if (ptComplexe ==  0) {
         CALCULATRICE_EXCEPTION("Erreur de construction du rationnel");
     }
-    return ptRationnel;
+    return ptComplexe;
 }
-*/
+
 
 
 Litterale* createExpression(QRegularExpressionMatch matched_exp) {
@@ -85,18 +128,6 @@ Litterale* createExpression(QRegularExpressionMatch matched_exp) {
     }
     return ptExpression;
 }
-/*
-    QStringList words;
-    QRegularExpression re("(?:'[^']+')");
-    QRegularExpressionMatch str_match = re.match(QString::fromStdString("'3+4 SIN(3x+10)'"));
-    if(str_match.hasMatch()) {
-        words = str_match.capturedTexts();
-    }
-    while(words.empty() == false) {
-       QString mot = words.takeFirst();
-       cout << mot.toStdString() << endl;
-    }
-*/
 
 
 
@@ -107,40 +138,17 @@ void Analyser::init() {
     QString reel = "^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$";
     QString rationnel = "^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$";
     QString atome = "^[A-Z]([A-Z0-9]*)$";
-    //QString complexe = "^(?<partRE>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)[\$](?<partIM>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)$";
-
+    QString complexe = "^(?<partRE>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)[\$](?<partIM>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)$";
+    QString expression = "(?:'[^']+')";
 
     m_matchers.insert(reel, createReel);
     m_matchers.insert(entier, createInteger);
     m_matchers.insert(rationnel, createRationnel);
     m_matchers.insert(atome, createAtome); //On fera un 2e traitement dans create atome pour ne pas créer un atome de meme nom qu'un operateur
-    //m_matchers.insert(complexe, createComplexe); --> Faire la fonction de reconnaissance des complexes
-    //m_matchers.insert("(?:'[^']+')", createExpression);
+    m_matchers.insert(complexe, createComplexe); //--> Faire la fonction de reconnaissance des complexes
+    m_matchers.insert(expression, createExpression);
 }
 
-
-/*
-    string c;
-    cout<<"?-";
-    getline(cin,c);
-    QString str_in = QString::fromStdString(c);
-    //cout << str_in.toStdString() << endl;
-    QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
-    int i = 0;
-    while(!liste_param.empty()) {
-        QRegularExpression regex("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$");
-        QString act = liste_param.takeFirst();
-        QRegularExpressionMatch str_match = regex.match(act);
-        if(str_match.hasMatch()) {
-            cout << "------- MATCHED --------" << endl;
-            QString act2 = str_match.captured(0);
-            cout << "Match " << i << ": " << act2.toStdString() << endl;
-        }
-        else
-            cout << "Case " << i << ": " << act.toStdString() << endl;
-        i++;
-    }
-*/
 
 
 //On itère sur la map qui contient les regex et les fonctions de construction, et on renvoie le ptr sur l'objet construit, nullptr sinon
@@ -162,27 +170,11 @@ bool Analyser::reconnaitre(QStringList& src) {
                 Litterale* lit_a_empiler = func(str_match);
                 stack->push(lit_a_empiler);
                 break;
-                /*if(lit_a_empiler != nullptr) {
-                    stack->push(lit_a_empiler);
-                    break; //On retrourne dans le while aussitot qu'on a trouvé le bon pattern -> on arrete de tester les regex sur le pattern deja trouvé
-                }
-                else {
-                    stack->setMessage("Entrée inconnue");
-                    return false;
-                }*/
-                /*
-                Ici en disant qu'on compte le nombre d'empilement qu'on fait -> grace au for et a la QStringList, on pourra choisir de depiler les n operandes deja empilées ou choisir de les laisser -> demande a l'utilisateur + if/else avec une fonction de réempilement
-                */
             }
             else {
                 //Une partie de la littérale ne matche pas, ca peut etre un opérateur
                 Operator *op = getOperateur(mot.toStdString());
-                if(!op) {
-                    //stack->setMessage("Entrée inconnue");
-                    //return false;//on sort des 2 for, on stoppe l'analyse syntaxique -> Un truc ne va pas -> on renvoie false
-                    continue;
-                }
-                else {
+                if (op) {
                     QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
                     if (stockage_temp_litterales.empty() == false){
                         //On execute l'operateur que si on a dépilé suffisament d'elements de la pile (donc si stockage_temp_litterales != nullptr)
@@ -193,9 +185,8 @@ bool Analyser::reconnaitre(QStringList& src) {
                 }
             }
         }
-        if(construction == false) { //-> il n'a jamais été construit -> ne correspond a aucun pattern !
+        if(construction == false) //-> il n'a jamais été construit -> ne correspond a aucun pattern !
             return false;
-        }
      }
     return true; //si on a pas retourné de false a la sortie du while => tout est bon
 }
