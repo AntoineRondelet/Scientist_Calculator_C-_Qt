@@ -13,25 +13,13 @@
 
 
 
-void Controleur::commande(const string& src)
+void Controleur::commande(QStringList& list_src)
 {
-    Litterale* number = analyser->reconnaitre(src);
-    if(number == nullptr) { //On a pas de litteraleNombre donc on teste si c'est un operateur
-        Operator *op = getOperateur(src);
-        if(!op) {
-            pileAff.setMessage("Entrée inconnue");
-        }
-        else {
-            QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
-            if (stockage_temp_litterales.empty() == false){
-                //On execute l'operateur que si on a dépilé suffisament d'elements de la pile (donc si stockage_temp_litterales != nullptr)
-                op->execute(stockage_temp_litterales);
-            }
-        }
+    bool match = analyser->reconnaitre(list_src);
+    if(match == false) { //On a pas de litteraleNombre donc on teste si c'est un operateur
+        pileAff.setMessage("Controleur.cpp: Entrée Inconnue");
     }
-    else {
-        pileAff.push(number);
-    }
+    //ou sinon faire une fonction de recuperation qui prend en parametre un int (renoyé par econnaitre, qui indique la position dans la QStringList du mot qui a pa sété reconnu de telle maniere a l'indiquer -> si 0 aors tout a été reconnu
 }
 
 
@@ -44,9 +32,16 @@ void Controleur::boucleExcecution(){
         pileAff.affiche();
         cout<<"?-";
         getline(cin,c);
-        if (c!="Q") commande(c);
+        QString str_in = QString::fromStdString(c);
+        QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
+        if (c!="Q") commande(liste_param);
     }while(c!="Q");
 }
+
+
+
+
+
 
 
 /*

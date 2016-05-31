@@ -18,7 +18,7 @@ public:
     }
 
     void boucleExcecution();
-    void commande(const string& src);
+    void commande(QStringList& list_src);
 
     ~Controleur(){delete analyser;} //On a une composition
 };

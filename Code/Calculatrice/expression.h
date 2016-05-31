@@ -15,3 +15,12 @@ public:
 inline Expression* Expression::clone() const {return new Expression(*this);}
 
 #endif // EXPRESSION_H
+
+//UTILISER le Validator pour valider la saisie dans une QLineEdit avec Qt.
+//De cette maniere on peut eviter les espaces dans les expressions -> on les interdit dans la regex
+
+/*
+QRegExp re("^[[,(]{1,1}(0|[1-9]{1,1}[0-9]{0,9})[,]{1,1}(0|[1-9]{1,1}[0-9]{0,9})[],)]{1,1}$");
+QRegExpValidator *validator = new QRegExpValidator(re, this);
+ui->lineEdit->setValidator(validator);
+*/

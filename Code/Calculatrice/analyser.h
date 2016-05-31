@@ -26,7 +26,7 @@ class Analyser {
 public:
     Analyser(): m_matchers(QMap<QString, func_t>()){}
     void init();
-    Litterale* reconnaitre(const string& src);
+    bool reconnaitre(QStringList& src);
 };
 
 #endif // ANALYSER_H

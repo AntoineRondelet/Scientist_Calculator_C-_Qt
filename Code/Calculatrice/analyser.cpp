@@ -2,6 +2,7 @@
 #include <functional>
 #include"entieranalyser.h"
 #include "pile.h"
+#include "operator.h"
 
 //Les fonctions qui construisent les objets apres que les regex aient matchées
 
@@ -103,37 +104,117 @@ Litterale* createExpression(QRegularExpressionMatch matched_exp) {
 //On initialise notre analyser (qui est un module du controleur -> composition)
 void Analyser::init() {
     QString entier = "^-?[[:digit:]]+$";
-    QString reel = "^(-?)[[:digit:]]*(\\\.)([[:digit:]]*)$";
+    QString reel = "^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$";
     QString rationnel = "^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$";
     QString atome = "^[A-Z]([A-Z0-9]*)$";
     //QString complexe = "^(?<partRE>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)[\$](?<partIM>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)$";
 
 
+    m_matchers.insert(reel, createReel);
     m_matchers.insert(entier, createInteger);
     m_matchers.insert(rationnel, createRationnel);
-    m_matchers.insert(reel, createReel);
     m_matchers.insert(atome, createAtome); //On fera un 2e traitement dans create atome pour ne pas créer un atome de meme nom qu'un operateur
     //m_matchers.insert(complexe, createComplexe); --> Faire la fonction de reconnaissance des complexes
-    m_matchers.insert("(?:'[^']+')", createExpression);
+    //m_matchers.insert("(?:'[^']+')", createExpression);
 }
 
+
+/*
+    string c;
+    cout<<"?-";
+    getline(cin,c);
+    QString str_in = QString::fromStdString(c);
+    //cout << str_in.toStdString() << endl;
+    QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
+    int i = 0;
+    while(!liste_param.empty()) {
+        QRegularExpression regex("^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$");
+        QString act = liste_param.takeFirst();
+        QRegularExpressionMatch str_match = regex.match(act);
+        if(str_match.hasMatch()) {
+            cout << "------- MATCHED --------" << endl;
+            QString act2 = str_match.captured(0);
+            cout << "Match " << i << ": " << act2.toStdString() << endl;
+        }
+        else
+            cout << "Case " << i << ": " << act.toStdString() << endl;
+        i++;
+    }
+*/
 
 
 //On itère sur la map qui contient les regex et les fonctions de construction, et on renvoie le ptr sur l'objet construit, nullptr sinon
-Litterale* Analyser::reconnaitre(const string& src)
-{
-    QMap<QString, func_t>::iterator i;
-    for (i = m_matchers.begin(); i != m_matchers.end(); ++i) {
-        QRegularExpression regex(i.key());
-        func_t func = i.value();
+bool Analyser::reconnaitre(QStringList& src) {
+    Pile* stack = &Pile::getInstance();
+    bool construction = false; //variable drapeau qui atteste de la construction ou non d'un objet
+    while(src.empty() == false) { //Tant que j'ai des Litterales a analyser
+        QString mot = src.takeFirst(); //C'est ca qui fait avancer mon while !!
+        QMap<QString, func_t>::iterator i;
 
-        QRegularExpressionMatch str_match = regex.match(QString::fromStdString(src));
-        if(str_match.hasMatch()) {
-            return func(str_match);
+        for (i = m_matchers.begin(); i != m_matchers.end(); ++i) { //On prend chaque "mot" de notre ligne de saisie et on le fais passer dans toutes nos regex
+            QRegularExpression regex(i.key());
+            func_t func = i.value();
+
+            QRegularExpressionMatch str_match = regex.match(mot);
+            if(str_match.hasMatch()) {
+                //Si ca match -> on appelle la fonction pour le construire
+                construction = true;
+                Litterale* lit_a_empiler = func(str_match);
+                stack->push(lit_a_empiler);
+                break;
+                /*if(lit_a_empiler != nullptr) {
+                    stack->push(lit_a_empiler);
+                    break; //On retrourne dans le while aussitot qu'on a trouvé le bon pattern -> on arrete de tester les regex sur le pattern deja trouvé
+                }
+                else {
+                    stack->setMessage("Entrée inconnue");
+                    return false;
+                }*/
+                /*
+                Ici en disant qu'on compte le nombre d'empilement qu'on fait -> grace au for et a la QStringList, on pourra choisir de depiler les n operandes deja empilées ou choisir de les laisser -> demande a l'utilisateur + if/else avec une fonction de réempilement
+                */
+            }
+            else {
+                //Une partie de la littérale ne matche pas, ca peut etre un opérateur
+                Operator *op = getOperateur(mot.toStdString());
+                if(!op) {
+                    //stack->setMessage("Entrée inconnue");
+                    //return false;//on sort des 2 for, on stoppe l'analyse syntaxique -> Un truc ne va pas -> on renvoie false
+                    continue;
+                }
+                else {
+                    QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
+                    if (stockage_temp_litterales.empty() == false){
+                        //On execute l'operateur que si on a dépilé suffisament d'elements de la pile (donc si stockage_temp_litterales != nullptr)
+                        op->execute(stockage_temp_litterales);
+                        construction = true;
+                        break;
+                    }
+                }
+            }
         }
-    }
-    return nullptr;
+        if(construction == false) { //-> il n'a jamais été construit -> ne correspond a aucun pattern !
+            return false;
+        }
+     }
+    return true; //si on a pas retourné de false a la sortie du while => tout est bon
 }
+
+/*
+string c;
+cout<<"?-";
+getline(cin,c);
+QString str_in = QString::fromStdString(c);
+cout << "------- MATCHED --------" << endl;
+//cout << str_in.toStdString() << endl;
+QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
+int i = 0;
+while(!liste_param.empty()) {
+    QString act = liste_param.takeFirst();
+    cout << "Case " << i << ": " << act.toStdString() << endl;
+    i++;
+}
+*/
 
 /*
     QStringList words;
