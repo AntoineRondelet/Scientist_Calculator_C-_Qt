@@ -4,7 +4,8 @@
 #include "pile.h"
 #include "operator.h"
 
-//Les fonctions qui construisent les objets apres que les regex aient matchées
+
+// --- Fonctions qui construisent les litterales en fonction des match --- //
 
 Litterale* createInteger(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE INTEGER!! " << endl;
@@ -118,10 +119,7 @@ Litterale* createComplexe(QRegularExpressionMatch matched_exp) {
 
 Litterale* createExpression(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE EXPRESSION !! " << endl;
-    //QStringList words;
     QString matched = matched_exp.captured(0);
-    Pile* stack = &Pile::getInstance();
-    //stack->setMessage(mot);
     Litterale* ptExpression = new Expression(matched);
     if (ptExpression ==  0) {
         CALCULATRICE_EXCEPTION("Erreur de construction de l'expression");
@@ -132,10 +130,7 @@ Litterale* createExpression(QRegularExpressionMatch matched_exp) {
 
 Litterale* createProgramme(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE Programme !! " << endl;
-    //QStringList words;
     QString matched = matched_exp.captured(0);
-    Pile* stack = &Pile::getInstance();
-    //stack->setMessage(mot);
     Litterale* ptProgramme = new Programme(matched);
     if (ptProgramme ==  0) {
         CALCULATRICE_EXCEPTION("Erreur de construction du Programme");
@@ -147,7 +142,8 @@ Litterale* createProgramme(QRegularExpressionMatch matched_exp) {
 
 
 
-//On initialise notre analyser (qui est un module du controleur -> composition)
+// --- Fonction: Initialisation de l'analyseur avec les regex et fonctions de construction --- //
+
 void Analyser::init() {
     QString entier = "^-?[[:digit:]]+$";
     QString reel = "^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$";
@@ -167,76 +163,82 @@ void Analyser::init() {
 }
 
 
+// --- On itère sur la QStringList. On construit l'objet reconnu, rien sinon --- //
 
-//On itère sur la map qui contient les regex et les fonctions de construction, et on renvoie le ptr sur l'objet construit, nullptr sinon
 bool Analyser::reconnaitre(QStringList& src) {
     Pile* stack = &Pile::getInstance();
-    bool construction = false; //variable drapeau qui atteste de la construction ou non d'un objet
+    //Variable drapeau: Construction d'objet ou pas
+    bool construction = false;
+    //Variable compteur de crochets: Programme avec le bon nombre de crochets ou pas
     int counterCrochet = 0;
 
-    while(src.empty() == false) { //Tant que j'ai des Litterales a analyser
+    //Tant que j'ai des litterales dans la QStringList (donc à analyser)
+    while(src.empty() == false) {
 
-        QString mot = src.takeFirst(); //C'est ca qui fait avancer mon while !!
+        QString mot = src.takeFirst();
 
-        // -------------- CIRCUIT QU'EMPRUNTE LES EXPRESSIONS SPLITEES ------------- //
-        //-------- On ne passe dans ce circuit de if etc QUE si l'utilisateur a mit des espaces dans l'expression et que donc elle a étée splitée
-        if (mot.left(1) == "'") { //on detecte "'" -> synonyme qu'une expression a étée splitée -> l'utilisateur a entré un espace
+        // --- Reconstruction des expressions splitées (Si espace lors de la saisie) --- //
+        if (mot.left(1) == "'") {
+            //Si on trouve (') seul: On a une expression qui a étée splitée (l'utilisateur l'a entrée avec un espace)
             if (mot.right(1) != "'" || mot.size() <= 1){
                 QString finExp = "";
-                while (!src.empty()){ //Pour eviter le break -> rajouter la condition (mot.right(1) != "'")
+                //Tant qu'il reste des String et qu'on a pas refermé l'expression ((') manquant à la fin)
+                while (!src.empty() && (mot.right(1) != "'")){
                     finExp = src.takeFirst();
+                    //On concatène notre expression sans espaces dans mot
                     mot += finExp;
-                    if (mot.right(1) == "'") {//on sort l'expression est "recollée"
-                        break;
-                    }
                 }
             }
-            //On interprete ce qu'on a en sortie de while
-            if (mot.right(1) != "'") { //On est sorti du while sans avoir pu trouver la "'" fermante de l'expression -> erreur de saisie
+            //On sort du while car src.empty() == true mais le (') de fin n'a pas été trouvé
+            if (mot.right(1) != "'") {
                 stack->setMessage("Attention, caractere de fin d'expression manquant: (') ");
-                return false; //on ne construit rien, on sort
+                //On ne construit rien, on sort
+                return false;
             }
         }
-        //--------- En sortant de tous ces if/else -> On a "recollé" les morceaux de la litterale expession qui avait etée saisie avec des espaces et donc splitée -> On s'assure par la meme occasion que tout "'" ouvert se ferme !
 
-
-        //------ CIRCUIT POUR RECONSTITUER LES PROGRAMMES ------//
+        // --- Reconstruction des programmes splités (forcement car espace entre chaque opérande) --- //
         if (mot == "[") {
-                counterCrochet++;
-                QString finProg = "";
-                while (!src.empty() && counterCrochet !=0){ //Si counterCrochet != 0 -> on a pas fini de lire le programme
-                    finProg = src.takeFirst();
-                    if (finProg == "[") counterCrochet++;
-                    if (finProg == "]") counterCrochet--;
-                    mot += " " + finProg; //On laisse l'espace entre chaque operande du programme
-                }
-                if(counterCrochet != 0) {
-                    stack->setMessage("Attention, crochet(s) manquant(s) : ']' ");
-                    return false;
-                }
+            counterCrochet++;
+            QString finProg = "";
+            while (!src.empty() && counterCrochet !=0){ //Si counterCrochet != 0 -> on a pas fini de lire le programme
+                finProg = src.takeFirst();
+                if (finProg == "[") counterCrochet++;
+                if (finProg == "]") counterCrochet--;
+                //On doit conserver l'espace de séparation entre chaque operande
+                mot += " " + finProg;
+            }
+            //On est sorti du while car src.empty() == true. Mais il manque des crochets
+            if(counterCrochet != 0) {
+                stack->setMessage("Attention, crochet(s) manquant(s) : ']' ");
+                return false;
+            }
         }
-         //------ SORTIE DE CIRCUIT POUR RECONSTITUER LES PROGRAMMES ------//
 
+
+        // --- Apres avoir réassemblé les expressions et les programmes, on analyse les entrées de l'utilisateur --- //
         QMap<QString, func_t>::iterator i;
-        for (i = m_matchers.begin(); i != m_matchers.end(); ++i) { //On prend chaque "mot" de notre ligne de saisie et on le fais passer dans toutes nos regex
+        //On prend chaque opérande saisie par l'utilisateur et on le fait passer par toutes les regex
+        for (i = m_matchers.begin(); i != m_matchers.end(); ++i) {
             QRegularExpression regex(i.key());
             func_t func = i.value();
 
             QRegularExpressionMatch str_match = regex.match(mot);
             if(str_match.hasMatch()) {
-                //Si ca match -> on appelle la fonction pour le construire
+                //Si un pattern match avec une regex: On appelle la fonction pour le construire
                 construction = true;
                 Litterale* lit_a_empiler = func(str_match);
                 stack->push(lit_a_empiler);
+                //On a construit notre objet, on sort et on analyse l'opérande suivante
                 break;
             }
             else {
-                //Une partie de la littérale ne matche pas, ca peut etre un opérateur
+                //Si aucune littérale ne match, ca peut etre un opérateur
                 Operator *op = getOperateur(mot.toStdString());
                 if (op) {
                     QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
                     if (stockage_temp_litterales.empty() == false){
-                        //On execute l'operateur que si on a dépilé suffisament d'elements de la pile (donc si stockage_temp_litterales != nullptr)
+                        //On execute l'operateur que si on a dépilé suffisament d'elements de la pile
                         op->execute(stockage_temp_litterales);
                         construction = true;
                         break;
@@ -244,41 +246,10 @@ bool Analyser::reconnaitre(QStringList& src) {
                 }
             }
         }
-        if(construction == false) //-> il n'a jamais été construit -> ne correspond a aucun pattern !
+        //On a rien construit: Donc on a entré quelque chose d'inconnu
+        if(construction == false)
             return false;
      }
-    return true; //si on a pas retourné de false a la sortie du while => tout est bon
+    //Tout est bon, on retourne true pour l'indiquer
+    return true;
 }
-
-/*
-string c;
-cout<<"?-";
-getline(cin,c);
-QString str_in = QString::fromStdString(c);
-cout << "------- MATCHED --------" << endl;
-//cout << str_in.toStdString() << endl;
-QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
-int i = 0;
-while(!liste_param.empty()) {
-    QString act = liste_param.takeFirst();
-    cout << "Case " << i << ": " << act.toStdString() << endl;
-    i++;
-}
-*/
-
-/*
-    QStringList words;
-    QRegularExpression re("(?:'[^']+')");
-    QRegularExpressionMatch str_match = re.match(QString::fromStdString("'3+4 SIN(3x+10)'"));
-    if(str_match.hasMatch()) {
-        words = str_match.capturedTexts();
-    }
-    while(words.empty() == false) {
-       QString mot = words.takeFirst();
-       cout << mot.toStdString() << endl;
-    }
-*/
-
-
-//Utiliser le global matching pour analyser toutes une entrée et pour trouver les programmes a l'interieur des programmes etc
-
