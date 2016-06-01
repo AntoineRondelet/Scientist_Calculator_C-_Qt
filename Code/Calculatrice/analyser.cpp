@@ -155,10 +155,30 @@ void Analyser::init() {
 bool Analyser::reconnaitre(QStringList& src) {
     Pile* stack = &Pile::getInstance();
     bool construction = false; //variable drapeau qui atteste de la construction ou non d'un objet
-    while(src.empty() == false) { //Tant que j'ai des Litterales a analyser
-        QString mot = src.takeFirst(); //C'est ca qui fait avancer mon while !!
-        QMap<QString, func_t>::iterator i;
 
+    while(src.empty() == false) { //Tant que j'ai des Litterales a analyser
+
+        QString mot = src.takeFirst(); //C'est ca qui fait avancer mon while !!
+
+        //-------- On ne passe dans ce circuit de if etc QUE si l'utilisateur a mit des espaces dans l'expression et que donc elle a étée splitée
+        if (mot.left(1) == "'") { //on detecte "'" -> synonyme qu'une expression a étée splitée -> l'utilisateur a entré un espace
+            if (mot.right(1) != "'" || mot.size() <= 1){
+                QString finExp = "";
+                while (!src.empty()){
+                    finExp = src.takeFirst();
+                    mot += finExp;
+                    if (mot.right(1) == "'") //on sort l'expression est "recollée"
+                        break;
+                }
+            }
+            //On interprete ce qu'on a en sortie de while
+            if (mot.right(1) != "'") { //On est sorti du while sans avoir pu trouver la "'" fermante de l'expression -> erreur de saisie
+                return false; //on ne construit rien, on sort
+            }
+        }
+        //--------- En sortant de tous ces if/else -> On a "recollé" les morceaux de la litterale expession qui avait etée saisie avec des espaces et donc splitée -> On s'assure par la meme occasion que tout "'" ouvert se ferme !
+
+        QMap<QString, func_t>::iterator i;
         for (i = m_matchers.begin(); i != m_matchers.end(); ++i) { //On prend chaque "mot" de notre ligne de saisie et on le fais passer dans toutes nos regex
             QRegularExpression regex(i.key());
             func_t func = i.value();
