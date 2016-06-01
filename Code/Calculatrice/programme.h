@@ -2,10 +2,18 @@
 #define PROGRAMME_H
 
 
-class Programme
-{
+#include "litterale.h"
+
+class Programme: public Litterale {
+    QString textExpr;
 public:
-    Programme();
+    Programme(const QString& s): Litterale(), textExpr(s){}
+
+    QString toString() const {return textExpr;} //Lors du passage a Qt : il faudra utiliser the "maxLength : int" property de la classe QLineEdit pour permettre a l'affichage des "...'" a la fin des Programmes trop longues
+    Programme* clone() const;
 };
+
+inline Programme* Programme::clone() const {return new Programme(*this);}
+
 
 #endif // PROGRAMME_H

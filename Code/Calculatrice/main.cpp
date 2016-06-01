@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
         cout << "On a catch" << endl;
     }
 
+
 /*
 //regex("\\[(.)*\\]"); --> regex pour les programmes
     string c;
@@ -60,8 +61,8 @@ int main(int argc, char *argv[])
         cout << "Case " << ": " << str_in.toStdString() << endl;
 */
 
-
 /*
+
     string c;
     cout<<"?-";
     getline(cin,c);
@@ -69,24 +70,24 @@ int main(int argc, char *argv[])
     //cout << str_in.toStdString() << endl;
     QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
     int i = 0;
+    int counterCrochet = 0;
     while(!liste_param.empty()) {
-        QRegularExpression regex("'(.)*'");
+        QRegularExpression regex("\\[(.)*\\]");
         QString act = liste_param.takeFirst();
 
 
-        //On ne passe dans ce circuit de if etc QUE si l'utilisateur a mit des espaces dans
-        if (act.left(1) == "'") {
-            if (act.right(1) != "'" || act.size() <= 1){
+        //------ CIRCUIT POUR RECONSTITUER LES PROGRAMMES ------//
+        if (act == "[") {
+                counterCrochet++;
                 QString isFound = "";
-                while (!liste_param.empty()){
+                while (!liste_param.empty() && counterCrochet !=0){ //Si counterCrochet != 0 -> on a pas fini de lire le programme
                     isFound = liste_param.takeFirst();
-                    act += isFound;
-                    if (act.right(1) == "'") //on sort l'expression est "recollée"
-                        break;
+                    if (isFound == "[") counterCrochet++;
+                    if (isFound == "]") counterCrochet--;
+                    act += " " + isFound;
                 }
-            }
         }
-        // En sortant de tous ces if/else -> On a "recollé" les morceaux de la litterale expession qui avait etée saisie avec des espaces et donc splitée -> On s'assure par la meme occasion que tout "'" ouvert se ferme !
+         //------ SORTIE DE CIRCUIT POUR RECONSTITUER LES PROGRAMMES ------//
 
         QRegularExpressionMatch str_match = regex.match(act);
         if(str_match.hasMatch()) {
@@ -100,6 +101,8 @@ int main(int argc, char *argv[])
     }
 
 */
+
+
 
 
 

@@ -13,6 +13,7 @@
 #include "rationnel.h"
 #include "atome.h"
 #include "expression.h"
+#include "programme.h"
 
 //#include"entieranalyser.h"
 
