@@ -9,10 +9,10 @@
 #include "analyser.h"
 
 class Controleur {
-    Pile& pileAff;
+    //Pile& pileAff;
     Analyser* analyser;
 public:
-    Controleur(Pile& v):pileAff(v), analyser(new Analyser()){
+    Controleur(/*Pile& v*/):/*pileAff(v), */analyser(new Analyser()){
         //On initialise la map qui contient nos regex et nos fonctions de construction
         analyser->init();
     }

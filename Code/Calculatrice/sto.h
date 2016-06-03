@@ -2,8 +2,7 @@
 #define STO_H
 
 
-class Sto
-{
+class Sto {
 public:
     Sto();
 };

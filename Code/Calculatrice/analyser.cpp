@@ -3,6 +3,7 @@
 #include"entieranalyser.h"
 #include "pile.h"
 #include "operator.h"
+#include "undo.h"
 
 
 // --- Fonctions qui construisent les litterales en fonction des match --- //
@@ -40,7 +41,7 @@ Litterale* createReel(QRegularExpressionMatch matched_exp) {
     return ptReel;
 }
 
-
+/*
 //ESSAYER: Ici pour eviter la grande enumeration des operateurs dans la 2e regex -> on peut penser a stocker les operateurs deja defini dans un QVector, a itérer sur ce QVector -> stocker chaque QString contenue dans un truc comme stringstream, qu'on conveti en string pour construire la regex
 Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE ATOME !! " << endl;
@@ -59,6 +60,7 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
         return ptAtome;
     }
 }
+*/
 
 
 Litterale* createComplexe(QRegularExpressionMatch matched_exp) {
@@ -117,6 +119,8 @@ Litterale* createComplexe(QRegularExpressionMatch matched_exp) {
 
 
 
+// -- Les litterales expressions et programmes ne sont pas evaluées automatiquement, on les empile juste (sujet p3). D'ou les regex très simplistes -- //
+
 Litterale* createExpression(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE EXPRESSION !! " << endl;
     QString matched = matched_exp.captured(0);
@@ -126,7 +130,6 @@ Litterale* createExpression(QRegularExpressionMatch matched_exp) {
     }
     return ptExpression;
 }
-
 
 Litterale* createProgramme(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE Programme !! " << endl;
@@ -148,15 +151,15 @@ void Analyser::init() {
     QString entier = "^-?[[:digit:]]+$";
     QString reel = "^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$";
     QString rationnel = "^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$";
-    QString atome = "^[A-Z]([A-Z0-9]*)$";
-    QString complexe = "^(?<partRE>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)[\$](?<partIM>[[:digit:]]+(([\.]|[\/])[[:digit:]]+)?)$";
+    //QString atome = "^[A-Z]([A-Z0-9]*)$";
+    QString complexe = "^(?<partRE>[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)[\\$](?<partIM>[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)$";
     QString expression = "(?:'[^']+')";
     QString programme = "\\[(.)*\\]";
 
     m_matchers.insert(reel, createReel);
     m_matchers.insert(entier, createInteger);
     m_matchers.insert(rationnel, createRationnel);
-    m_matchers.insert(atome, createAtome); //On fera un 2e traitement dans create atome pour ne pas créer un atome de meme nom qu'un operateur
+    //m_matchers.insert(atome, createAtome); //On fera un 2e traitement dans create atome pour ne pas créer un atome de meme nom qu'un operateur
     m_matchers.insert(complexe, createComplexe); //--> Faire la fonction de reconnaissance des complexes
     m_matchers.insert(expression, createExpression);
     m_matchers.insert(programme, createProgramme);
@@ -166,7 +169,7 @@ void Analyser::init() {
 // --- On itère sur la QStringList. On construit l'objet reconnu, rien sinon --- //
 
 bool Analyser::reconnaitre(QStringList& src) {
-    Pile* stack = &Pile::getInstance();
+    //Pile* stack = &Pile::getInstance();
     //Variable drapeau: Construction d'objet ou pas
     bool construction = false;
     //Variable compteur de crochets: Programme avec le bon nombre de crochets ou pas
@@ -191,7 +194,7 @@ bool Analyser::reconnaitre(QStringList& src) {
             }
             //On sort du while car src.empty() == true mais le (') de fin n'a pas été trouvé
             if (mot.right(1) != "'") {
-                stack->setMessage("Attention, caractere de fin d'expression manquant: (') ");
+                Pile::getInstance().setMessage("Attention, caractere de fin d'expression manquant: (') ");
                 //On ne construit rien, on sort
                 return false;
             }
@@ -210,7 +213,7 @@ bool Analyser::reconnaitre(QStringList& src) {
             }
             //On est sorti du while car src.empty() == true. Mais il manque des crochets
             if(counterCrochet != 0) {
-                stack->setMessage("Attention, crochet(s) manquant(s) : ']' ");
+                Pile::getInstance().setMessage("Attention, crochet(s) manquant(s) : ']' ");
                 return false;
             }
         }
@@ -228,20 +231,30 @@ bool Analyser::reconnaitre(QStringList& src) {
                 //Si un pattern match avec une regex: On appelle la fonction pour le construire
                 construction = true;
                 Litterale* lit_a_empiler = func(str_match);
-                stack->push(lit_a_empiler);
+                Pile::getInstance().push(lit_a_empiler);
                 //On a construit notre objet, on sort et on analyse l'opérande suivante
                 break;
             }
-            else {
+            else { //Aucune litterale n'a matchée
                 //Si aucune littérale ne match, ca peut etre un opérateur
                 Operator *op = getOperateur(mot.toStdString());
                 if (op) {
-                    QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
-                    if (stockage_temp_litterales.empty() == false){
-                        //On execute l'operateur que si on a dépilé suffisament d'elements de la pile
-                        op->execute(stockage_temp_litterales);
-                        construction = true;
-                        break;
+                    Undo* undoTest = dynamic_cast<Undo*>(op);
+                    if (undoTest != nullptr) {
+                        //On a un operateur Undo, on l'execute
+                        QVector<Litterale*> vide;
+                        Pile::getInstance().setMessage("ON EST AVANT LE UNDO");
+                        undoTest->execute(vide);
+                        construction = false;
+                    }
+                    else {
+                        QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
+                        if (stockage_temp_litterales.empty() == false){
+                            //On execute l'operateur que si on a dépilé suffisament d'elements de la pile
+                            op->execute(stockage_temp_litterales);
+                            construction = true;
+                            break;
+                        }
                     }
                 }
             }

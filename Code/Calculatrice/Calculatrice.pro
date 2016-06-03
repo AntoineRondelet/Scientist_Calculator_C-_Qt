@@ -43,7 +43,10 @@ SOURCES += main.cpp\
     programme.cpp \
     complexe.cpp \
     operateurcomplexe.cpp \
-    function.cpp
+    function.cpp \
+    pilememento.cpp \
+    pilecaretaker.cpp \
+    undo.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -75,7 +78,10 @@ HEADERS  += mainwindow.h \
     programme.h \
     complexe.h \
     operateurcomplexe.h \
-    function.h
+    function.h \
+    pilememento.h \
+    pilecaretaker.h \
+    undo.h
 
 FORMS    += mainwindow.ui
 

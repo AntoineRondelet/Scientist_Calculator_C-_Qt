@@ -14,8 +14,7 @@ void Add::execute(QVector<Litterale*> litterals) const {
             delete litterals[i];
         }
         //On empilele resultat
-        Pile* stack = &Pile::getInstance();
-        stack->push(&res);
+        Pile::getInstance().push(&res);
     }
     else {
         this->reChargerOperande(litterals);

@@ -16,7 +16,7 @@ void Pile::affiche() const{
 }
 
 
-//SINGLETON
+// -- Singleton -- //
 
 Pile::Handler Pile::handler;
 
@@ -29,6 +29,21 @@ Pile& Pile::getInstance() {
 void Pile::libererInstance() {
     delete handler.instance;
     handler.instance=nullptr;
+}
+
+
+// -- Memento -- //
+
+Pile* Pile::clone() const {
+    Pile* pClone = new Pile();
+    QStack<Litterale*>::iterator it;
+    Litterale* litte = nullptr;
+    for (it = Pile::getInstance().begin(); it != Pile::getInstance().end(); ++it){
+        litte = *it;
+        // -- On push dans la nouvelle pile LE CLONE de chaque litterale de la pile actuelle. -- //
+        pClone->push(litte->clone());
+    }
+    return pClone;
 }
 
 

@@ -11,6 +11,8 @@
 #include "den.h"
 #include "drop.h"
 
+#include "undo.h"
+
 
 
 
@@ -46,6 +48,18 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "DROP") {
         return new Drop;
     }
+
+    //---------- Operateurs "Speciaux" -----------//
+    else if(str == "UNDO") {
+        //Pile* stack = &Pile::getInstance();
+        //stack->setMessage("On construit un UNDO");
+        return new Undo;
+    }
+    /*
+    else if(str == "REDO") {
+        return new Redo;
+    }
+    */
 
     //---------- Si on a pas reconnu un operateur ----------- //
     cout << "Operateur inconnu ! " << endl;

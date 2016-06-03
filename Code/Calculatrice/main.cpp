@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
 
 
    try {
-        Pile& stack = Pile::getInstance();
-        Controleur controle(stack);
+        //Pile& stack = Pile::getInstance();
+        Controleur controle/*(stack)*/;
         controle.boucleExcecution();
     }
     catch (CalculatriceException &e) {
