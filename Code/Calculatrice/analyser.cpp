@@ -243,9 +243,8 @@ bool Analyser::reconnaitre(QStringList& src) {
                     if (undoTest != nullptr) {
                         //On a un operateur Undo, on l'execute
                         QVector<Litterale*> vide;
-                        Pile::getInstance().setMessage("ON EST AVANT LE UNDO");
                         undoTest->execute(vide);
-                        construction = false;
+                        construction = false; // -- Comme ca on ne fait pas de sauvegarde apres un UNDO (c'est pas le but) -- //
                     }
                     else {
                         QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();

@@ -6,15 +6,18 @@
 
 #include "calculatriceexception.h"
 
+// -- Cette classe c'est le manageur des piles de sauvegarde -- //
+
 
 // --- DESIGN PATTERN SINGLETON --- //
 
 class PileCaretaker {
-public: // A CHANGER JUSTE POUR UN TEST !!
+
+private:
     // -- Attributs -- //
-    unsigned int NbEtatsSave; // Taille de la pile des sauvegardes de la pile
-    unsigned int numIndex; // Si on a une pile des sauvegardes de la pile, faire un UNDO: descendre, REDO: monter. Cet index nous permet de gerer cette descente/montée dans la pile --> indique où on est dans l'historique des piles
-    QStack<Pile::PileMemento*> PileMementoList;
+    unsigned int NbEtatsSave; // -- Nombre de sauvegardes qu'on veut, en même temps dans le système -- //
+    static unsigned int numIndex; // -- Position courante dans la pile de sauvegarde (on est ou/sur quelle sauvegarde) -- //
+    QStack<const Pile::PileMemento*> PileMementoList; // -- Nos sauvegardes sont constantes, en effet, on ne devrait pas pouvoir les changer (ce sont des sauvegardes...) -- //
 
     // -- Debut singleton -- //
     PileCaretaker(const PileCaretaker& p);
@@ -32,15 +35,14 @@ public: // A CHANGER JUSTE POUR UN TEST !!
     // -- Fin singleton -- //
 
 
-
 public:
-    PileCaretaker(unsigned int NbEtats, unsigned int nIdx = 0): NbEtatsSave(NbEtats), numIndex(nIdx){}
+    PileCaretaker(unsigned int NbEtats): NbEtatsSave(NbEtats){}
 
-    // -- Save state of the originator -- //
+    // -- Save state de la pile "principale": Ajoute une pile de sauvegarde dans PileMementoList -- //
     void saveState(Pile* orig);
 
-    //restore state of the originator
-    void restoreState(Pile* orig, unsigned int stateNb);
+    // -- restore un ancien state de la pile "principale": Va récuperer une pile de sauvegarde pour la fetch/"deverser" dans la pile "principale pour repartir d'une sauvegarde -- //
+    void restoreDownState(Pile* orig);
 
 
     // -- Singleton -- //

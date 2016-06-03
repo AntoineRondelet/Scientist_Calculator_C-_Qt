@@ -2,9 +2,9 @@
 #include "pilecaretaker.h"
 
 void Undo::execute(QVector<Litterale*> litterals) const {
+    PileCaretaker* stackHistory = &PileCaretaker::getInstance();
     Pile* stack = &Pile::getInstance();
     stack->setMessage("On revient à 1 état précédent");
-    PileCaretaker* stackHistory = &PileCaretaker::getInstance();
-    stackHistory->restoreState(stack, (stackHistory->PileMementoList.size()-2));
-    return;
+    stackHistory->restoreDownState(stack);
+    //return;
 }

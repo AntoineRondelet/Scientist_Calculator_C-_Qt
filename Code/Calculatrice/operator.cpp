@@ -51,8 +51,6 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
 
     //---------- Operateurs "Speciaux" -----------//
     else if(str == "UNDO") {
-        //Pile* stack = &Pile::getInstance();
-        //stack->setMessage("On construit un UNDO");
         return new Undo;
     }
     /*

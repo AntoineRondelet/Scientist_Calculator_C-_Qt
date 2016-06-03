@@ -6,7 +6,7 @@
 
 // -- Operateur spécial: On choisit de les faire heriter direct de la classe Operateur -- //
 
-class Undo: public Operator{
+class Undo: public Operator {
 public:
     Undo(): Operator(){}
     QVector<Litterale*> chargerOperande() const{return QVector<Litterale*>();}
