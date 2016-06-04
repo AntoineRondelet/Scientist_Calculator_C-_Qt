@@ -37,6 +37,8 @@ void PileCaretaker::saveState(Pile* orig) {
 }
 
 // -- Recupère une sauvegarde pour la "mettre" dans la pile "principale" -- //
+
+// -- UNDO -- //
 void PileCaretaker::restoreDownState(Pile* orig) {
     if (!PileMementoList.empty() && numIndex > 0){
         QString index = QString::number(numIndex);
@@ -48,6 +50,23 @@ void PileCaretaker::restoreDownState(Pile* orig) {
     // -- liste de piles de sauvegardes est vide -- //
     else {
         orig->setMessage("Vous etes sur la derniere sauvegarde: UNDO impossible");
+        //CALCULATRICE_EXCEPTION("BackUpPiles : Impossible de revenir en arrière (undo) car liste piles vide !");
+    }
+}
+
+
+// -- REDO -- //
+void PileCaretaker::restoreUpState(Pile* orig) {
+    if (!PileMementoList.empty() && numIndex < PileMementoList.size()-1){
+        QString index = QString::number(numIndex);
+        orig->setMessage("INDEX RESTORE : " + index + "  BLABLA <-----");
+        // -- On monte dans l'historique des sauvegardes: donc on incrémente notre index -- //
+        const Pile::PileMemento* pileToRestore = PileMementoList[++numIndex];
+        orig->restoreStatePile(pileToRestore);
+    }
+    // -- liste de piles de sauvegardes est vide -- //
+    else {
+        orig->setMessage("Vous etes sur la sauvegarde la plus récente: REDO impossible");
         //CALCULATRICE_EXCEPTION("BackUpPiles : Impossible de revenir en arrière (undo) car liste piles vide !");
     }
 }

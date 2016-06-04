@@ -4,6 +4,8 @@
 #include "pile.h"
 #include "operator.h"
 #include "undo.h"
+#include "redo.h"
+
 
 
 // --- Fonctions qui construisent les litterales en fonction des match --- //
@@ -240,11 +242,19 @@ bool Analyser::reconnaitre(QStringList& src) {
                 Operator *op = getOperateur(mot.toStdString());
                 if (op) {
                     Undo* undoTest = dynamic_cast<Undo*>(op);
+                    Redo* redoTest = dynamic_cast<Redo*>(op);
                     if (undoTest != nullptr) {
                         //On a un operateur Undo, on l'execute
                         QVector<Litterale*> vide;
                         undoTest->execute(vide);
                         construction = false; // -- Comme ca on ne fait pas de sauvegarde apres un UNDO (c'est pas le but) -- //
+                        break;
+                    }
+                    else if (redoTest != nullptr) {
+                        //On a un operateur Undo, on l'execute
+                        QVector<Litterale*> vide;
+                        redoTest->execute(vide);
+                        construction = false; // -- Comme ca on ne fait pas de sauvegarde apres un REDO (c'est pas le but) -- //
                         break;
                     }
                     else {

@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     function.cpp \
     pilememento.cpp \
     pilecaretaker.cpp \
-    undo.cpp
+    undo.cpp \
+    redo.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -81,7 +82,8 @@ HEADERS  += mainwindow.h \
     function.h \
     pilememento.h \
     pilecaretaker.h \
-    undo.h
+    undo.h \
+    redo.h
 
 FORMS    += mainwindow.ui
 

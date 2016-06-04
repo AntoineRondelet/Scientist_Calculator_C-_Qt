@@ -14,7 +14,6 @@
 class PileCaretaker {
 
 private:
-    //friend class Undo;
 
     // -- Attributs -- //
     unsigned int NbEtatsSave; // -- Nombre de sauvegardes qu'on veut, en même temps dans le système -- //
@@ -43,8 +42,10 @@ public:
 
     // -- Save state de la pile "principale": Ajoute une pile de sauvegarde dans PileMementoList -- //
     void saveState(Pile* orig);
-    // -- restore un ancien state de la pile "principale": Va récuperer une pile de sauvegarde pour la fetch/"deverser" dans la pile "principale pour repartir d'une sauvegarde -- //
+    // -- restore un ancien state de la pile "principale": UNDO: On récupère une pile de sauvegarde pour la fetch/"deverser" dans la pile "principale pour repartir d'une sauvegarde -- //
     void restoreDownState(Pile* orig);
+    // -- restore un état plus récent de la pile "principale": REDO -- //
+    void restoreUpState(Pile* orig);
 
 
     // -- Singleton -- //

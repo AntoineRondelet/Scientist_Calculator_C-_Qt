@@ -12,6 +12,8 @@
 #include "drop.h"
 
 #include "undo.h"
+#include "redo.h"
+
 
 
 
@@ -53,11 +55,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "UNDO") {
         return new Undo;
     }
-    /*
     else if(str == "REDO") {
         return new Redo;
     }
-    */
 
     //---------- Si on a pas reconnu un operateur ----------- //
     cout << "Operateur inconnu ! " << endl;
