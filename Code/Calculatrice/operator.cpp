@@ -14,6 +14,7 @@
 #include "undo.h"
 #include "redo.h"
 #include "operateurspecial.h"
+#include "sto.h"
 
 
 
@@ -36,6 +37,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == "$") {
         return new  OperateurComplexe;
+    }
+    else if(str == "STO") {
+        return new Sto;
     }
 
     //---------- Operateurs Unaires ----------- //

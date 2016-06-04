@@ -48,7 +48,9 @@ SOURCES += main.cpp\
     pilecaretaker.cpp \
     undo.cpp \
     redo.cpp \
-    operateurspecial.cpp
+    operateurspecial.cpp \
+    identificateurmanager.cpp \
+    forget.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -85,7 +87,9 @@ HEADERS  += mainwindow.h \
     pilecaretaker.h \
     undo.h \
     redo.h \
-    operateurspecial.h
+    operateurspecial.h \
+    identificateurmanager.h \
+    forget.h
 
 FORMS    += mainwindow.ui
 

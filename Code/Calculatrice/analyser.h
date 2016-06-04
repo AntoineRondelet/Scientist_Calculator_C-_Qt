@@ -14,6 +14,7 @@
 #include "atome.h"
 #include "expression.h"
 #include "programme.h"
+#include "identificateurmanager.h"
 
 //#include"entieranalyser.h"
 

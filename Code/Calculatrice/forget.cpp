@@ -1,18 +1,18 @@
-#include "sto.h"
-
+#include "forget.h"
 
 #include <QString>
 #include "atome.h"
 #include "litterale.h"
 #include "identificateurmanager.h"
 
-void Sto::execute(QVector<Litterale*> litterals) const {
-    Atome* operande1 = dynamic_cast<Atome*>(litterals[0]);
-    LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 
-    if (operande1!=nullptr && operande2!=nullptr){
+/*
+void Forget::execute(QVector<Litterale*> litterals) const {
+    Litterale* operande = dynamic_cast<Litterale*>(litterals[0]);
+
+    if (operande!=nullptr){
         IdentificateurManager& id_man = IdentificateurManager::getInstance();
-        id_man.ajouterIdentificateur(operande1->toString(), operande2->clone());
+        id_man.supprimerIdentificateur(operande);
 
         // -- On delete le tableau qu'on a récupéré en argument -- //
         for (unsigned int i = 0; i < Nb_a_depiler; i++) {
@@ -25,3 +25,4 @@ void Sto::execute(QVector<Litterale*> litterals) const {
         this->reChargerOperande(litterals);
     }
 }
+*/
