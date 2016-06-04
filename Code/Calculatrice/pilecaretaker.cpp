@@ -19,42 +19,35 @@ void PileCaretaker::libererInstance() {
 }
 
 
-// -- save state of the originator -- //
-/*
-void PileCaretaker::saveState(Pile* orig){
+// -- Sauvegarde de la pile "principale" -- //
 
-    // -- On ajoute nos etats en haut de la pile -- //
+void PileCaretaker::saveState(Pile* orig) {
     PileMementoList.push(orig->saveStatePile());
     numIndex++;
-
-    // -- On ne veut garder en memoire que NbEtatsSave de la pile: limiter l'impact en memoire des UNDO/REDO -- //
-    while (PileMementoList.size() >= NbEtatsSave) {
-       // -- Tant que j'ai plus de sauvegardes de pile que je n'en veux, je supprime les plus anciennes -- //
-       const Pile::PileMemento* lastPile = PileMementoList.takeFirst();
-       Pile* pileASupprimer = lastPile->getState();
-       while(!pileASupprimer->empty()) {
-           // -- On supprime toutes les litterales de la pile unes à unes (on s'assure de relacher toute la memoire) -- //
-           Litterale* litASuppr = pileASupprimer->pop();
-           delete litASuppr;
-       }
-       delete pileASupprimer;
+    // -- On ne veut que NbEtatsSave sauvegardes en memoire à la fois: On supprime les plus anciennes (on ne garde que les plus recentes) -- //
+    // -- On se limite a un nombre fini de sauvegardes de piles (parametrable par l'user via setNbEtatsSave() par exemple: On limite l'impact memoire du UNDO/REDO -- //
+    if (numIndex > NbEtatsSave-1) {
+        const Pile::PileMemento* pileToDelete = PileMementoList.takeFirst();
+        while (!pileToDelete->getState()->empty()){
+            delete pileToDelete->getState()->pop();
+        }
+        delete pileToDelete;
+        numIndex--;
     }
 }
 
-
-// -- Restore state of the originator -- //
-
-void PileCaretaker::restoreDownState(Pile* orig){
-
-    // Si on veut retourner à un etat qui n'est plus stocké (on ne garde qu'un nombre fini, parametrable de PileMemento en memoire -- //
-    // -- : Erreur, sinon si on veut faire un Undo alors qu'on a qu'une seule pile de sauvegarder: c'est la version actuelle donc on dit "stop les Undo" //
-    if(numIndex < 1) {
-        CALCULATRICE_EXCEPTION ("Plus possible de faire un UNDO");
+// -- Recupère une sauvegarde pour la "mettre" dans la pile "principale" -- //
+void PileCaretaker::restoreDownState(Pile* orig) {
+    if (!PileMementoList.empty() && numIndex > 0){
+        QString index = QString::number(numIndex);
+        orig->setMessage("INDEX RESTORE : " + index + "  BLABLA <-----");
+        // -- On descends dans l'historique des sauvegardes: donc on décrémente notre index -- //
+        const Pile::PileMemento* pileToRestore = PileMementoList[--numIndex];
+        orig->restoreStatePile(pileToRestore);
     }
+    // -- liste de piles de sauvegardes est vide -- //
     else {
-        numIndex= numIndex-1;
-        orig->restoreStatePile(PileMementoList[numIndex]);
+        orig->setMessage("Vous etes sur la derniere sauvegarde: UNDO impossible");
+        //CALCULATRICE_EXCEPTION("BackUpPiles : Impossible de revenir en arrière (undo) car liste piles vide !");
     }
 }
-
-*/

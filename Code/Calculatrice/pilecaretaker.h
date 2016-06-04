@@ -32,48 +32,19 @@ private:
 
 
 public:
-    PileCaretaker(unsigned int NbEtats, unsigned int nbIndex=0): NbEtatsSave(NbEtats), numIndex(nbIndex), PileMementoList(QStack<const Pile::PileMemento*>()){}
+    PileCaretaker(unsigned int NbEtats, unsigned int nbIndex=-1): NbEtatsSave(NbEtats), numIndex(nbIndex), PileMementoList(QStack<const Pile::PileMemento*>()){}
     int getNumIndex() const {return numIndex;}
     int getNbEtatsSave() const {return NbEtatsSave;}
+
+    // -- On peut imaginer une amelioration de l'application ou l'utilisateur peut gérer lui-meme le nombre de UNDO qu'il veut pouvoir faire -- //
+    // -- NB: Si NbEtatsSave = 5 (N), on pourra revenir à 4 (N-1) etats précédents, car l'état courant sera en top de pile -- //
     void setNbEtatsSave(unsigned int nb) {NbEtatsSave = nb;}
 
 
     // -- Save state de la pile "principale": Ajoute une pile de sauvegarde dans PileMementoList -- //
-    //void saveState(Pile* orig);
+    void saveState(Pile* orig);
     // -- restore un ancien state de la pile "principale": Va récuperer une pile de sauvegarde pour la fetch/"deverser" dans la pile "principale pour repartir d'une sauvegarde -- //
-    //void restoreDownState(Pile* orig);
-
-
-    // -- Sauvegarde de la pile "principale" -- //
-
-    void saveState(Pile* orig) {
-        PileMementoList.push(orig->saveStatePile());
-        numIndex+=1;
-        QString index = QString::number(this->numIndex);
-        orig->setMessage("INDEX SAVE : " + index + "  <-----");
-    }
-
-    // -- Recupère une sauvegarde pour la "mettre" dans la pile "principale" -- //
-    void restoreDownState(Pile* orig) {
-        QString index2 = QString::number(numIndex);
-        orig->setMessage("INDEX RESTORE : " + index2 + "  <-----");
-        const Pile::PileMemento* pileToRestore = PileMementoList[--numIndex];
-        orig->restoreStatePile(pileToRestore);
-
-/*
-        int taille = getNumIndex();
-        if (!PileMementoList.empty() && taille > 0){
-            QString index = QString::number(taille);
-            stack->setMessage("INDEX RESTORE : " + index + "  BLABLA <-----");
-            //numIndex--; // on descends dans la liste des piles, donc on décrémente notre index.
-            const Pile::PileMemento* pileToRestore = PileMementoList[--taille];
-            orig->restoreStatePile(pileToRestore);
-        } else { // liste de piles vide
-            CALCULATRICE_EXCEPTION("BackUpPiles : Impossible de revenir en arrière (undo) car liste piles vide !");
-        }
-        */
-    }
-
+    void restoreDownState(Pile* orig);
 
 
     // -- Singleton -- //
