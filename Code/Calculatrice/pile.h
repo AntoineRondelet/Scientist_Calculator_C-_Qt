@@ -59,7 +59,10 @@ public:
 //----------------------------------------------------------------------------------//
 
     // -- Sauvegarde l'état pile actuelle: A chaque sauvegarde on créer un memento: ATTENTION les sauvegardes doivent etre des ptr constants, sinon on pourrait changer l'état d'une sauvegarde, ce qui n'est pas très secure -- //
+
     const PileMemento* saveStatePile() const {return new PileMemento(Pile::handler.instance);}
+    void restoreStatePile(const PileMemento* pM) {handler.instance = pM->getState();}
+
 
 
     // -- Restaure un état antécédent -- //
@@ -67,7 +70,7 @@ public:
     // -- Nos sauvegardes sont juste des piles "constantes" donc non modifiables qui permettent de savoir ce qu'il y avait avant dans la pile -- //
     // -- Il est a noter qu'elles ne sont en AUCUN CAS exploitable directement, il faut, comme rebasculer les données de la sauvegarde dans la pile "principale" -- //
     // -- Si on veut repartir d'une sauvegarde pour faire des modifications (On doit récupérer les données correspondantes à la sauvegarde -- //
-    void restoreStatePile(const PileMemento* pM) {
+    /*void restoreStatePile(const PileMemento* pM) {
         while (!this->empty()) {
             delete this->pop();
         }
@@ -80,7 +83,7 @@ public:
             // -- On push dans la nouvelle pile LE CLONE de chaque litterale de la pile actuelle. -- //
             this->push(litToPush->clone());
         }
-    }
+    }*/
 
 
     Pile* clone() const;

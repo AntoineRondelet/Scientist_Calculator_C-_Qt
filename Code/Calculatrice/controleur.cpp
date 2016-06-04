@@ -39,6 +39,8 @@ void Controleur::commande(QStringList& list_src)
 
 void Controleur::boucleExcecution(){
     string c;
+    //Une sauvegarde de la pile vide
+    PileCaretaker::getInstance().saveState(&Pile::getInstance());
     do {
         Pile::getInstance().affiche();
         cout<<"?-";

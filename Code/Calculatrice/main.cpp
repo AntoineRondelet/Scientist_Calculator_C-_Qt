@@ -10,6 +10,7 @@
 #include "controleur.h"
 #include "calculatriceexception.h"
 #include <QTextStream>
+#include "pilecaretaker.h"
 
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
@@ -35,6 +36,7 @@ int main(int argc, char *argv[])
         //Pile& stack = Pile::getInstance();
         Controleur controle/*(stack)*/;
         controle.boucleExcecution();
+
     }
     catch (CalculatriceException &e) {
         cout << e.what();

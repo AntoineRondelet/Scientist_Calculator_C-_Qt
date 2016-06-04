@@ -14,5 +14,6 @@ public:
     void execute(QVector<Litterale*> litterals) const;
 };
 
+
 #endif // UNDO_H
 
