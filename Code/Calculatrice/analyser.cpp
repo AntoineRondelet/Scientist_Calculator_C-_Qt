@@ -5,6 +5,7 @@
 #include "operator.h"
 #include "undo.h"
 #include "redo.h"
+#include "operateurspecial.h"
 
 
 
@@ -43,7 +44,7 @@ Litterale* createReel(QRegularExpressionMatch matched_exp) {
     return ptReel;
 }
 
-/*
+
 //ESSAYER: Ici pour eviter la grande enumeration des operateurs dans la 2e regex -> on peut penser a stocker les operateurs deja defini dans un QVector, a itérer sur ce QVector -> stocker chaque QString contenue dans un truc comme stringstream, qu'on conveti en string pour construire la regex
 Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE ATOME !! " << endl;
@@ -62,7 +63,7 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
         return ptAtome;
     }
 }
-*/
+
 
 
 Litterale* createComplexe(QRegularExpressionMatch matched_exp) {
@@ -153,7 +154,7 @@ void Analyser::init() {
     QString entier = "^-?[[:digit:]]+$";
     QString reel = "^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$";
     QString rationnel = "^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$";
-    //QString atome = "^[A-Z]([A-Z0-9]*)$";
+    QString atome = "^[A-Z]([A-Z0-9]*)$";
     QString complexe = "^(?<partRE>[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)[\\$](?<partIM>[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)$";
     QString expression = "(?:'[^']+')";
     QString programme = "\\[(.)*\\]";
@@ -161,7 +162,7 @@ void Analyser::init() {
     m_matchers.insert(reel, createReel);
     m_matchers.insert(entier, createInteger);
     m_matchers.insert(rationnel, createRationnel);
-    //m_matchers.insert(atome, createAtome); //On fera un 2e traitement dans create atome pour ne pas créer un atome de meme nom qu'un operateur
+    m_matchers.insert(atome, createAtome); //On fera un 2e traitement dans create atome pour ne pas créer un atome de meme nom qu'un operateur
     m_matchers.insert(complexe, createComplexe); //--> Faire la fonction de reconnaissance des complexes
     m_matchers.insert(expression, createExpression);
     m_matchers.insert(programme, createProgramme);
@@ -241,20 +242,13 @@ bool Analyser::reconnaitre(QStringList& src) {
                 //Si aucune littérale ne match, ca peut etre un opérateur
                 Operator *op = getOperateur(mot.toStdString());
                 if (op) {
-                    Undo* undoTest = dynamic_cast<Undo*>(op);
-                    Redo* redoTest = dynamic_cast<Redo*>(op);
-                    if (undoTest != nullptr) {
+                    OperateurSpecial* speOp = dynamic_cast<OperateurSpecial*>(op);
+                    if (speOp != nullptr) {
                         //On a un operateur Undo, on l'execute
                         QVector<Litterale*> vide;
-                        undoTest->execute(vide);
-                        construction = false; // -- Comme ca on ne fait pas de sauvegarde apres un UNDO (c'est pas le but) -- //
-                        break;
-                    }
-                    else if (redoTest != nullptr) {
-                        //On a un operateur Undo, on l'execute
-                        QVector<Litterale*> vide;
-                        redoTest->execute(vide);
-                        construction = false; // -- Comme ca on ne fait pas de sauvegarde apres un REDO (c'est pas le but) -- //
+                        speOp->execute(vide);
+                        // -- Comme ca on ne fait pas de sauvegarde de la pile apres l'application d'un operateur special (n'affectant pas la pile: pas de construction d'objet) -- //
+                        construction = false;
                         break;
                     }
                     else {

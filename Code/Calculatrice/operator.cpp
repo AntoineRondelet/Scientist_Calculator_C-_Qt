@@ -13,6 +13,7 @@
 
 #include "undo.h"
 #include "redo.h"
+#include "operateurspecial.h"
 
 
 

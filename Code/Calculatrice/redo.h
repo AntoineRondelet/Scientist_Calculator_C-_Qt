@@ -1,15 +1,13 @@
 #ifndef REDO_H
 #define REDO_H
 
-#include "operator.h"
+#include "operateurspecial.h"
 
 // -- Operateur spécial: On choisit de les faire heriter direct de la classe Operateur -- //
 
-class Redo: public Operator {
+class Redo: public OperateurSpecial {
 public:
-    Redo(): Operator(){}
-    QVector<Litterale*> chargerOperande() const{return QVector<Litterale*>();}
-    void reChargerOperande(QVector<Litterale*> litterals) const{}
+    Redo(): OperateurSpecial(){}
     void execute(QVector<Litterale*> litterals) const;
 };
 
