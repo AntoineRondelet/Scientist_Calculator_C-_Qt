@@ -14,7 +14,7 @@
 class PileCaretaker {
 
 private:
-    friend class Undo;
+    //friend class Undo;
 
     // -- Attributs -- //
     unsigned int NbEtatsSave; // -- Nombre de sauvegardes qu'on veut, en même temps dans le système -- //
@@ -47,20 +47,18 @@ public:
     // -- Sauvegarde de la pile "principale" -- //
 
     void saveState(Pile* orig) {
-        //PileMementoList.push(orig->saveStatePile());
+        PileMementoList.push(orig->saveStatePile());
         numIndex+=1;
-        //Pile* stack = &Pile::getInstance();
         QString index = QString::number(this->numIndex);
         orig->setMessage("INDEX SAVE : " + index + "  <-----");
     }
 
     // -- Recupère une sauvegarde pour la "mettre" dans la pile "principale" -- //
     void restoreDownState(Pile* orig) {
-        //Pile* stack = &Pile::getInstance();
-        numIndex-=1;
-        //Eg : qDebug() << numIndex;
         QString index2 = QString::number(numIndex);
         orig->setMessage("INDEX RESTORE : " + index2 + "  <-----");
+        const Pile::PileMemento* pileToRestore = PileMementoList[--numIndex];
+        orig->restoreStatePile(pileToRestore);
 
 /*
         int taille = getNumIndex();
