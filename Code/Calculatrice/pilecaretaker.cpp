@@ -22,17 +22,22 @@ void PileCaretaker::libererInstance() {
 // -- Sauvegarde de la pile "principale" -- //
 
 void PileCaretaker::saveState(Pile* orig) {
-    PileMementoList.push(orig->saveStatePile());
-    numIndex++;
-    // -- On ne veut que NbEtatsSave sauvegardes en memoire à la fois: On supprime les plus anciennes (on ne garde que les plus recentes) -- //
-    // -- On se limite a un nombre fini de sauvegardes de piles (parametrable par l'user via setNbEtatsSave() par exemple: On limite l'impact memoire du UNDO/REDO -- //
-    if (numIndex > NbEtatsSave-1) {
-        const Pile::PileMemento* pileToDelete = PileMementoList.takeFirst();
-        while (!pileToDelete->getState()->empty()){
-            delete pileToDelete->getState()->pop();
+    if (numIndex<PileMementoList.size()-1) { //Alors on fait des modifs a partir d'un état restauré
+        PileMementoList[++numIndex] = orig->saveStatePile();
+    }
+    else {
+        PileMementoList.push(orig->saveStatePile());
+        numIndex++;
+        // -- On ne veut que NbEtatsSave sauvegardes en memoire à la fois: On supprime les plus anciennes (on ne garde que les plus recentes) -- //
+        // -- On se limite a un nombre fini de sauvegardes de piles (parametrable par l'user via setNbEtatsSave() par exemple: On limite l'impact memoire du UNDO/REDO -- //
+        if (numIndex > NbEtatsSave-1) {
+            const Pile::PileMemento* pileToDelete = PileMementoList.takeFirst();
+            while (!pileToDelete->getState()->empty()){
+                delete pileToDelete->getState()->pop();
+            }
+            delete pileToDelete;
+            numIndex--;
         }
-        delete pileToDelete;
-        numIndex--;
     }
 }
 
