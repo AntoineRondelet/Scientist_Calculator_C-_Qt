@@ -245,6 +245,7 @@ bool Analyser::reconnaitre(QStringList& src) {
                         QVector<Litterale*> vide;
                         undoTest->execute(vide);
                         construction = false; // -- Comme ca on ne fait pas de sauvegarde apres un UNDO (c'est pas le but) -- //
+                        break;
                     }
                     else {
                         QVector<Litterale*> stockage_temp_litterales = op->chargerOperande();
