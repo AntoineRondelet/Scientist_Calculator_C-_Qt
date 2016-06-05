@@ -6,11 +6,30 @@
 
 #include "expression.h"
 
-bool isOperateur(const QString& str) {
-    if (str == "+" || str == "-" || str == "*" || str == "/")
+
+bool isOperateurPrioritaire(const QString& str) {
+    if (str == "NEG")
         return true;
     else
         return false;
+}
+
+bool isOperateurSecondaire(const QString& str) {
+    if (str == "*" || str == "/")
+        return true;
+    else
+        return false;
+}
+
+bool isOperateurTernaire(const QString& str) {
+    if (str == "+" || str == "-")
+        return true;
+    else
+        return false;
+}
+
+bool isOperateur(const QString& str) {
+        return (isOperateurPrioritaire(str) || isOperateurSecondaire(str) || isOperateurTernaire(str));
 }
 
 
@@ -31,29 +50,39 @@ void Eval::execute(QVector<Litterale*> litterals) const {
 
         // -- Traitement -- //
 
-        // -- Permutation des operateurs prioritaires (On fera d'abord ces opérations) -- //
-        for (unsigned int i=0; i<testSplit.size(); i++){
-            if(i<testSplit.size() && (testSplit[i] == "*" || testSplit[i] == "/")) {
-                unsigned int j = i+1;
+        // -- Permutation des operateurs secondaire (On fera d'abord ces opérations) -- //
+        for (int i=0; i<testSplit.size(); i++){
+            if(i<testSplit.size() && isOperateurSecondaire(testSplit[i])) { //On est sur un "*" ou un "/"
+                int j = i+1;
                 while(j<testSplit.size() && !isOperateur(testSplit[j]))
                     j++;
-                //on sort du while quand on est sur un operateur
-                testSplit.move(i, j-1);
+
+                // On sort du while quand on est sur un operateur
+                if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
+                    //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
+                    if(isOperateurPrioritaire(testSplit[j]))
+                        testSplit.move(i,j);
+                    else //opérateur de la meme priorité ou moins prioritaire, on ne le "depasse" pas (a savoir que depasser un operateur => etre fait apres donc : moins prioritaire)
+                        testSplit.move(i,j-1);
+                }
+                else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
+                    testSplit.move(i, j-1);
+                }
             }
         }
-        // -- Permutation des operateurs secondaires (On fera ces opérations ensuite) -- //
-        for (unsigned int i=0; i<testSplit.size(); i++){
-            if(i<testSplit.size() && (testSplit[i] == "+" || testSplit[i] == "-")) {
-                unsigned int j = i+1;
+        // -- Permutation des operateurs ternaires (On fera ces opérations ensuite) -- //
+        for (int i=0; i<testSplit.size(); i++){
+            if(i<testSplit.size() && isOperateurTernaire(testSplit[i])) {
+                int j = i+1;
                 // -- Ici ATTENTION a l'ordre des conditions ! Il est forcement celui-ci: on ne peut pas le changer ! Sinon ASSERT erreur (on essaie d'acceder a une case qui n'est pas dans le tableau -- //
                 while(j<testSplit.size() && !isOperateur(testSplit[j]))
                     j++;
                 //on sort du while quand on est sur un operateur
                 if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
                     //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
-                    if(testSplit[j] == "*" || testSplit[j] == "/")
+                    if(isOperateurSecondaire(testSplit[j]))
                         testSplit.move(i,j);
-                    else //opérateur non prioritaire
+                    else //opérateur non prioritaire ou de meme priorité
                         testSplit.move(i,j-1);
                 }
                 else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
