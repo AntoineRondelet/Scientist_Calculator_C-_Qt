@@ -29,6 +29,10 @@ public:
     LitteraleNombre& soustraction(const LitteraleNombre& lit) const override;
     LitteraleNombre& multiplication(const LitteraleNombre& lit) const override;
     LitteraleNombre& division(const LitteraleNombre& lit) const override;
+    LitteraleNombre& egal(const LitteraleNombre& n) const override;
+    LitteraleNombre& inferieur(const LitteraleNombre& n) const override;
+    LitteraleNombre& superieur(const LitteraleNombre& n) const override;
+
 
     Rationnel& operator=(const LitteraleNum& lit) override;
 

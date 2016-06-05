@@ -28,7 +28,6 @@ public:
     Analyser(): m_matchers(QMap<QString, func_t>()){}
     void init();
     bool reconnaitre(QStringList& src);
-
 };
 
 #endif // ANALYSER_H

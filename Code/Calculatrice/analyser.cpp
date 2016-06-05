@@ -64,13 +64,14 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
             // -- Cette litterale est UN CLONE de celle contenue dans la QMap car si on la depile, on va la supprimer, mais on veur pouvoir la garder dans le tableau ! -- //
             ptAtome = id_man.m_names.value(matched)->clone();
         }
-        else {
+        else if (!id_man.m_names.contains(matched)) {
             // -- Si l'atome n'est associé a aucune litterale: on le construit -- //
             ptAtome = new Atome(matched);
         }
-        if (ptAtome ==  nullptr) {
+        else {
             // -- On a une erreur car on a detecté un atome mais on a pas pu le construire -- //
-            CALCULATRICE_EXCEPTION("Erreur de construction de l'atome");
+            //CALCULATRICE_EXCEPTION("Erreur de construction de l'atome");
+            Pile::getInstance().setMessage("Probleme de création de l'atome");
         }
         return ptAtome;
     }
@@ -139,6 +140,7 @@ Litterale* createComplexe(QRegularExpressionMatch matched_exp) {
 Litterale* createExpression(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE EXPRESSION !! " << endl;
     QString matched = matched_exp.captured(0);
+    //matched.remove("'");
     Litterale* ptExpression = new Expression(matched);
     if (ptExpression ==  0) {
         CALCULATRICE_EXCEPTION("Erreur de construction de l'expression");

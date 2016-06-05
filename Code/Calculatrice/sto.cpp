@@ -11,6 +11,7 @@
 
 void Sto::execute(QVector<Litterale*> litterals) const {
     // -- STO porte sur des EXPRESSIONS ne contenant qu'UN atome -- //
+
     Expression* operande1 = dynamic_cast<Expression*>(litterals[0]);
     LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 

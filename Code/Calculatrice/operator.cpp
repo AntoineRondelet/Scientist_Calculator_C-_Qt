@@ -5,6 +5,8 @@
 #include "div.h"
 #include "sous.h"
 #include "operateurcomplexe.h"
+#include "oplogique.h"
+
 
 #include "neg.h"
 #include "num.h"
@@ -42,6 +44,10 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "STO") {
         return new Sto;
     }
+    else if(str == "=") {
+        return new OpLogiqueEgal;
+    }
+
 
     //---------- Operateurs Unaires ----------- //
     else if(str == "NEG") {

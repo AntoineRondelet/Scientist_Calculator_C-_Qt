@@ -233,3 +233,208 @@ LitteraleNombre& Complexe::division(const LitteraleNombre& lit) const {
 
 
 
+LitteraleNombre& Complexe::superieur(const LitteraleNombre& lit) const {
+    const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
+    if (ptComplexe == nullptr) {
+        const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
+        // int + int = int
+        if (ptEntier == 0) {
+            //int + rationnel = rationnel
+            const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
+                if (ptRationnel == 0) {
+                    //int + reel = reel
+                    const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
+                        if (ptReel ==  0) {
+                            CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
+                        }
+                        else {
+                            if (1){
+                                Entier* res= new Entier(1);
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                             }
+                            else {
+                                Entier* res= new Entier(0);
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
+                        }
+                }
+                else {
+                    if (1){
+                        Entier* res= new Entier(1);
+                        LitteraleNombre& ref = *res;
+                        return ref;
+                     }
+                    else {
+                        Entier* res= new Entier(0);
+                        LitteraleNombre& ref = *res;
+                        return ref;
+                    }
+                }
+        }
+        else {
+            if (1){
+                Entier* res= new Entier(1);
+                LitteraleNombre& ref = *res;
+                return ref;
+             }
+            else {
+                Entier* res= new Entier(0);
+                LitteraleNombre& ref = *res;
+                return ref;
+            }
+        }
+    }
+    else {/*
+        if (this->valeur > ptComplexe->getPartEnt()){
+            Entier* res= new Entier(1);
+            return *res;
+         }
+        else {
+            Entier* res= new Entier(0);
+            return *res;
+        }*/
+    }
+}
+
+
+//PAS FAIT
+LitteraleNombre& Complexe::inferieur(const LitteraleNombre& lit) const {
+    const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
+    if (ptComplexe == nullptr) {
+        const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
+        // int + int = int
+        if (ptEntier == 0) {
+            //int + rationnel = rationnel
+            const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
+                if (ptRationnel == 0) {
+                    //int + reel = reel
+                    const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
+                        if (ptReel ==  0) {
+                            CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
+                        }
+                        else {
+                            if (1){
+                                Entier* res= new Entier(1);
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                             }
+                            else {
+                                Entier* res= new Entier(0);
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
+                        }
+                }
+                else {
+                    if (1){
+                        Entier* res= new Entier(1);
+                        LitteraleNombre& ref = *res;
+                        return ref;
+                     }
+                    else {
+                        Entier* res= new Entier(0);
+                        LitteraleNombre& ref = *res;
+                        return ref;
+                    }
+                }
+        }
+        else {
+            if (1){
+                Entier* res= new Entier(1);
+                LitteraleNombre& ref = *res;
+                return ref;
+             }
+            else {
+                Entier* res= new Entier(0);
+                LitteraleNombre& ref = *res;
+                return ref;
+            }
+        }
+    }
+    else {/*
+        if (this->valeur > ptComplexe->getPartEnt()){
+            Entier* res= new Entier(1);
+            return *res;
+         }
+        else {
+            Entier* res= new Entier(0);
+            return *res;
+        }*/
+    }
+}
+
+
+LitteraleNombre& Complexe::egal(const LitteraleNombre& lit) const {
+    const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
+    if (ptComplexe == nullptr) {
+        const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
+        // int + int = int
+        if (ptEntier == 0) {
+            //int + rationnel = rationnel
+            const Rationnel* ptRationnel = dynamic_cast<const Rationnel*>(&lit);
+                if (ptRationnel == 0) {
+                    //int + reel = reel
+                    const Reel* ptReel = dynamic_cast<const Reel*>(&lit);
+                        if (ptReel ==  0) {
+                            CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
+                        }
+                        else {
+                            if (1){
+                                Entier* res= new Entier(1);
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                             }
+                            else {
+                                Entier* res= new Entier(0);
+                                LitteraleNombre& ref = *res;
+                                return ref;
+                            }
+                        }
+                }
+                else {
+                    if (1){
+                        Entier* res= new Entier(1);
+                        LitteraleNombre& ref = *res;
+                        return ref;
+                     }
+                    else {
+                        Entier* res= new Entier(0);
+                        LitteraleNombre& ref = *res;
+                        return ref;
+                    }
+                }
+        }
+        else {
+            if (1){
+                Entier* res= new Entier(1);
+                LitteraleNombre& ref = *res;
+                return ref;
+             }
+            else {
+                Entier* res= new Entier(0);
+                LitteraleNombre& ref = *res;
+                return ref;
+            }
+        }
+    }
+    else {/*
+        if (this->valeur > ptComplexe->getPartEnt()){
+            Entier* res= new Entier(1);
+            return *res;
+         }
+        else {
+            Entier* res= new Entier(0);
+            return *res;
+        }*/
+    }
+}
+
+
+
+
+
+
+
+

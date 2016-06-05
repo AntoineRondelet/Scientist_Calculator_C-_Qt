@@ -51,7 +51,8 @@ SOURCES += main.cpp\
     operateurspecial.cpp \
     identificateurmanager.cpp \
     forget.cpp \
-    eval.cpp
+    eval.cpp \
+    oplogique.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -91,7 +92,8 @@ HEADERS  += mainwindow.h \
     operateurspecial.h \
     identificateurmanager.h \
     forget.h \
-    eval.h
+    eval.h \
+    oplogique.h
 
 FORMS    += mainwindow.ui
 

@@ -8,8 +8,15 @@ class Expression: public Litterale {
 public:
     Expression(const QString& s): Litterale(), textExpr(s){}
 
-    QString toString() const {return textExpr;} //Lors du passage a Qt : il faudra utiliser the "maxLength : int" property de la classe QLineEdit pour permettre a l'affichage des "...'" a la fin des Expressions trop longues
+    QString toString() const {return (textExpr);} //Lors du passage a Qt : il faudra utiliser the "maxLength : int" property de la classe QLineEdit pour permettre a l'affichage des "...'" a la fin des Expressions trop longues
     Expression* clone() const;
+
+    Litterale& addition(const Litterale& lit) const;
+    Litterale& soustraction(const Litterale& lit) const;
+    Litterale& multiplication(const Litterale& lit) const;
+    Litterale& division(const Litterale& lit) const;
+
+    void eval(Litterale* lit) const;
 };
 
 inline Expression* Expression::clone() const {return new Expression(*this);}
