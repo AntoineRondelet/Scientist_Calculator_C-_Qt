@@ -138,7 +138,7 @@ void Eval::execute(QVector<Litterale*> litterals) const {
                             if(isOperateurSecondaire(testSplit[j]) || isOperateurPrioritaire(testSplit[j]))
                                 testSplit.move(i,j);
                         else //opérateur non prioritaire ou de meme priorité
-                            testSplit.move(i,j-1);
+                            testSplit.move(i,j);
                         insertion = true;
                         break;
                         }
