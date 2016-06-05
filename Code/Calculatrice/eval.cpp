@@ -1,6 +1,7 @@
 #include "eval.h"
 #include <QString>
 #include <QStringList>
+#include <QRegularExpression>
 #include "controleur.h"
 
 
@@ -46,17 +47,35 @@ void Eval::execute(QVector<Litterale*> litterals) const {
         test.replace(QRegularExpression("\\/"), " / ");
 
         // -- Ici, on va a partir de l'expression a evaluer, créer une QStringList que l'on va "réorganiser" à la maniere d'une saisie "standard" faite par l'utilisateur -- //
-        QStringList testSplit = test.split(" ");
+        QStringList testSplit = test.split(QRegularExpression("[[:space:]]+"));
+        // -- ATTENTION: On est obligé de partitionner sur 1 ou plusieurs espaces car si on a deux operateurs de suite (typiquement le cas du "-" infixe), on aura un espace "parasite" lors du split -- //
 
         // -- Traitement -- //
 
-        // -- Permutation des operateurs secondaire (On fera d'abord ces opérations) -- //
+        // -- Verification des atomes et remplacement des - infixes par des NEG -- //
+        for (int i=0; i<testSplit.size(); i++){
+            if(i<testSplit.size() && testSplit[i] == "-") { //On est sur un "-" -> on regarde si c'est un NEG ou un - "normal"
+                if ((i == 0) || (i>0 && isOperateur(testSplit[i-1]))) { //Les cas ou un "-" <=> NEG: Soit l'expression commence par un "-", soit on a un "-" directement apres un operateur !
+                    testSplit[i] = "NEG";
+                }
+            }
+        }
+        // -- Permutation des operateurs prioritaires (On fera d'abord ces opérations) -- //
+        for (int i=0; i<testSplit.size(); i++){
+            if(i<testSplit.size() && isOperateurPrioritaire(testSplit[i])) { //On est sur un "NEG" etc.
+                int j = i+1;
+                while(j<testSplit.size() && !isOperateur(testSplit[j]))
+                    j++;
+                // On sort du while quand on est sur un operateur: Comme on est sur les operateurs prioritaires, ils doivent restent le plus haut possible pour etre fait en premiers. Donc ils ne passent jamais en dessous d'un autre operateur
+                testSplit.move(i, j-1);
+            }
+        }
+        // -- Permutation des operateurs secondaire (On fera ensuite ces opérations) -- //
         for (int i=0; i<testSplit.size(); i++){
             if(i<testSplit.size() && isOperateurSecondaire(testSplit[i])) { //On est sur un "*" ou un "/"
                 int j = i+1;
                 while(j<testSplit.size() && !isOperateur(testSplit[j]))
                     j++;
-
                 // On sort du while quand on est sur un operateur
                 if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
                     //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
@@ -70,7 +89,7 @@ void Eval::execute(QVector<Litterale*> litterals) const {
                 }
             }
         }
-        // -- Permutation des operateurs ternaires (On fera ces opérations ensuite) -- //
+        // -- Permutation des operateurs ternaires (On fera ces opérations en dernier) -- //
         for (int i=0; i<testSplit.size(); i++){
             if(i<testSplit.size() && isOperateurTernaire(testSplit[i])) {
                 int j = i+1;
@@ -80,7 +99,7 @@ void Eval::execute(QVector<Litterale*> litterals) const {
                 //on sort du while quand on est sur un operateur
                 if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
                     //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
-                    if(isOperateurSecondaire(testSplit[j]))
+                    if(isOperateurSecondaire(testSplit[j]) || isOperateurPrioritaire(testSplit[j]))
                         testSplit.move(i,j);
                     else //opérateur non prioritaire ou de meme priorité
                         testSplit.move(i,j-1);
