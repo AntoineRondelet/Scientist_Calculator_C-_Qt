@@ -45,6 +45,8 @@ void Eval::execute(QVector<Litterale*> litterals) const {
         test.replace(QRegularExpression("-"), " - ");
         test.replace(QRegularExpression("\\*"), " * ");
         test.replace(QRegularExpression("\\/"), " / ");
+        test.replace(QRegularExpression("\\("), " ( ");
+        test.replace(QRegularExpression("\\)"), " ) ");
 
         // -- Ici, on va a partir de l'expression a evaluer, créer une QStringList que l'on va "réorganiser" à la maniere d'une saisie "standard" faite par l'utilisateur -- //
         QStringList testSplit = test.split(QRegularExpression("[[:space:]]+"));
@@ -57,6 +59,7 @@ void Eval::execute(QVector<Litterale*> litterals) const {
             if(i<testSplit.size() && testSplit[i] == "-") { //On est sur un "-" -> on regarde si c'est un NEG ou un - "normal"
                 if ((i == 0) || (i>0 && isOperateur(testSplit[i-1]))) { //Les cas ou un "-" <=> NEG: Soit l'expression commence par un "-", soit on a un "-" directement apres un operateur !
                     testSplit[i] = "NEG";
+                    // -- On remplace ces "-" infixe par des NEG que le controleur sait gérer -- //
                 }
             }
         }
@@ -72,36 +75,59 @@ void Eval::execute(QVector<Litterale*> litterals) const {
         }
         // -- Permutation des operateurs secondaire (On fera ensuite ces opérations) -- //
         for (int i=0; i<testSplit.size(); i++){
-            if(i<testSplit.size() && isOperateurSecondaire(testSplit[i])) { //On est sur un "*" ou un "/"
+            if (i<testSplit.size() && isOperateurSecondaire(testSplit[i])) { //On est sur un "*" ou un "/"
                 int j = i+1;
-                while(j<testSplit.size() && !isOperateur(testSplit[j]))
-                    j++;
-                // On sort du while quand on est sur un operateur
-                if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
-                    //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
-                    if(isOperateurPrioritaire(testSplit[j]))
-                        testSplit.move(i,j);
-                    else //opérateur de la meme priorité ou moins prioritaire, on ne le "depasse" pas (a savoir que depasser un operateur => etre fait apres donc : moins prioritaire)
-                        testSplit.move(i,j-1);
+                // -- On rencontre une parenthese ouvrante: On "saute" tout son contenu ! -- //
+                if (j < testSplit.size() && testSplit[j] == "(") {
+                    while(j<testSplit.size() && testSplit[j] != ")")
+                        j++;
+                    // On sort du while quand on est sur un operateur
+                    if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
+                        //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
+                        if(isOperateurPrioritaire(testSplit[j]))
+                            testSplit.move(i,j);
+                        else //opérateur de la meme priorité ou moins prioritaire, on ne le "depasse" pas (a savoir que depasser un operateur => etre fait apres donc : moins prioritaire)
+                            testSplit.move(i,j-1);
+                    }
+                    else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
+                        testSplit.move(i, j-1);
+                    }
                 }
-                else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
-                    testSplit.move(i, j-1);
+                // -- Ok: pas de parenthese: cas normal -- //
+                else {
+                    while(j<testSplit.size() && !isOperateur(testSplit[j]))
+                        j++;
+                    // On sort du while quand on est sur un operateur
+                    if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
+                        //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
+                        if(isOperateurPrioritaire(testSplit[j]))
+                            testSplit.move(i,j);
+                        else //opérateur de la meme priorité ou moins prioritaire, on ne le "depasse" pas (a savoir que depasser un operateur => etre fait apres donc : moins prioritaire)
+                            testSplit.move(i,j-1);
+                    }
+                    else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
+                        testSplit.move(i, j-1);
+                    }
                 }
             }
         }
-        // -- Permutation des operateurs ternaires (On fera ces opérations en dernier) -- //
+        // -- Permutation des operateurs ternaires (+ -) (On fera ces opérations en dernier) -- //
         for (int i=0; i<testSplit.size(); i++){
             if(i<testSplit.size() && isOperateurTernaire(testSplit[i])) {
                 int j = i+1;
                 // -- Ici ATTENTION a l'ordre des conditions ! Il est forcement celui-ci: on ne peut pas le changer ! Sinon ASSERT erreur (on essaie d'acceder a une case qui n'est pas dans le tableau -- //
-                while(j<testSplit.size() && !isOperateur(testSplit[j]))
+                while(j<testSplit.size() && !isOperateur(testSplit[j]) && testSplit[j] != ")")
                     j++;
                 //on sort du while quand on est sur un operateur
                 if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
                     //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
-                    if(isOperateurSecondaire(testSplit[j]) || isOperateurPrioritaire(testSplit[j]))
-                        testSplit.move(i,j);
-                    else //opérateur non prioritaire ou de meme priorité
+                    if (isOperateur(testSplit[j])) {
+                        if(isOperateurSecondaire(testSplit[j]) || isOperateurPrioritaire(testSplit[j]))
+                            testSplit.move(i,j);
+                        else //opérateur non prioritaire ou de meme priorité
+                            testSplit.move(i,j-1);
+                    }
+                    if (testSplit[j] == ")")
                         testSplit.move(i,j-1);
                 }
                 else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
@@ -110,7 +136,10 @@ void Eval::execute(QVector<Litterale*> litterals) const {
             }
         }
 
-        stack.setMessage(testSplit.join(""));
+        QString message = testSplit.join("");
+        //message.remove(QChar('('));
+        //message.remove(QChar(')'));
+        stack.setMessage(message);
 
         Controleur& cont = Controleur::getInstance();
         bool rep = cont.analyser->reconnaitre(testSplit);
