@@ -15,7 +15,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QRegularExpressionMatchIterator>
-#include<QStringList>
+#include <QStringList>
 
 #include <iostream>
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
    try {
         //Pile& stack = Pile::getInstance();
-        Controleur controle/*(stack)*/;
+        Controleur& controle = Controleur::getInstance();
         controle.boucleExcecution();
 
     }
@@ -45,64 +45,47 @@ int main(int argc, char *argv[])
         cout << "On a catch" << endl;
     }
 
+    //le but ici c'est de la mettre dans l'ordre qui est compris par la machine !
+    //QString test = "'3*X1+3+TOTO/-2";
+    QString test = "'3+3'";
+    test.remove("'");
+    cout << "before : " << test.toStdString() << endl;
+    test.replace(QRegularExpression("\\+"), " + ");
+    test.replace(QRegularExpression("-"), " - ");
+    test.replace(QRegularExpression("\\*"), " * ");
+    test.replace(QRegularExpression("\\/"), " / ");
+    cout << "after spaces : " << test.toStdString() << endl;
 
-/*
-//regex("\\[(.)*\\]"); --> regex pour les programmes
-    string c;
-    cout<<"?-";
-    getline(cin,c);
-    QString str_in = QString::fromStdString(c);
-    QRegularExpression regex("'(.)*'");
-    QRegularExpressionMatch str_match = regex.match(str_in);
-    if(str_match.hasMatch()) {
-        cout << "------- MATCHED --------" << endl;
-        QString act2 = str_match.captured(0);
-        cout << "Match " << ": " << act2.toStdString() << endl;
-    }
-    else
-        cout << "Case " << ": " << str_in.toStdString() << endl;
-*/
+    QStringList testSplit = test.split(" ");
+    testSplit.swap(1,2);
+    //verification des atomes -> A FAIRE
+    //verification des - infixes (NEG)
+    //for (unsigned int i = 0; i < testSplit.size(); ++i){
+        /*
+        if (testSplit[i] == "-") {
+            if (i == 0 || (i > 0 && (testSplit[i-1] == "+" || testSplit[i-1] == "-" || testSplit[i-1] == "*" || testSplit[i-1] == "/")))
+                testSplit.swap(i, i+1); // on echange le - avec la litterale sur laquelle il s'applique
+                cout << "on est dans le if " << endl;
+                QString stri = testSplit[i];
+                QString stri1 = testSplit[i+2];
+                cout << " index i : " << stri.toStdString() << endl;
+                cout << " index i+1 : " << stri1.toStdString() << endl;
 
-/*
-
-    string c;
-    cout<<"?-";
-    getline(cin,c);
-    QString str_in = QString::fromStdString(c);
-    //cout << str_in.toStdString() << endl;
-    QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
-    int i = 0;
-    int counterCrochet = 0;
-    while(!liste_param.empty()) {
-        QRegularExpression regex("\\[(.)*\\]");
-        QString act = liste_param.takeFirst();
+                //testSplit[i+1] = "NEG";
+            }*/
+        /*
+        //permutation des operateurs prioritaires * et -
+        if (testSplit[i] == "*" || testSplit[i] == "/") {
+            unsigned int j = 1;
+            while((i+j < testSplit.size() && (testSplit[i+j] != "+" || testSplit[i+j] != "-" || testSplit[i+j] != "*" || testSplit[i+j] != "/"))){
+                testSplit.swap(i+j, i+j+1);
+                j++;
+            }
+        }*/
+    //}
+    cout << "Apres debut de tri : " << testSplit.join(" ").toStdString() << endl;
 
 
-        //------ CIRCUIT POUR RECONSTITUER LES PROGRAMMES ------//
-        if (act == "[") {
-                counterCrochet++;
-                QString isFound = "";
-                while (!liste_param.empty() && counterCrochet !=0){ //Si counterCrochet != 0 -> on a pas fini de lire le programme
-                    isFound = liste_param.takeFirst();
-                    if (isFound == "[") counterCrochet++;
-                    if (isFound == "]") counterCrochet--;
-                    act += " " + isFound;
-                }
-        }
-         //------ SORTIE DE CIRCUIT POUR RECONSTITUER LES PROGRAMMES ------//
-
-        QRegularExpressionMatch str_match = regex.match(act);
-        if(str_match.hasMatch()) {
-            cout << "------- MATCHED --------" << endl;
-            QString act2 = str_match.captured(0);
-            cout << "Match " << i << ": " << act2.toStdString() << endl;
-        }
-        else
-            cout << "Case " << i << ": " << act.toStdString() << endl;
-        i++;
-    }
-
-*/
 
 
 

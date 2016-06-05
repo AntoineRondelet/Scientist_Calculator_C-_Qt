@@ -57,20 +57,20 @@ void Controleur::boucleExcecution(){
 
 
 
-/*
-void splitEntry(const string& c) {
-    //QRegularExpression re1("(\\W+)"); --> matche ce qui n'est pas un mot
-    QRegularExpression re("(\\w+)"); //--> matche ce qui est  un mot
-    // Exemple : splitEntry("324 -765 + "); --> re1 matche: - et +, re2 matche: 324 et 765
-    QRegularExpressionMatchIterator i = re.globalMatch(QString::fromStdString(c));
-    QStringList words;
-    while (i.hasNext()) {
-        QRegularExpressionMatch match = i.next();
-        QString word = match.captured(1);
-        cout << "word: " << word.toStdString() << endl;
-        words << word;
-    }
+
+// -- Singleton -- //
+
+Controleur::Handler Controleur::handler;
+
+Controleur& Controleur::getInstance() {
+    if(handler.instance == nullptr)
+        handler.instance = new Controleur;
+    return *handler.instance;
 }
 
-*/
+void Controleur::libererInstance() {
+    delete handler.instance;
+    handler.instance=nullptr;
+}
+
 

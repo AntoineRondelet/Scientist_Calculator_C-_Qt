@@ -10,6 +10,7 @@
 #include "num.h"
 #include "den.h"
 #include "drop.h"
+#include "eval.h"
 
 #include "undo.h"
 #include "redo.h"
@@ -54,6 +55,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == "DROP") {
         return new Drop;
+    }
+    else if(str == "EVAL") {
+        return new Eval;
     }
 
     //---------- Operateurs "Speciaux" -----------//

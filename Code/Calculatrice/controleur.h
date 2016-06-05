@@ -8,8 +8,27 @@
 #include <QString>
 #include "analyser.h"
 
+#include "eval.h"
+
 class Controleur {
+    friend class Eval;
     Analyser* analyser;
+
+    //Debut singleton
+    Controleur(const Controleur& p);
+    Controleur& operator=(const Controleur& p);
+    ~Controleur(){delete analyser;} //On a une composition
+
+    class Handler {
+    public:
+        Controleur* instance;
+        Handler():instance(0){}
+        ~Handler() {delete instance;}
+    };
+
+    static Handler handler;
+    //Fin singleton
+
 public:
     Controleur(): analyser(new Analyser()){
         //On initialise la map qui contient nos regex et nos fonctions de construction
@@ -19,7 +38,11 @@ public:
     void boucleExcecution();
     void commande(QStringList& list_src);
 
-    ~Controleur(){delete analyser;} //On a une composition
+
+
+    // -- Singleton -- //
+    static Controleur& getInstance();
+    static void libererInstance();
 };
 
 //void splitEntry(const string& c); //Fonction qui permet de recuperer chaque "mot" dans la "phrase" saisie par le user

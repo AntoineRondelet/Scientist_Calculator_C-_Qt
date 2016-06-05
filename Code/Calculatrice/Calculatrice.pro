@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     redo.cpp \
     operateurspecial.cpp \
     identificateurmanager.cpp \
-    forget.cpp
+    forget.cpp \
+    eval.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -89,7 +90,8 @@ HEADERS  += mainwindow.h \
     redo.h \
     operateurspecial.h \
     identificateurmanager.h \
-    forget.h
+    forget.h \
+    eval.h
 
 FORMS    += mainwindow.ui
 
