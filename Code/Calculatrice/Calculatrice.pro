@@ -52,7 +52,9 @@ SOURCES += main.cpp\
     identificateurmanager.cpp \
     forget.cpp \
     eval.cpp \
-    oplogique.cpp
+    oplogique.cpp \
+    dup.cpp \
+    ift.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -93,11 +95,11 @@ HEADERS  += mainwindow.h \
     identificateurmanager.h \
     forget.h \
     eval.h \
-    oplogique.h
+    oplogique.h \
+    dup.h \
+    ift.h
 
 FORMS    += mainwindow.ui
 
 
 CONFIG += console
-
-

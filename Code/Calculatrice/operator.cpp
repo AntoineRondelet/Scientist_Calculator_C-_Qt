@@ -6,6 +6,7 @@
 #include "sous.h"
 #include "operateurcomplexe.h"
 #include "oplogique.h"
+#include "ift.h"
 
 
 #include "neg.h"
@@ -58,6 +59,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == ">=") {
         return new OpLogiqueSupEgal;
+    }
+    else if(str == "IFT") {
+        return new Ift;
     }
 
 
