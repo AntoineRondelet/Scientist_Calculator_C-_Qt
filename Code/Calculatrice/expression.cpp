@@ -90,87 +90,74 @@ bool isOperateur(const QString& str) {
 
 
 
-void Expression::eval(Litterale* lit) const {
+QStringList Expression::eval(Litterale* lit) const {
     Pile& stack = Pile::getInstance();
     Expression* operandeExpression = dynamic_cast<Expression *>(lit);
 
-    bool insertion = false;
-
     if(operandeExpression) {
+
         QString test = operandeExpression->toString();
         test.remove("'");
         test.replace(QRegularExpression("\\+"), " + ");
         test.replace(QRegularExpression("-"), " - ");
         test.replace(QRegularExpression("\\*"), " * ");
         test.replace(QRegularExpression("\\/"), " / ");
-        test.replace(QRegularExpression("\\("), " ( ");
-        test.replace(QRegularExpression("\\)"), " ) ");
 
-        // -- Ici, on va a partir de l'expression a evaluer, créer une QStringList que l'on va "réorganiser" à la maniere d'une saisie "standard" faite par l'utilisateur -- //
+        // -- Ici, on va a partir de l'expression a evaluer, créer une QStringList que l'on va "réorganiser" à la maniere -- //
+        // -- d'une saisie "standard" faite par l'utilisateur -- //
         QStringList testSplit = test.split(QRegularExpression("[[:space:]]+"));
-        // -- ATTENTION: On est obligé de partitionner sur 1 ou plusieurs espaces car si on a deux operateurs de suite (typiquement le cas du "-" infixe), on aura un espace "parasite" lors du split -- //
 
-        // -- Traitement -- //
+        // -- ATTENTION: On est obligé de partitionner sur 1 ou plusieurs espaces car si on a deux operateurs de suite -- //
+        // -- (typiquement le cas du "-" infixe), on aura un espace "parasite" lors du split -- //
 
-        // -- Verification des atomes et remplacement des - infixes par des NEG -- //
+        // -- TRAITEMENT: On debute la réorganisation de l'expression -- //
+
+        // -- Etape1: Verification des atomes et remplacement des - infixes par des NEG (compris par la machine) -- //
         for (int i=0; i<testSplit.size(); i++){
-            if(i<testSplit.size() && testSplit[i] == "-") { //On est sur un "-" -> on regarde si c'est un NEG ou un - "normal"
-                if ((i == 0) || (i>0 && isOperateur(testSplit[i-1]))) { //Les cas ou un "-" <=> NEG: Soit l'expression commence par un "-", soit on a un "-" directement apres un operateur !
+            // -- On est sur un "-": on regarde si c'est un NEG ou un - "normal" -- //
+            if(i<testSplit.size() && testSplit[i] == "-") {
+                // -- Les cas ou un "-" <=> NEG: Soit l'expression commence par un "-", soit on a un "-" directement apres un operateur ! -- //
+                if ((i == 0) || (i>0 && isOperateur(testSplit[i-1]))) {
                     testSplit[i] = "NEG";
-                    // -- On remplace ces "-" infixe par des NEG que le controleur sait gérer -- //
                 }
             }
         }
 
 
-        // -- OPERATEURS DEFINIS PAR l'USER (On fera d'abord ces opérations) -- //
+
+        // -- Etape2: Permutation des operateurs prioritaires (On fera d'abord ces opérations) -- //
         for (int i=0; i<testSplit.size(); i++){
-            if(i<testSplit.size() && isOperateurPrioritaire(testSplit[i])) {
+            if(i<testSplit.size() && isOperateurPrioritaire(testSplit[i])) { //On est sur un "NEG" etc.
                 int j = i+1;
-                // -- ON RENCONTRE UNE PARENTHESE OUVRANTE: On "saute" tout son contenu ! -- //
-                while (j<testSplit.size()) {
-                    if (testSplit[j] == "(") {
-                        while(testSplit[j] != ")") j++;
-                    }
-                    // -- Ici ATTENTION a l'ordre des conditions ! Il est forcement celui-ci: on ne peut pas le changer ! Sinon ASSERT erreur (on essaie d'acceder a une case qui n'est pas dans le tableau -- //
-                    else if (isOperateur(testSplit[j])){
-                        //opérateur non prioritaire ou de meme priorité
-                        testSplit.move(i,j-1);
-                    }
-                    else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
-                        testSplit.move(i, j-1);
-                    }
-                    j++;
-                }
+                while(j<testSplit.size() && !isOperateur(testSplit[j])) j++;
+                // On sort du while quand on est sur un operateur: Comme on est sur les operateurs prioritaires, ils doivent restent le plus haut possible pour etre fait en premiers. Donc ils ne passent jamais en dessous d'un autre operateur
+                // Nous avons raisonner avec une pile, et "passer en dessous" implique de ce fait etre fait apres d'autres opérateurs.
+                // Donc de part la "hauteur" d'un opérateur dans la pile, on a pu raisonner sur sa priorité
+                testSplit.move(i, j-1);
             }
         }
 
 // --------------------------------------------------------------------------------------------------------------------- //
 
-        // -- OPERATEURS * ET / (On fera ces opérations en dernier) -- //
+
+
+        // -- Permutation des operateurs secondaire: * et / (On fera ensuite ces opérations) -- //
         for (int i=0; i<testSplit.size(); i++){
-            if(i<testSplit.size() && isOperateurSecondaire(testSplit[i])) {
+            if(i<testSplit.size() && isOperateurSecondaire(testSplit[i])) { //On est sur un "*" ou un "/"
                 int j = i+1;
-                // -- ON RENCONTRE UNE PARENTHESE OUVRANTE: On "saute" tout son contenu ! -- //
-                while (j<testSplit.size() && insertion == false) {
-                    if (testSplit[j] == "(") {
-                        while(testSplit[j] != ")") j++;
-                    }
-                    // -- Ici ATTENTION a l'ordre des conditions ! Il est forcement celui-ci: on ne peut pas le changer ! Sinon ASSERT erreur (on essaie d'acceder a une case qui n'est pas dans le tableau -- //
-                    else {
-                        if (isOperateur(testSplit[j])){
-                            if(isOperateurPrioritaire(testSplit[j]))
-                                testSplit.move(i,j);
-                        else //opérateur non prioritaire ou de meme priorité
-                            testSplit.move(i,j-1);
-                        insertion = true;
-                        break;
-                        }
-                    }
-                    j++;
-                }
-                if (insertion == false)
-                    testSplit.move(i,j-1);
+                while(j<testSplit.size() && !isOperateur(testSplit[j])) j++;
+                // On sort du while quand on est sur un operateur
+                if(j<testSplit.size()) {
+                //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
+                //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
+                    if(isOperateurPrioritaire(testSplit[j]))
+                        testSplit.move(i,j);
+                    else //opérateur de la meme priorité ou moins prioritaire, on ne le "depasse" pas (a savoir que depasser un operateur => etre fait apres donc : moins prioritaire)
+                        testSplit.move(i,j-1);
+                 }
+                 else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
+                    testSplit.move(i, j-1);
+                 }
             }
         }
 
@@ -179,53 +166,30 @@ void Expression::eval(Litterale* lit) const {
 
 
         // -- OPERATEURS + ET - (On fera ces opérations en dernier) -- //
+        // -- Permutation des operateurs ternaires (On fera ces opérations en dernier) -- //
         for (int i=0; i<testSplit.size(); i++){
-            insertion = false;
-            // -- Ici ATTENTION a l'ordre des conditions ! Il est forcement celui-ci: on ne peut pas le changer ! Sinon ASSERT erreur (on essaie d'acceder a une case qui n'est pas dans le tableau -- //
             if(i<testSplit.size() && isOperateurTernaire(testSplit[i])) {
                 int j = i+1;
-                // -- ON RENCONTRE UNE PARENTHESE OUVRANTE: On "saute" tout son contenu ! -- //
-                while (j<testSplit.size() && insertion == false) {
-                    if (testSplit[j] == "(") {
-                        while(testSplit[j] != ")") j++;
-                    }
-                    else {
-                        if (isOperateur(testSplit[j])){
-                            if(isOperateurSecondaire(testSplit[j]) || isOperateurPrioritaire(testSplit[j]))
-                                testSplit.move(i,j);
-                        else //opérateur non prioritaire ou de meme priorité
-                            testSplit.move(i,j);
-                        insertion = true;
-                        break;
-                        }
-                    }
-                    j++;
+                // -- Ici ATTENTION a l'ordre des conditions ! Il est forcement celui-ci: on ne peut pas le changer ! Sinon ASSERT erreur (on essaie d'acceder a une case qui n'est pas dans le tableau -- //
+                while(j<testSplit.size() && !isOperateur(testSplit[j])) j++;
+                //on sort du while quand on est sur un operateur
+                if(j<testSplit.size()) { //on verifie la cause de la sortie du while: ici on verifie qu'on est sorti car on est tombé sur un opérateur et non pas parce qu'on est a la fin
+                    //Si l'operateur qui nous a fait sortir du while est un operateur prioritaire, on met l'operateur secondaire apres.
+                    if(isOperateurSecondaire(testSplit[j]) || isOperateurPrioritaire(testSplit[j]))
+                        testSplit.move(i,j);
+                    else //opérateur non prioritaire ou de meme priorité
+                        testSplit.move(i,j-1);
                 }
-                if (insertion == false)
-                    testSplit.move(i,j-1);
+                else { //Si jamais on est sorti parce qu'on était a la fin de l'expression
+                    testSplit.move(i, j-1);
+                }
             }
         }
-
-        QString message = testSplit.join("");
-        //message.remove(QChar('('));
-        //message.remove(QChar(')'));
-        stack.setMessage(message);
-
-        /*Controleur& cont = Controleur::getInstance();
-        bool rep = cont.analyser->reconnaitre(testSplit);
-
-        if(rep == false) {
-            this->reChargerOperande(litterals);
-            stack.setMessage("ON EST LA ");
-        }else {
-           delete litterals[0];
-        }*/
+    return testSplit;
     }
-    /*
     else {
-        // -- On réeimpile la littérale qui n'est pas du bon type -- //
-        this->reChargerOperande(litterals);
-    }*/
+        CALCULATRICE_EXCEPTION("PROBLEME DANS L'EVALUATION DE LA LITTERALE");
+    }
 }
 
 

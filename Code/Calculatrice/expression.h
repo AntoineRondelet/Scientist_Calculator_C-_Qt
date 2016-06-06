@@ -16,7 +16,7 @@ public:
     Litterale& multiplication(const Litterale& lit) const;
     Litterale& division(const Litterale& lit) const;
 
-    void eval(Litterale* lit) const;
+    QStringList eval(Litterale* lit) const;
 };
 
 inline Expression* Expression::clone() const {return new Expression(*this);}

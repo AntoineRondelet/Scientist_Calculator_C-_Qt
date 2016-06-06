@@ -11,6 +11,8 @@
 #include "eval.h"
 
 class Controleur {
+    friend class Eval;
+
     Analyser* analyser;
 
     //Debut singleton

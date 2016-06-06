@@ -8,7 +8,7 @@
 class Eval: public UnaryOperator{
 public:
     Eval(): UnaryOperator(){}
-    void execute(QVector<Litterale*> litterals) const override{}
+    void execute(QVector<Litterale*> litterals) const override;
 };
 
 #endif // EVAL_H
