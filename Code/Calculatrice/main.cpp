@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     */
 
 
-   /*try {
+   try {
         //Pile& stack = Pile::getInstance();
         Controleur& controle = Controleur::getInstance();
         controle.boucleExcecution();
@@ -44,13 +44,14 @@ int main(int argc, char *argv[])
     }
     catch (...) {
         cout << "On a catch" << endl;
-    }*/
+    }
 
+/*
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
     QString res = id_man.strOperateurs();
 
     cout << " ----> Res : " << res.toStdString() << endl;
-
+*/
 
     return 0;
 }

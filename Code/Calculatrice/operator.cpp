@@ -47,6 +47,18 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "=") {
         return new OpLogiqueEgal;
     }
+    else if(str == "<") {
+        return new OpLogiqueInf;
+    }
+    else if(str == "<=") {
+        return new OpLogiqueInfEgal;
+    }
+    else if(str == ">") {
+        return new OpLogiqueSup;
+    }
+    else if(str == ">=") {
+        return new OpLogiqueSupEgal;
+    }
 
 
     //---------- Operateurs Unaires ----------- //

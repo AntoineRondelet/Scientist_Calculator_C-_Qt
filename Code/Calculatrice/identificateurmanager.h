@@ -53,7 +53,7 @@ public:
 
     // -- On choisit de ne pas faire de methode d'ajout d'operateur car les operateurs sont buit-in. Donc a priori, seul un programmeur pourra en ajouter, et pas l'utilisateur (il pourra cependant faire des programmes !) -- //
 
-    QString strOperateurs() const;
+    const QString strOperateurs() const;
 
 
     // -- Singleton -- //

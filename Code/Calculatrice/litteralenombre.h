@@ -21,9 +21,9 @@ public:
     virtual LitteraleNombre& soustraction(const LitteraleNombre& n) const = 0;
     virtual LitteraleNombre& multiplication(const LitteraleNombre& n) const = 0;
     virtual LitteraleNombre& division(const LitteraleNombre& n) const = 0;
-    virtual LitteraleNombre& egal(const LitteraleNombre& n) const = 0;
-    virtual LitteraleNombre& inferieur(const LitteraleNombre& n) const = 0;
-    virtual LitteraleNombre& superieur(const LitteraleNombre& n) const = 0;
+    virtual bool egal(const LitteraleNombre& n) const = 0;
+    virtual bool inferieur(const LitteraleNombre& n) const = 0;
+    virtual bool superieur(const LitteraleNombre& n) const = 0;
 
 
     LitteraleNombre& operator+(const LitteraleNombre& n){return this->addition(n);}

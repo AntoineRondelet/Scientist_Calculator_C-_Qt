@@ -27,9 +27,9 @@ public:
     LitteraleNombre& soustraction(const LitteraleNombre& lit) const override;
     LitteraleNombre& multiplication(const LitteraleNombre& lit) const override;
     LitteraleNombre& division(const LitteraleNombre& lit) const override;
-    LitteraleNombre& egal(const LitteraleNombre& n) const override;
-    LitteraleNombre& inferieur(const LitteraleNombre& n) const override;
-    LitteraleNombre& superieur(const LitteraleNombre& n) const override;
+    bool egal(const LitteraleNombre& n) const override;
+    bool inferieur(const LitteraleNombre& n) const override;
+    bool superieur(const LitteraleNombre& n) const override;
 
     //~Complexe(){delete partEnt; delete partIm;} //--> MET LE BASARD DANS LA MEMOIRE /!\ PAS BON
 };

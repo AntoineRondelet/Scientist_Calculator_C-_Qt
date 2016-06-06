@@ -49,10 +49,24 @@ void IdentificateurManager::init() {
     m_ops.insert("NUM", "HIGH");
     m_ops.insert("DEN", "HIGH");
     m_ops.insert("$", "HIGH");
+    m_ops.insert("DIV", "HIGH");
+    m_ops.insert("MOD", "HIGH");
+    m_ops.insert("RE", "HIGH");
+    m_ops.insert("IM", "HIGH");
+    m_ops.insert("ARG", "HIGH");
+    m_ops.insert("STO", "HIGH");
+    m_ops.insert("FORGET", "HIGH");
+    m_ops.insert("DUP", "HIGH");
+    m_ops.insert("NOT", "HIGH");
+    m_ops.insert("OR", "HIGH");
+    m_ops.insert("AND", "HIGH");
 }
 
+//NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET
 
-QString IdentificateurManager::strOperateurs() const {
+
+// -- Utile pour construire une chaine de caracteres pour faire la regex sur les operateurs dans la fonction "createAtome"  -- //
+const QString IdentificateurManager::strOperateurs() const {
     QString result;
     QList<QString> op_list = m_ops.keys("HIGH");
     QList<QString>::iterator i;

@@ -303,7 +303,7 @@ Complexe* Rationnel::toComplexe() const {
 
 
 
-LitteraleNombre& Rationnel::superieur(const LitteraleNombre& lit) const {
+bool Rationnel::superieur(const LitteraleNombre& lit) const {
     const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
     if (ptComplexe == nullptr) {
         const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
@@ -319,58 +319,45 @@ LitteraleNombre& Rationnel::superieur(const LitteraleNombre& lit) const {
                         }
                         else {
                             if ((static_cast<float>(this->getNumerateur())/this->getDenominateur()) > ptReel->getValue()){
-                                Entier* res= new Entier(1);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return true;
                              }
                             else {
-                                Entier* res= new Entier(0);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return false;
                             }
                         }
                 }
                 else {
                     if ((static_cast<float>(this->getNumerateur())/this->getDenominateur()) > (static_cast<float>(ptRationnel->getNumerateur())/ptRationnel->getDenominateur())){
-                        Entier* res= new Entier(1);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return true;
                      }
                     else {
-                        Entier* res= new Entier(0);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return false;
                     }
                 }
         }
         else {
             if ((static_cast<float>(this->getNumerateur())/this->getDenominateur()) > ptEntier->getValeur()){
-                Entier* res= new Entier(1);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return true;
              }
             else {
-                Entier* res= new Entier(0);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return false;
             }
         }
     }
-    else {/*
-        if (this->valeur > ptComplexe->getPartEnt()){
-            Entier* res= new Entier(1);
-            return *res;
+    else {
+        Complexe* cplx = this->toComplexe();
+        if (cplx->getPartEnt()->superieur(*ptComplexe->getPartEnt()) || (cplx->getPartEnt()->egal(*ptComplexe->getPartEnt()) && cplx->getPartIm()->superieur(*ptComplexe->getPartIm()))){
+            return true;
          }
         else {
-            Entier* res= new Entier(0);
-            return *res;
-        }*/
+            return false;
+        }
     }
 }
 
 
 
-LitteraleNombre& Rationnel::inferieur(const LitteraleNombre& lit) const {
+bool Rationnel::inferieur(const LitteraleNombre& lit) const {
     const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
     if (ptComplexe == nullptr) {
         const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
@@ -386,56 +373,44 @@ LitteraleNombre& Rationnel::inferieur(const LitteraleNombre& lit) const {
                         }
                         else {
                             if ((static_cast<float>(this->getNumerateur())/this->getDenominateur()) < ptReel->getValue()){
-                                Entier* res= new Entier(1);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return true;
                              }
                             else {
-                                Entier* res= new Entier(0);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return false;
                             }
                         }
                 }
                 else {
                     if ((static_cast<float>(this->getNumerateur())/this->getDenominateur()) < (static_cast<float>(ptRationnel->getNumerateur())/ptRationnel->getDenominateur())){
-                        Entier* res= new Entier(1);
-                        return *res;
+                        return true;
                      }
                     else {
-                        Entier* res= new Entier(0);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return false;
                     }
                 }
         }
         else {
             if ((static_cast<float>(this->getNumerateur())/this->getDenominateur()) < ptEntier->getValeur()){
-                Entier* res= new Entier(1);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return true;
              }
             else {
-                Entier* res= new Entier(0);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return false;
             }
         }
     }
-    else {/*
-        if (this->valeur > ptComplexe->getPartEnt()){
-            Entier* res= new Entier(1);
-            return *res;
+    else {
+        Complexe* cplx = this->toComplexe();
+        if (cplx->getPartEnt()->inferieur(*ptComplexe->getPartEnt()) || (cplx->getPartEnt()->egal(*ptComplexe->getPartEnt()) && cplx->getPartIm()->inferieur(*ptComplexe->getPartIm()))){
+            return true;
          }
         else {
-            Entier* res= new Entier(0);
-            return *res;
-        }*/
+            return false;
+        }
     }
 }
 
 
-LitteraleNombre& Rationnel::egal(const LitteraleNombre& lit) const {
+bool Rationnel::egal(const LitteraleNombre& lit) const {
     const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
     if (ptComplexe == nullptr) {
         const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
@@ -451,52 +426,39 @@ LitteraleNombre& Rationnel::egal(const LitteraleNombre& lit) const {
                         }
                         else {
                             if ((static_cast<float>(this->getNumerateur())/this->getDenominateur()) == ptReel->getValue()){
-                                Entier* res= new Entier(1);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return true;
                              }
                             else {
-                                Entier* res= new Entier(0);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return false;
                             }
                         }
                 }
                 else {
                     if ((this->numerateur == ptRationnel->getNumerateur()) && (this->denominateur == ptRationnel->getDenominateur())){
-                        Entier* res= new Entier(1);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return true;
                      }
                     else {
-                        Entier* res= new Entier(0);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return false;
                     }
                 }
         }
         else {
             if (this->numerateur == ptEntier->getNumerateur()){
-                Entier* res= new Entier(1);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return true;
              }
             else {
-                Entier* res= new Entier(0);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return false;
             }
         }
     }
-    else {/*
-        if (this->valeur > ptComplexe->getPartEnt()){
-            Entier* res= new Entier(1);
-            return *res;
+    else {
+        Complexe* cplx = this->toComplexe();
+        if (cplx->getPartEnt()->egal(*ptComplexe->getPartEnt()) && cplx->getPartIm()->egal(*ptComplexe->getPartIm())){
+            return true;
          }
         else {
-            Entier* res= new Entier(0);
-            return *res;
-        }*/
+            return false;
+        }
     }
 }
 

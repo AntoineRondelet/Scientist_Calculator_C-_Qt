@@ -50,16 +50,20 @@ Litterale* createReel(QRegularExpressionMatch matched_exp) {
 Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE ATOME !! " << endl;
     QString matched = matched_exp.captured(0);
+
     //on refait tourner une regex pour s'assurer que l'atome n'a pas le nom d'un programme deja existant
-    QRegularExpression regexOperateur("NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET"); //C'est pas tres propre ! il faudrait trouver un moyen de faire cela de facon plus propre
+    IdentificateurManager& id_man = IdentificateurManager::getInstance();
+    const QString str_ops = id_man.strOperateurs();
+    QRegularExpression regexOperateur("NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET");
+    //"^(NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET)"
     QRegularExpressionMatch str_match_op = regexOperateur.match(matched);
+
     if(str_match_op.hasMatch()) {
         return nullptr; //on veut creer un atome qui a le meme identificateur qu'un programme
     }
     else {
         // -- On a effectivement un atome: On verifie s'il est repertorié dans la table des identificateurs (s'il est affecté a une litterale via un STO) -- //
         Litterale* ptAtome = nullptr;
-        IdentificateurManager& id_man = IdentificateurManager::getInstance();
         if (id_man.m_names.contains(matched)) { //Le nom de cet atome figure dans la table. On doit construire l'objet auquel il est associé
             // -- Cette litterale est UN CLONE de celle contenue dans la QMap car si on la depile, on va la supprimer, mais on veur pouvoir la garder dans le tableau ! -- //
             ptAtome = id_man.m_names.value(matched)->clone();

@@ -229,11 +229,12 @@ LitteraleNombre& Complexe::division(const LitteraleNombre& lit) const {
 
 
 
+// -- HYPOTHESE POUR LA COMPARAISON DES COMPLEXES -- //
+// -- Attention: Hypothese ! Pour comparer les nombres complexes, comme on est dans R^2 c'est assez delicat -- //
+// -- On applique l'ordre lexicographique c'est (x,y) > (a,b) ssi x>a ou (x=a et y>b) dans ce cas la -- //
 
 
-
-
-LitteraleNombre& Complexe::superieur(const LitteraleNombre& lit) const {
+bool Complexe::superieur(const LitteraleNombre& lit) const {
     const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
     if (ptComplexe == nullptr) {
         const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
@@ -248,59 +249,48 @@ LitteraleNombre& Complexe::superieur(const LitteraleNombre& lit) const {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
                         else {
-                            if (1){
-                                Entier* res= new Entier(1);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                            Complexe* cplx = ptReel->toComplexe();
+                            if (this->getPartEnt()->superieur(*cplx->getPartEnt()) || (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->superieur(*cplx->getPartIm()))){
+                                return true;
                              }
                             else {
-                                Entier* res= new Entier(0);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return false;
                             }
                         }
                 }
                 else {
-                    if (1){
-                        Entier* res= new Entier(1);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                    Complexe* cplx = ptRationnel->toComplexe();
+                    if (this->getPartEnt()->superieur(*cplx->getPartEnt()) || (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->superieur(*cplx->getPartIm()))){
+                        return true;
                      }
                     else {
-                        Entier* res= new Entier(0);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return false;
                     }
                 }
         }
         else {
-            if (1){
-                Entier* res= new Entier(1);
-                LitteraleNombre& ref = *res;
-                return ref;
+            Complexe* cplx = ptEntier->toComplexe();
+            if (this->getPartEnt()->superieur(*cplx->getPartEnt()) || (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->superieur(*cplx->getPartIm()))){
+                return true;
              }
             else {
-                Entier* res= new Entier(0);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return false;
             }
         }
     }
-    else {/*
-        if (this->valeur > ptComplexe->getPartEnt()){
-            Entier* res= new Entier(1);
-            return *res;
+    else {
+        if (this->getPartEnt()->superieur(*ptComplexe->getPartEnt()) || (this->getPartEnt()->egal(*ptComplexe->getPartEnt()) && this->getPartIm()->superieur(*ptComplexe->getPartIm()))){
+            return true;
          }
         else {
-            Entier* res= new Entier(0);
-            return *res;
-        }*/
+            return false;
+        }
     }
 }
 
 
 //PAS FAIT
-LitteraleNombre& Complexe::inferieur(const LitteraleNombre& lit) const {
+bool Complexe::inferieur(const LitteraleNombre& lit) const {
     const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
     if (ptComplexe == nullptr) {
         const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
@@ -315,58 +305,49 @@ LitteraleNombre& Complexe::inferieur(const LitteraleNombre& lit) const {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
                         else {
-                            if (1){
-                                Entier* res= new Entier(1);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                            Complexe* cplx = ptReel->toComplexe();
+                            if (this->getPartEnt()->inferieur(*cplx->getPartEnt()) || (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->inferieur(*cplx->getPartIm()))){
+                                return true;
                              }
                             else {
-                                Entier* res= new Entier(0);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return false;
                             }
                         }
                 }
                 else {
-                    if (1){
-                        Entier* res= new Entier(1);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                    Complexe* cplx = ptRationnel->toComplexe();
+                    if (this->getPartEnt()->inferieur(*cplx->getPartEnt()) || (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->inferieur(*cplx->getPartIm()))){
+                        return true;
                      }
                     else {
-                        Entier* res= new Entier(0);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return false;
                     }
                 }
         }
         else {
-            if (1){
-                Entier* res= new Entier(1);
-                LitteraleNombre& ref = *res;
-                return ref;
+            Complexe* cplx = ptEntier->toComplexe();
+            if (this->getPartEnt()->inferieur(*cplx->getPartEnt()) || (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->inferieur(*cplx->getPartIm()))){
+                return true;
              }
             else {
-                Entier* res= new Entier(0);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return false;
             }
         }
     }
-    else {/*
-        if (this->valeur > ptComplexe->getPartEnt()){
-            Entier* res= new Entier(1);
-            return *res;
+    else {
+        if (this->getPartEnt()->inferieur(*ptComplexe->getPartEnt()) || (this->getPartEnt()->egal(*ptComplexe->getPartEnt()) && this->getPartIm()->inferieur(*ptComplexe->getPartIm()))){
+            return true;
          }
         else {
-            Entier* res= new Entier(0);
-            return *res;
-        }*/
+            return false;
+        }
     }
 }
 
 
-LitteraleNombre& Complexe::egal(const LitteraleNombre& lit) const {
+// -- On dit qu'un complexe est egal a un autre quand leur parties imagianires ET reelles sont egales -- //
+
+bool Complexe::egal(const LitteraleNombre& lit) const {
     const Complexe* ptComplexe = dynamic_cast<const Complexe*>(&lit);
     if (ptComplexe == nullptr) {
         const Entier* ptEntier = dynamic_cast<const Entier*>(&lit);
@@ -381,56 +362,44 @@ LitteraleNombre& Complexe::egal(const LitteraleNombre& lit) const {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
                         else {
-                            if (1){
-                                Entier* res= new Entier(1);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                            Complexe* cplx = ptReel->toComplexe();
+                            if (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->egal(*cplx->getPartIm())){
+                                return true;
                              }
                             else {
-                                Entier* res= new Entier(0);
-                                LitteraleNombre& ref = *res;
-                                return ref;
+                                return false;
                             }
                         }
                 }
                 else {
-                    if (1){
-                        Entier* res= new Entier(1);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                    Complexe* cplx = ptRationnel->toComplexe();
+                    if (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->egal(*cplx->getPartIm())){
+                        return true;
                      }
                     else {
-                        Entier* res= new Entier(0);
-                        LitteraleNombre& ref = *res;
-                        return ref;
+                        return false;
                     }
                 }
         }
         else {
-            if (1){
-                Entier* res= new Entier(1);
-                LitteraleNombre& ref = *res;
-                return ref;
+            Complexe* cplx = ptEntier->toComplexe();
+            if (this->getPartEnt()->egal(*cplx->getPartEnt()) && this->getPartIm()->egal(*cplx->getPartIm())){
+                return true;
              }
             else {
-                Entier* res= new Entier(0);
-                LitteraleNombre& ref = *res;
-                return ref;
+                return false;
             }
         }
     }
-    else {/*
-        if (this->valeur > ptComplexe->getPartEnt()){
-            Entier* res= new Entier(1);
-            return *res;
+    else {
+        if (this->getPartEnt()->egal(*ptComplexe->getPartEnt()) && this->getPartIm()->egal(*ptComplexe->getPartIm())){
+            return true;
          }
         else {
-            Entier* res= new Entier(0);
-            return *res;
-        }*/
+            return false;
+        }
     }
 }
-
 
 
 
