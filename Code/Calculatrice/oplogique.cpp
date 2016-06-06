@@ -2,28 +2,48 @@
 
 #include "expression.h"
 #include "entier.h"
+#include "eval.h"
+#include <QVector>
 
 void OpLogiqueEgal::execute(QVector<Litterale*> litterals) const {
 
-    LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
-    LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
+    LitteraleNombre* operandeNb1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
+    LitteraleNombre* operandeNb2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 
-    if (operande1!=nullptr && operande2!=nullptr){
+    Expression* operande1Ex = dynamic_cast<Expression*>(litterals[0]);
+    Expression* operande2Ex = dynamic_cast<Expression*>(litterals[1]);
+
+    // -- Si on opère sur des expressions, on les evalue et on opère ensuite sur les nombres renvoyés par l'evaluation -- //
+    Eval objEval;
+    if(operande1Ex != nullptr) {
+        QVector<Litterale*> vec;
+        vec.push_back(litterals[0]);
+        objEval.execute(vec);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb1 = dynamic_cast<LitteraleNombre *>(result);
+    }
+    if(operande2Ex != nullptr) {
+        QVector<Litterale*> vec2;
+        vec2.push_back(litterals[1]);
+        objEval.execute(vec2);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb2 = dynamic_cast<LitteraleNombre *>(result);
+    }
+
+    // -- Nombre et nombre -- //
+    if (operandeNb1!=nullptr && operandeNb2!=nullptr){
         Litterale* res = nullptr;
-        if(operande2->egal(*operande1)) //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme
+        if(operandeNb2->egal(*operandeNb1))
             res = new Entier(1);
         else
             res = new Entier(0);
 
         //On delete le tableau qu'on a récupéré en argument
-        for (unsigned int i = 0; i < Nb_a_depiler; i++) {
-            delete litterals[i];
-        }
+        delete operandeNb1;
+        delete operandeNb2;
+
         //On empile le resultat
         Pile::getInstance().push(res);
-    }
-    else {
-        this->reChargerOperande(litterals);
     }
 }
 
@@ -32,20 +52,41 @@ void OpLogiqueEgal::execute(QVector<Litterale*> litterals) const {
 
 void OpLogiqueInf::execute(QVector<Litterale*> litterals) const {
 
-    LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
-    LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
+    LitteraleNombre* operandeNb1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
+    LitteraleNombre* operandeNb2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 
-    if (operande1!=nullptr && operande2!=nullptr){
+    Expression* operande1Ex = dynamic_cast<Expression*>(litterals[0]);
+    Expression* operande2Ex = dynamic_cast<Expression*>(litterals[1]);
+
+    // -- Si on opère sur des expressions, on les evalue et on opère ensuite sur les nombres renvoyés par l'evaluation -- //
+    Eval objEval;
+    if(operande1Ex != nullptr) {
+        QVector<Litterale*> vec;
+        vec.push_back(litterals[0]);
+        objEval.execute(vec);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb1 = dynamic_cast<LitteraleNombre *>(result);
+    }
+    if(operande2Ex != nullptr) {
+        QVector<Litterale*> vec2;
+        vec2.push_back(litterals[1]);
+        objEval.execute(vec2);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb2 = dynamic_cast<LitteraleNombre *>(result);
+    }
+
+    // -- Nombre Nombre -- //
+    if (operandeNb1!=nullptr && operandeNb2!=nullptr){
         Litterale* res = nullptr;
-        if(operande2->inferieur(*operande1)) //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme
+        if(operandeNb2->inferieur(*operandeNb1)) //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme
             res = new Entier(1);
         else
             res = new Entier(0);
 
         //On delete le tableau qu'on a récupéré en argument
-        for (unsigned int i = 0; i < Nb_a_depiler; i++) {
-            delete litterals[i];
-        }
+        delete operandeNb1;
+        delete operandeNb2;
+
         //On empile le resultat
         Pile::getInstance().push(res);
     }
@@ -58,20 +99,41 @@ void OpLogiqueInf::execute(QVector<Litterale*> litterals) const {
 
 void OpLogiqueSup::execute(QVector<Litterale*> litterals) const {
 
-    LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
-    LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
+    LitteraleNombre* operandeNb1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
+    LitteraleNombre* operandeNb2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 
-    if (operande1!=nullptr && operande2!=nullptr){
+    Expression* operande1Ex = dynamic_cast<Expression*>(litterals[0]);
+    Expression* operande2Ex = dynamic_cast<Expression*>(litterals[1]);
+
+    // -- Si on opère sur des expressions, on les evalue et on opère ensuite sur les nombres renvoyés par l'evaluation -- //
+    Eval objEval;
+    if(operande1Ex != nullptr) {
+        QVector<Litterale*> vec;
+        vec.push_back(litterals[0]);
+        objEval.execute(vec);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb1 = dynamic_cast<LitteraleNombre *>(result);
+    }
+    if(operande2Ex != nullptr) {
+        QVector<Litterale*> vec2;
+        vec2.push_back(litterals[1]);
+        objEval.execute(vec2);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb2 = dynamic_cast<LitteraleNombre *>(result);
+    }
+
+    // -- Nombre nombre -- //
+    if (operandeNb1!=nullptr && operandeNb2!=nullptr){
         Litterale* res = nullptr;
-        if(operande2->superieur(*operande1)) //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme
+        if(operandeNb2->superieur(*operandeNb1)) //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme
             res = new Entier(1);
         else
             res = new Entier(0);
 
         //On delete le tableau qu'on a récupéré en argument
-        for (unsigned int i = 0; i < Nb_a_depiler; i++) {
-            delete litterals[i];
-        }
+        delete operandeNb1;
+        delete operandeNb2;
+
         //On empile le resultat
         Pile::getInstance().push(res);
     }
@@ -84,20 +146,41 @@ void OpLogiqueSup::execute(QVector<Litterale*> litterals) const {
 
 void OpLogiqueInfEgal::execute(QVector<Litterale*> litterals) const {
 
-    LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
-    LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
+    LitteraleNombre* operandeNb1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
+    LitteraleNombre* operandeNb2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 
-    if (operande1!=nullptr && operande2!=nullptr){
+    Expression* operande1Ex = dynamic_cast<Expression*>(litterals[0]);
+    Expression* operande2Ex = dynamic_cast<Expression*>(litterals[1]);
+
+    // -- Si on opère sur des expressions, on les evalue et on opère ensuite sur les nombres renvoyés par l'evaluation -- //
+    Eval objEval;
+    if(operande1Ex != nullptr) {
+        QVector<Litterale*> vec;
+        vec.push_back(litterals[0]);
+        objEval.execute(vec);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb1 = dynamic_cast<LitteraleNombre *>(result);
+    }
+    if(operande2Ex != nullptr) {
+        QVector<Litterale*> vec2;
+        vec2.push_back(litterals[1]);
+        objEval.execute(vec2);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb2 = dynamic_cast<LitteraleNombre *>(result);
+    }
+
+    // -- Nombre nombre -- //
+    if (operandeNb1!=nullptr && operandeNb2!=nullptr){
         Litterale* res = nullptr;
-        if(operande2->inferieur(*operande1) || operande2->egal(*operande1))
+        if(operandeNb2->inferieur(*operandeNb1) || operandeNb2->egal(*operandeNb1))
             res = new Entier(1);
         else
             res = new Entier(0);
 
         //On delete le tableau qu'on a récupéré en argument
-        for (unsigned int i = 0; i < Nb_a_depiler; i++) {
-            delete litterals[i];
-        }
+        delete operandeNb1;
+        delete operandeNb2;
+
         //On empile le resultat
         Pile::getInstance().push(res);
     }
@@ -110,20 +193,41 @@ void OpLogiqueInfEgal::execute(QVector<Litterale*> litterals) const {
 
 void OpLogiqueSupEgal::execute(QVector<Litterale*> litterals) const {
 
-    LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
-    LitteraleNombre* operande2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
+    LitteraleNombre* operandeNb1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
+    LitteraleNombre* operandeNb2 = dynamic_cast<LitteraleNombre *>(litterals[1]);
 
-    if (operande1!=nullptr && operande2!=nullptr){
+    Expression* operande1Ex = dynamic_cast<Expression*>(litterals[0]);
+    Expression* operande2Ex = dynamic_cast<Expression*>(litterals[1]);
+
+    // -- Si on opère sur des expressions, on les evalue et on opère ensuite sur les nombres renvoyés par l'evaluation -- //
+    Eval objEval;
+    if(operande1Ex != nullptr) {
+        QVector<Litterale*> vec;
+        vec.push_back(litterals[0]);
+        objEval.execute(vec);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb1 = dynamic_cast<LitteraleNombre *>(result);
+    }
+    if(operande2Ex != nullptr) {
+        QVector<Litterale*> vec2;
+        vec2.push_back(litterals[1]);
+        objEval.execute(vec2);
+        Litterale* result = Pile::getInstance().pop();
+        operandeNb2 = dynamic_cast<LitteraleNombre *>(result);
+    }
+
+    // -- Nombre nombre -- //
+    if (operandeNb1!=nullptr && operandeNb2!=nullptr){
         Litterale* res = nullptr;
-        if(operande2->superieur(*operande1) || operande2->egal(*operande1))
+        if(operandeNb2->superieur(*operandeNb1) || operandeNb2->egal(*operandeNb1))
             res = new Entier(1);
         else
             res = new Entier(0);
 
         //On delete le tableau qu'on a récupéré en argument
-        for (unsigned int i = 0; i < Nb_a_depiler; i++) {
-            delete litterals[i];
-        }
+        delete operandeNb1;
+        delete operandeNb2;
+
         //On empile le resultat
         Pile::getInstance().push(res);
     }
