@@ -14,6 +14,7 @@
 #include "den.h"
 #include "drop.h"
 #include "eval.h"
+#include "dup.h"
 
 #include "undo.h"
 #include "redo.h"
@@ -80,6 +81,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == "EVAL") {
         return new Eval;
+    }
+    else if(str == "DUP") {
+        return new Dup;
     }
 
     //---------- Operateurs "Speciaux" -----------//
