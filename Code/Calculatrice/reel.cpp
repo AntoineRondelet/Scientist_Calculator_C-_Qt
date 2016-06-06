@@ -144,14 +144,11 @@ LitteraleNombre& Reel::division(const LitteraleNombre& lit) const {
                         }
                         else {
                             //On traite le cas ou on tente la division par zero
-                            if (ptEntier->getValeur() == 0){
-                                CALCULATRICE_EXCEPTION("Erreur: Division par zero");
-                            }
-                            else {
-                                Reel* res= new Reel(value/ptEntier->getValeur());
-                                LitteraleNombre& ref = *res;
-                                return ref;
-                            }
+                            if(ptReel->getValue() == 0)
+                                CALCULATRICE_EXCEPTION("Division par zero");
+                            Reel* res= new Reel(value/ptEntier->getValeur());
+                            LitteraleNombre& ref = *res;
+                            return ref;
                         }
                 }
                 else {
@@ -180,6 +177,8 @@ LitteraleNombre& Reel::division(const LitteraleNombre& lit) const {
         }
     }
     else {
+        if(ptComplexe->getPartEnt() == 0 && ptComplexe->getPartIm() == 0)
+            CALCULATRICE_EXCEPTION("Division par zero");
         Complexe* temp = this->toComplexe();
         LitteraleNombre& res= (*temp) / (*ptComplexe);
         return res;

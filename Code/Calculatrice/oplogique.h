@@ -9,6 +9,12 @@ public:
     void execute(QVector<Litterale*> litterals) const override;
 };
 
+class OpLogiqueDiffEgal:public BinaryOperator{
+public:
+    OpLogiqueDiffEgal(): BinaryOperator(){}
+    void execute(QVector<Litterale*> litterals) const override;
+};
+
 
 class OpLogiqueInf:public BinaryOperator{
 public:

@@ -245,6 +245,8 @@ LitteraleNombre& Rationnel::division(const LitteraleNombre& lit) const {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
                         else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+                            if(ptReel->getValue() == 0)
+                                CALCULATRICE_EXCEPTION("Division par zero");
                             Rationnel* res= new Rationnel(numerateur, denominateur*ptEntier->getValeur());
                             res->simplification();
                             if (res->denominateur== 1) {
@@ -259,6 +261,8 @@ LitteraleNombre& Rationnel::division(const LitteraleNombre& lit) const {
                         }
                 }
                 else {
+                    if(ptReel->getValue() == 0)
+                        CALCULATRICE_EXCEPTION("Division par zero");
                     //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
                     Reel* res= new Reel((static_cast<float>(numerateur)/denominateur)/ptReel->getValue());
                     LitteraleNombre& ref = *res;
@@ -266,6 +270,8 @@ LitteraleNombre& Rationnel::division(const LitteraleNombre& lit) const {
                 }
         }
         else { //cf: enoncé page 4 -> on renvoie un int si apres simplification on a un den = 1
+            if(ptRationnel->getNumerateur() == 0)
+                CALCULATRICE_EXCEPTION("Division par zero");
             Rationnel* res= new Rationnel(numerateur*ptRationnel->denominateur, denominateur*ptRationnel->numerateur);
             res->simplification();
             if (res->denominateur== 1) {
@@ -280,6 +286,8 @@ LitteraleNombre& Rationnel::division(const LitteraleNombre& lit) const {
         }
     }
     else {
+        if(ptComplexe->getPartEnt() == 0 && ptComplexe->getPartIm() == 0)
+            CALCULATRICE_EXCEPTION("Division par zero");
         Complexe* temp = this->toComplexe();
         LitteraleNombre& res= (*temp) * (*ptComplexe);
         return res;

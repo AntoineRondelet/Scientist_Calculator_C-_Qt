@@ -156,12 +156,16 @@ LitteraleNombre& Entier::division(const LitteraleNombre& lit) const {
                             CALCULATRICE_EXCEPTION("ERREUR: Dynamic_cast");
                         }
                         else {
+                            if(ptReel->getValue() == 0)
+                                CALCULATRICE_EXCEPTION("Division par zero");
                             Reel* res= new Reel(valeur/ptReel->getValue());
                             LitteraleNombre& ref = *res;
                             return ref;
                         }
                 }
                 else {
+                    if(ptRationnel->getNumerateur() == 0)
+                        CALCULATRICE_EXCEPTION("Division par zero");
                     //ATTENTION, on oublie pas le static_cast<> pour contourner le probleme de la division de 2 int
                     Rationnel* res= new Rationnel(valeur*ptRationnel->getDenominateur(), ptRationnel->getNumerateur());
                     LitteraleNombre& ref = *res;
@@ -169,6 +173,8 @@ LitteraleNombre& Entier::division(const LitteraleNombre& lit) const {
                 }
         }
         else { //Cf énoncé
+            if(ptEntier->getValeur() == 0)
+                CALCULATRICE_EXCEPTION("Division par zero");
             if (valeur%ptEntier->valeur == 0) {
                 Entier* res= new Entier(valeur/ptEntier->valeur);
                 LitteraleNombre& ref = *res;
@@ -182,6 +188,8 @@ LitteraleNombre& Entier::division(const LitteraleNombre& lit) const {
         }
     }
     else {
+            if(ptComplexe->getPartEnt() == 0 && ptComplexe->getPartIm() == 0)
+                CALCULATRICE_EXCEPTION("Division par zero");
             Complexe* temp = this->toComplexe();
             LitteraleNombre& res= (*temp) / (*ptComplexe);
             return res;

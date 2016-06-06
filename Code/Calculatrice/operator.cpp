@@ -7,7 +7,8 @@
 #include "operateurcomplexe.h"
 #include "oplogique.h"
 #include "ift.h"
-
+#include "sto.h"
+#include "swap.h"
 
 #include "neg.h"
 #include "num.h"
@@ -19,7 +20,7 @@
 #include "undo.h"
 #include "redo.h"
 #include "operateurspecial.h"
-#include "sto.h"
+#include "clear.h"
 
 
 
@@ -61,8 +62,14 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == ">=") {
         return new OpLogiqueSupEgal;
     }
+    else if(str == "!=") {
+        return new OpLogiqueDiffEgal;
+    }
     else if(str == "IFT") {
         return new Ift;
+    }
+    else if(str == "SWAP") {
+        return new Swap;
     }
 
 
@@ -92,6 +99,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == "REDO") {
         return new Redo;
+    }
+    else if(str == "CLEAR") {
+        return new Clear;
     }
 
     //---------- Si on a pas reconnu un operateur ----------- //

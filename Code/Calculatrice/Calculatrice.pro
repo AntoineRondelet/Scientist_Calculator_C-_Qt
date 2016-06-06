@@ -54,7 +54,9 @@ SOURCES += main.cpp\
     eval.cpp \
     oplogique.cpp \
     dup.cpp \
-    ift.cpp
+    ift.cpp \
+    clear.cpp \
+    swap.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -97,7 +99,9 @@ HEADERS  += mainwindow.h \
     eval.h \
     oplogique.h \
     dup.h \
-    ift.h
+    ift.h \
+    clear.h \
+    swap.h
 
 FORMS    += mainwindow.ui
 

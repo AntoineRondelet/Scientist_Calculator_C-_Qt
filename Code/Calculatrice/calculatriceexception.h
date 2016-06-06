@@ -4,6 +4,7 @@
 #include <exception>
 #include <string>
 #include <sstream>
+#include <QString>
 
 #define CALCULATRICE_EXCEPTION(m) throw CalculatriceException(__FILE__, __LINE__, m);
 
@@ -15,6 +16,8 @@ class CalculatriceException : public std::exception
 public:
     CalculatriceException(const char* filename, int line, const std::string& message) noexcept : file(filename), msg(message), lineno(line) {}
     ~CalculatriceException() noexcept {}
+
+    std::string getMsg(){return msg;}
 
     const char* what() const noexcept
     {

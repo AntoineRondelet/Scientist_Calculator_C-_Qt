@@ -16,7 +16,14 @@
 
 void Controleur::commande(QStringList& list_src)
 {
-    bool match = analyser->reconnaitre(list_src);
+    try{
+        bool match = analyser->reconnaitre(list_src);
+        PileCaretaker::getInstance().saveState(&Pile::getInstance());
+    }
+    catch (CalculatriceException& e) {
+        Pile::getInstance().setMessage(QString::fromStdString(e.getMsg()));
+    }
+/*
     if(match == false) {
         //On a pas de litteraleNombre donc on teste si c'est un operateur
         //stack->setMessage("Controleur.cpp: Entrée Inconnue");
@@ -26,7 +33,7 @@ void Controleur::commande(QStringList& list_src)
         // -- La commande s'est executée: On sauvegarde le changement -- //
         // -- On sauvegarde a chaque fois que match == true (on a produit de nouvelles littérales et on a donc modifié la pile) -- //
         PileCaretaker::getInstance().saveState(&Pile::getInstance());
-    }
+    }*/
     /* A FAIRE
     else {
         ICI IL FAUT faire : On recompose une QString a partir de la QStringList splitée -> Et on affiche strEntree sur la QLineEdit (sujet p3)
