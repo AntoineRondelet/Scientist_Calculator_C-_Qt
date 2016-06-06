@@ -5,11 +5,11 @@
 #include "litterale.h"
 
 class Programme: public Litterale {
-    QString textExpr;
+    QString textProg;
 public:
-    Programme(const QString& s): Litterale(), textExpr(s){}
+    Programme(const QString& s): Litterale(), textProg(s){}
 
-    QString toString() const {return textExpr;} //Lors du passage a Qt : il faudra utiliser the "maxLength : int" property de la classe QLineEdit pour permettre a l'affichage des "...'" a la fin des Programmes trop longues
+    QString toString() const {return textProg;} //Lors du passage a Qt : il faudra utiliser the "maxLength : int" property de la classe QLineEdit pour permettre a l'affichage des "...'" a la fin des Programmes trop longues
     Programme* clone() const;
 };
 

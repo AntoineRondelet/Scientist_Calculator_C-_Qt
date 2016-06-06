@@ -141,7 +141,7 @@ QStringList Expression::eval(Litterale* lit) const {
 
 
 
-        // -- Permutation des operateurs secondaire: * et / (On fera ensuite ces opérations) -- //
+        // -- Etape3: Permutation des operateurs secondaire: * et / (On fera ensuite ces opérations) -- //
         for (int i=0; i<testSplit.size(); i++){
             if(i<testSplit.size() && isOperateurSecondaire(testSplit[i])) { //On est sur un "*" ou un "/"
                 int j = i+1;
@@ -165,8 +165,7 @@ QStringList Expression::eval(Litterale* lit) const {
 // --------------------------------------------------------------------------------------------------------------------- //
 
 
-        // -- OPERATEURS + ET - (On fera ces opérations en dernier) -- //
-        // -- Permutation des operateurs ternaires (On fera ces opérations en dernier) -- //
+        // -- Etape4: Permutation des operateurs ternaires (On fera ces opérations en dernier) -- //
         for (int i=0; i<testSplit.size(); i++){
             if(i<testSplit.size() && isOperateurTernaire(testSplit[i])) {
                 int j = i+1;
