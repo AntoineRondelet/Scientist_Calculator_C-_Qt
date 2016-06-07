@@ -9,8 +9,11 @@
 #include "analyser.h"
 
 #include "eval.h"
+#include <QObject>
 
-class Controleur {
+class Controleur: public QObject {
+    Q_OBJECT
+
     friend class Eval;
 
     Analyser* analyser;
@@ -44,6 +47,9 @@ public:
     // -- Singleton -- //
     static Controleur& getInstance();
     static void libererInstance();
+
+signals:
+    void modificationEtat();
 };
 
 //void splitEntry(const string& c); //Fonction qui permet de recuperer chaque "mot" dans la "phrase" saisie par le user

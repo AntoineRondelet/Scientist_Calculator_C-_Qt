@@ -20,6 +20,7 @@ void Controleur::commande(QStringList& list_src)
         bool match = analyser->reconnaitre(list_src);
         if (match == true) // -- On a construit quelque chose: on sauvegarde -- //
             PileCaretaker::getInstance().saveState(&Pile::getInstance());
+        modificationEtat();
     }
     catch (CalculatriceException& e) {
         Pile::getInstance().setMessage(QString::fromStdString(e.getMsg()));
@@ -27,6 +28,8 @@ void Controleur::commande(QStringList& list_src)
     catch (...) {
         Pile::getInstance().setMessage("Sorry something went wrong");
     }
+}
+
 
 /*
     if(match == false) {
@@ -44,8 +47,6 @@ void Controleur::commande(QStringList& list_src)
         ICI IL FAUT faire : On recompose une QString a partir de la QStringList splitée -> Et on affiche strEntree sur la QLineEdit (sujet p3)
         QString strEntree = str.join(" ");
     }*/
-}
-
 
 
 
@@ -62,11 +63,6 @@ void Controleur::boucleExcecution(){
         if (c!="Q") commande(liste_param);
     } while(c!="Q");
 }
-
-
-
-
-
 
 
 

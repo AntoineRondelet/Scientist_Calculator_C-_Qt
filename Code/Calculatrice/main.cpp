@@ -41,12 +41,4 @@ int main(int argc, char *argv[])
     //controle.boucleExcecution();
 
     return a.exec();
-
-
-
-
-
-
-
-    return 0;
 }

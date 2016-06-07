@@ -14,6 +14,7 @@
 #include "calculatriceexception.h"
 #include "pilecaretaker.h"
 #include "identificateurmanager.h"
+#include "operator.h"
 
 #include <iterator>
 #include <QString>
@@ -36,6 +37,7 @@ public:
     ~MainWindow();
     //void show();
     void connections();
+    void init();
 
 private:
     Ui::MainWindow *ui;
@@ -64,6 +66,18 @@ private slots:
 
         //-- Point (.) -- //
         void butDotAppuye();
+
+        //-- Enter -- //
+        void butEnterAppuye();
+
+        // -- Refresh l'affichage de la pile -- //
+        void refresh();
+
+        // -- Manipulation de la pile -- //
+        void butSwapAppuye();
+        void butDropAppuye();
+        void butDupAppuye();
+        void butClearAppuye();
 };
 
 

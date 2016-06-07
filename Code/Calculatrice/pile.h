@@ -4,6 +4,7 @@
 #include <QProcess>
 #include <QStack>
 #include <QString>
+#include <QObject>
 
 #include "litterale.h"
 
@@ -12,6 +13,8 @@
 // ----  DESIGN PATTERN SINGLETON ---- //
 
 class Pile: public QStack<Litterale*> {
+
+
     friend class PileCaretaker;
 
     //Debut singleton
@@ -94,7 +97,6 @@ public:
 
 
     Pile* clone() const;
-
 };
 
 

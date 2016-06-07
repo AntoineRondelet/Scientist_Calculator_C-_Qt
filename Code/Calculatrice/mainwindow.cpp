@@ -7,14 +7,27 @@
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QHeaderView>
+#include <QString>
+#include <QStringList>
+#include <QKeyEvent>
+
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    // ----------- debut init ------------ //
+    // -- On initialise l'apparence de la fenetre principale -- //
+    init();
+    // on établit les connections entre les boutons
+    connections();
+}
 
+
+MainWindow::~MainWindow(){delete ui;}
+
+
+void MainWindow::init() {
     // -- On met le fond de la QLineEdit du message en noir -- //
     ui->lineEditMessage->setStyleSheet("background: black; color: white");
 
@@ -22,9 +35,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->lineEditMessage->setReadOnly(true);
 
 
-    //on precise le nombre de lignes et le nombre de colonnes (ici 1) qu'on veut afficher
-    //QTableWidget --> c'est juste une coquille --> on a des rangées pour mettre ce que l'on veut, MAIS, on va devoir allouer
-    //dynamiquement ce qu'on va mettre dedans --> ATTENTION
+    // -- On precise le nombre de lignes et le nombre de colonnes (ici 1) qu'on veut afficher -- //
+    // -- QTableWidget: c'est juste une coquille. On a des rangées pour mettre ce que l'on veut -- //
+    // -- MAIS, on va devoir allouer dynamiquement ce qu'on va mettre dedans: ATTENTION -- //
     ui->tableWidgetPile->setRowCount(Pile::getInstance().getNbAffiche());
     ui->tableWidgetPile->setColumnCount(1);
 
@@ -56,24 +69,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tableWidgetPile->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     this->setWindowTitle("CALCULATRICE LO21"); //Donner un titre a sa fenetre
-
-    //connect(commande, SIGNAL(returnPressed()),this, SLOT(getNextCommande()));
-    //On declenche un signal quand on fait un "enter" --> signal envoyé
-    //On a pas besoin de mettre QObject:: devant connect, car ici, on est dans un widget qui herite de QObject donc pas besoin ici
-    //on affiche en message ce que rentre l'utilisateur au moment ou il fait un enter
-
-    //connect(pile, SIGNAL(modificationEtat()), this, SLOT(refresh()));
-    // ------------- fin init ------------ //
-
-
-
-    // on établit les connections entre les boutons
-    connections();
 }
-
-
-MainWindow::~MainWindow(){delete ui;}
-
 
 
 // connection
@@ -93,10 +89,9 @@ void MainWindow::connections() {
     // -- Operateur complexe -- //
     connect(ui->pButCplx, SIGNAL(clicked()), this, SLOT(butOpCplxAppuye()));
 
-    /*
     // -- Espace -- //
-    connect(ui->butdollar, SIGNAL(clicked()), this, SLOT(butDollarAppuye()));
-    */
+    //connect(ui->butdollar, SIGNAL(clicked()), this, SLOT(butDollarAppuye()));
+
 
     // -- Point -- //
     connect(ui->pButDot, SIGNAL(clicked()), this, SLOT(butDotAppuye()));
@@ -106,48 +101,37 @@ void MainWindow::connections() {
     connect(ui->pButSous, SIGNAL(clicked()), this, SLOT(butSousAppuye()));
     connect(ui->pButMult, SIGNAL(clicked()), this, SLOT(butMultAppuye()));
     connect(ui->pButDiv, SIGNAL(clicked()), this, SLOT(butDivAppuye()));
+
+    // -- Connection si l'utilisateur appuie sur la touche enter -- //
+    connect(ui->pButEnter, SIGNAL(clicked()), this, SLOT(butEnterAppuye()));
+    // -- Connection si l'utilisateur appuie sur la touche enter du clavier ! -- //
+    //connect(ui->actionKeyboard, SIGNAL(clicked()), this, SLOT(keyPressEvent()));
+
+    // -- Connection entre le Controleur et la fenetre pour refresh la pile quand on fait une modif -- //
+    connect(&Controleur::getInstance(), SIGNAL(modificationEtat()), this, SLOT(refresh()));
+
+    // -- Manipulation de la pile -- //
+    connect(ui->pButSwap, SIGNAL(clicked()), this, SLOT(butSwapAppuye()));
+    connect(ui->pButClear, SIGNAL(clicked()), this, SLOT(butClearAppuye()));
+    connect(ui->pButDrop, SIGNAL(clicked()), this, SLOT(butDropAppuye()));
+    connect(ui->pButDup, SIGNAL(clicked()), this, SLOT(butDupAppuye()));
 }
 
 
-/* LES SLOTS */
-// 0->9
-void MainWindow::but0Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"0");
-}
+// ------------- LES SLOTS -------------- //
 
-void MainWindow::but1Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"1");
-}
 
-void MainWindow::but2Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"2");
-}
-
-void MainWindow::but3Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"3");
-}
-
-void MainWindow::but4Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"4");
-}
-
-void MainWindow::but5Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"5");
-}
-
-void MainWindow::but6Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"6");
-}
-
-void MainWindow::but7Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"7");
-}
-void MainWindow::but8Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"8");
-}
-void MainWindow::but9Appuye() {
-    ui->lineEditCommande->setText(ui->lineEditCommande->text()+"9");
-}
+// --  Chiffres [0-9] -- //
+void MainWindow::but0Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"0");}
+void MainWindow::but1Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"1");}
+void MainWindow::but2Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"2");}
+void MainWindow::but3Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"3");}
+void MainWindow::but4Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"4");}
+void MainWindow::but5Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"5");}
+void MainWindow::but6Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"6");}
+void MainWindow::but7Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"7");}
+void MainWindow::but8Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"8");}
+void MainWindow::but9Appuye() {ui->lineEditCommande->setText(ui->lineEditCommande->text()+"9");}
 
 
 // -- Operateur complexe -- //
@@ -162,27 +146,69 @@ void MainWindow::butDotAppuye(){ ui->lineEditCommande->setText(ui->lineEditComma
 
 
 // -- Opérations de base -- //
-
-void MainWindow::butAddAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" +"); }
-void MainWindow::butSousAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" -"); }
-void MainWindow::butMultAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" *"); }
+void MainWindow::butAddAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"+"); }
+void MainWindow::butSousAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"-"); }
+void MainWindow::butMultAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"*"); }
 void MainWindow::butDivAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"/"); }
 
+
+// -- Manipulation de la pile -- //
+void MainWindow::butSwapAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" SWAP");}
+void MainWindow::butDropAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" DROP");}
+void MainWindow::butDupAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" DUP");}
+void MainWindow::butClearAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" CLEAR");}
+
+
+// -- Lorsque l'on appuie sur le bouton Enter -- //
+void MainWindow::butEnterAppuye() {
+    Pile::getInstance().setMessage("");
+    // -- Interpreter l'entrée de l'utilisateur -- //
+    QString str_in = ui->lineEditCommande->text();
+    // -- Extraction de chaque element de la ligne on suppose que le séparateur est l'espace -- //
+    QStringList liste_param = str_in.split(QRegularExpression("[[:space:]]+"));
+    if (str_in!="Q") Controleur::getInstance().commande(liste_param);
+
+    // -- On remet le message de la QListEdit de message a zero -- //
+    ui->lineEditCommande->clear();
+}
+
+
+// -- Permet d'actualiser la pile quand on fait des changements -- //
+void MainWindow::refresh() {
+    ui->lineEditMessage->setText(Pile::getInstance().getMessage());
+    for(unsigned int i=0; i<Pile::getInstance().getNbAffiche(); i++)
+    {
+        // -- Pour remettre a zero les donnees de ma pile -- //
+        ui->tableWidgetPile->item(i,0)->setText("");
+    }
+    // -- Affichage -- //
+    unsigned int nb=0;
+    for(Pile::iterator it=Pile::getInstance().begin(); it!=Pile::getInstance().end() && nb<Pile::getInstance().getNbAffiche(); ++it) {
+            ui->tableWidgetPile->item(Pile::getInstance().getNbAffiche()-nb-1,0)->setText((*it)->toString());
+            nb++;
+    }
+}
+
+/*
+void MainWindow::keyPressEvent(QKeyEvent *ev){
+    if (ev->key() == Qt::Key_Enter){
+        butEnterAppuye();
+    }
+    else{
+        QMainWindow::keyPressEvent(ev);
+    }
+}
+*/
+
+/* Pour fair ele ctrl-z et le undo etc
+QShortcut* shortcut = new QShortcut(QKeySequence("Ctrl+W"), this);
+QObject::connect(shortcut, SIGNAL(activated()), tonObject, SLOT(tonSlot()));
+*/
 
 
 
 
 /*
-
-
-// virgule
-connect(ui->butpoint, SIGNAL(clicked()), this, SLOT(butPointAppuye()));
-
-// opérations
-connect(ui->butaddition, SIGNAL(clicked()), this, SLOT(butAdditionAppuye()));
-connect(ui->butsoustraction, SIGNAL(clicked()), this, SLOT(butSoustractionAppuye()));
-connect(ui->butmultiplication, SIGNAL(clicked()), this, SLOT(butMultiplicationAppuye()));
-connect(ui->butdivision, SIGNAL(clicked()), this, SLOT(butDivisionAppuye()));
 
 // enter et eval
 connect(ui->butenter, SIGNAL(clicked()), this, SLOT(butEnterAppuye()));
@@ -201,14 +227,5 @@ connect(ui->butBackspace, SIGNAL(clicked()), this, SLOT(butBackspace()));
 // Edition : actions Undo et Redo
 connect(ui->actionAnnuler, SIGNAL(triggered()), this, SLOT(annulerEtatPile()));
 connect(ui->actionRetablir, SIGNAL(triggered()), this, SLOT(retablirEtatPile()));
-
-// pile
-connect(ui->butswap, SIGNAL(clicked()), this, SLOT(butSwapAppuye()));
-connect(ui->butsum, SIGNAL(clicked()), this, SLOT(butSumAppuye()));
-connect(ui->butmean, SIGNAL(clicked()), this, SLOT(butMeanAppuye()));
-connect(ui->butclear, SIGNAL(clicked()), this, SLOT(butClearAppuye()));
-connect(ui->butdrop, SIGNAL(clicked()), this, SLOT(butDropAppuye()));
-connect(ui->butdup, SIGNAL(clicked()), this, SLOT(butDupAppuye()));
-connect(ui->butCote, SIGNAL(clicked()), this, SLOT(butCote()));
 */
 
