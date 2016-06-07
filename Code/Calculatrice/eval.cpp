@@ -20,7 +20,7 @@ void Eval::execute(QVector<Litterale*> litterals) const {
         bool rep = cont.analyser->reconnaitre(expAnalyse);
         if(rep == false) {
             this->reChargerOperande(litterals);
-            Pile::getInstance().setMessage("ERREUR: Evaluation de l'expression");
+            CALCULATRICE_EXCEPTION("ERREUR: Evaluation de l'expression");
         }
         else {
             delete litterals[0];
@@ -32,8 +32,9 @@ void Eval::execute(QVector<Litterale*> litterals) const {
         bool rep = cont.analyser->reconnaitre(progAnalyse);
         if(rep == false) {
             this->reChargerOperande(litterals);
+            CALCULATRICE_EXCEPTION("ERREUR: Evaluation du programme");
             //progAnalyse.join("-")
-            Pile::getInstance().setMessage(progAnalyse.join("-"));
+            //Pile::getInstance().setMessage(progAnalyse.join("-"));
             //Pile::getInstance().setMessage("ERREUR: Evaluation du programme");
         }
         else {

@@ -25,7 +25,7 @@ QVector<Litterale*> BinaryOperator::chargerOperande() const{
 
 void BinaryOperator::reChargerOperande(QVector<Litterale*> litterals) const {
     Pile& ptr_stack = Pile::getInstance();
-    ptr_stack.setMessage("Operandes du mauvais type");
     while (!litterals.isEmpty())
         ptr_stack.push(litterals.takeLast());
+    CALCULATRICE_EXCEPTION("Operandes du mauvais type");
 }

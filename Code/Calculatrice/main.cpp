@@ -33,18 +33,10 @@ int main(int argc, char *argv[])
     */
 
 
-   try {
         //Pile& stack = Pile::getInstance();
         Controleur& controle = Controleur::getInstance();
         controle.boucleExcecution();
 
-    }
-    catch (CalculatriceException &e) {
-        cout << e.what();
-    }
-    catch (...) {
-        cout << "On a catch" << endl;
-    }
 
 /*
     IdentificateurManager& id_man = IdentificateurManager::getInstance();

@@ -18,6 +18,6 @@ QStringList Programme::eval(Litterale* lit) const {
         return str_lis_op;
     }
     else {
-        CALCULATRICE_EXCEPTION("PROBLEME DANS L'EVALUATION DE LA LITTERALE");
+        CALCULATRICE_EXCEPTION("PROBLEME DANS L'EVALUATION DE LA LITTERALE programme");
     }
 }

@@ -18,11 +18,16 @@ void Controleur::commande(QStringList& list_src)
 {
     try{
         bool match = analyser->reconnaitre(list_src);
-        PileCaretaker::getInstance().saveState(&Pile::getInstance());
+        if (match == true) // -- On a construit quelque chose: on sauvegarde -- //
+            PileCaretaker::getInstance().saveState(&Pile::getInstance());
     }
     catch (CalculatriceException& e) {
         Pile::getInstance().setMessage(QString::fromStdString(e.getMsg()));
     }
+    catch (...) {
+        Pile::getInstance().setMessage("Sorry something went wrong");
+    }
+
 /*
     if(match == false) {
         //On a pas de litteraleNombre donc on teste si c'est un operateur

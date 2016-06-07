@@ -21,8 +21,8 @@ void Den::execute(QVector<Litterale*> litterals) const {
         delete litterals[0];
     }
     else {
-        stack.setMessage("Erreur: Operande du mauvais type");
         //On réeimpile la littérale
         this->reChargerOperande(litterals);
+        CALCULATRICE_EXCEPTION("Erreur: Operande du mauvais type");
     }
 }

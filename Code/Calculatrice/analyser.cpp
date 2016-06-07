@@ -74,8 +74,7 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
         }
         else {
             // -- On a une erreur car on a detecté un atome mais on a pas pu le construire -- //
-            //CALCULATRICE_EXCEPTION("Erreur de construction de l'atome");
-            Pile::getInstance().setMessage("Probleme de création de l'atome");
+            CALCULATRICE_EXCEPTION("Erreur de construction de l'atome");
         }
         return ptAtome;
     }
@@ -215,8 +214,9 @@ bool Analyser::reconnaitre(QStringList& src) {
             }
             //On sort du while car src.empty() == true mais le (') de fin n'a pas été trouvé
             if (mot.right(1) != "'") {
+                //CALCULATRICE_EXCEPTION("Attention, caractere de fin d'expression manquant: (') ");
+                // -- On ne leve PAS d'exception ici car on veut informer le controleur qu'on a rien construit ! (pour faire une sauvegarde ou pas) -- //
                 Pile::getInstance().setMessage("Attention, caractere de fin d'expression manquant: (') ");
-                //On ne construit rien, on sort
                 return false;
             }
         }
@@ -234,6 +234,8 @@ bool Analyser::reconnaitre(QStringList& src) {
             }
             //On est sorti du while car src.empty() == true. Mais il manque des crochets
             if(counterCrochet != 0) {
+                //CALCULATRICE_EXCEPTION("Attention, crochet(s) manquant(s) : ']' ");
+                // -- On ne leve PAS d'exception ici car on veut informer le controleur qu'on a rien construit ! (pour faire une sauvegarde ou pas) -- //
                 Pile::getInstance().setMessage("Attention, crochet(s) manquant(s) : ']' ");
                 return false;
             }

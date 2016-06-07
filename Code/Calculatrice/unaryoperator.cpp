@@ -19,9 +19,9 @@ QVector<Litterale*> UnaryOperator::chargerOperande() const{
 
 void UnaryOperator::reChargerOperande(QVector<Litterale*> litterals) const {
     Pile& ptr_stack = Pile::getInstance();
-    ptr_stack.setMessage("Operande du mauvais type");
     while (!litterals.isEmpty())
         ptr_stack.push(litterals.takeLast());
+    CALCULATRICE_EXCEPTION("Operandes du mauvais type");
 }
 
 

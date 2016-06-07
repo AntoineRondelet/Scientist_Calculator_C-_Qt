@@ -16,9 +16,9 @@ void Num::execute(QVector<Litterale*> litterals) const {
     }
     else {
         if (!operandeEntier)
-            stack.setMessage("Erreur: Operande du mauvais type");
-        //On réeimpile la littérale
-        this->reChargerOperande(litterals);
+            //On réeimpile la littérale
+            this->reChargerOperande(litterals);
+            CALCULATRICE_EXCEPTION("Erreur: Operande du mauvais type");
     }
 }
 
