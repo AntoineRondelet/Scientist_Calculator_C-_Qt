@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
+
 #include "pile.h"
 #include "litterale.h"
 #include "reel.h"
@@ -24,19 +25,10 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    /*
+
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-
-    return a.exec();
-    */
-
-
-        //Pile& stack = Pile::getInstance();
-        Controleur& controle = Controleur::getInstance();
-        controle.boucleExcecution();
-
 
 /*
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
@@ -44,6 +36,17 @@ int main(int argc, char *argv[])
 
     cout << " ----> Res : " << res.toStdString() << endl;
 */
+    //Pile& stack = Pile::getInstance();
+    //Controleur& controle = Controleur::getInstance();
+    //controle.boucleExcecution();
+
+    return a.exec();
+
+
+
+
+
+
 
     return 0;
 }
