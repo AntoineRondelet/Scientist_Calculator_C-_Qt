@@ -9,6 +9,8 @@
 #include "ift.h"
 #include "sto.h"
 #include "swap.h"
+#include "and.h"
+#include "or.h"
 
 #include "neg.h"
 #include "num.h"
@@ -16,6 +18,7 @@
 #include "drop.h"
 #include "eval.h"
 #include "dup.h"
+#include "not.h"
 
 #include "undo.h"
 #include "redo.h"
@@ -71,6 +74,13 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "SWAP") {
         return new Swap;
     }
+    else if(str == "AND") {
+        return new And;
+    }
+    else if(str == "OR") {
+        return new Or;
+    }
+
 
 
     //---------- Operateurs Unaires ----------- //
@@ -91,6 +101,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == "DUP") {
         return new Dup;
+    }
+    else if(str == "NOT") {
+        return new Not;
     }
 
     //---------- Operateurs "Speciaux" -----------//

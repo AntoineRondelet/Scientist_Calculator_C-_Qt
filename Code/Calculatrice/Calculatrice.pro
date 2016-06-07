@@ -56,7 +56,10 @@ SOURCES += main.cpp\
     dup.cpp \
     ift.cpp \
     clear.cpp \
-    swap.cpp
+    swap.cpp \
+    and.cpp \
+    or.cpp \
+    not.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -101,7 +104,10 @@ HEADERS  += mainwindow.h \
     dup.h \
     ift.h \
     clear.h \
-    swap.h
+    swap.h \
+    and.h \
+    or.h \
+    not.h
 
 FORMS    += mainwindow.ui
 
