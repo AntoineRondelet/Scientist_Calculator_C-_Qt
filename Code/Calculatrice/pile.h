@@ -39,6 +39,8 @@ public:
     QString getMessage() const {return message;}
     void setMessage(const QString& m) {message=m;}
 
+    unsigned int getNbAffiche() const {return nbAffiche;}
+
     // -- Singleton -- //
     static Pile& getInstance();
     static void libererInstance();
