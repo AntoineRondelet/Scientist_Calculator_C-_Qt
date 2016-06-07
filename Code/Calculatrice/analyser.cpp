@@ -5,6 +5,8 @@
 #include "operator.h"
 #include "undo.h"
 #include "redo.h"
+#include "eval.h"
+#include "programme.h"
 #include "operateurspecial.h"
 #include "identificateurmanager.h"
 
