@@ -33,6 +33,15 @@ void IdentificateurManager::ajouterIdentificateur(const QString lit_name, Litter
 }
 
 
+void IdentificateurManager::forgetIdentificateur(const QString lit_name) {
+    // -- Utiliser insert() permet, si l'identifiant correspond deja a une variable, de l'écraser -- //
+    if (m_names.contains(lit_name)) {
+        Litterale* lit_name_suppr = m_names.take(lit_name);
+        delete lit_name_suppr;
+    }
+}
+
+
 
 void IdentificateurManager::init() {
     m_ops.insert("+", "LOW");

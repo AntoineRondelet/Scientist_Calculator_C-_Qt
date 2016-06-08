@@ -43,13 +43,9 @@ public:
     }
 
     void ajouterIdentificateur(const QString lit_name, Litterale* lit);
+    void forgetIdentificateur(const QString lit_name);
 
     void init();
-
-    /*void supprimerIdentificateur(Litterale* lit) {
-        Litterale* lit_name_suppr = m_names.take(lit_name);
-        delete lit_name_suppr;
-    }*/
 
     // -- On choisit de ne pas faire de methode d'ajout d'operateur car les operateurs sont buit-in. Donc a priori, seul un programmeur pourra en ajouter, et pas l'utilisateur (il pourra cependant faire des programmes !) -- //
 

@@ -6,23 +6,26 @@
 #include "identificateurmanager.h"
 
 
-/*
 void Forget::execute(QVector<Litterale*> litterals) const {
-    Litterale* operande = dynamic_cast<Litterale*>(litterals[0]);
 
-    if (operande!=nullptr){
-        IdentificateurManager& id_man = IdentificateurManager::getInstance();
-        id_man.supprimerIdentificateur(operande);
+    QRegularExpression atome("^[A-Z]([A-Z0-9]*)$");
 
-        // -- On delete le tableau qu'on a récupéré en argument -- //
-        for (unsigned int i = 0; i < Nb_a_depiler; i++) {
-            delete litterals[i];
+    Expression* operande1 = dynamic_cast<Expression*>(litterals[0]);
+    if(operande1 != nullptr) {
+        QString stringAMatcher = operande1->toString();
+        stringAMatcher.remove("'");
+        QRegularExpressionMatch str_match = atome.match(stringAMatcher);
+
+        if(str_match.hasMatch()) {
+            IdentificateurManager& id_man = IdentificateurManager::getInstance();
+            id_man.forgetIdentificateur(stringAMatcher);
         }
-        //On empile le resultat: Pas de resultat à empiler ici
-        //Pile::getInstance().push(&res);
+        else {
+            CALCULATRICE_EXCEPTION("L'expression ne doit comporter qu'un atome !")
+        }
     }
     else {
+        // -- Sinon, opérande du mauvais type: On réempile -- //
         this->reChargerOperande(litterals);
     }
 }
-*/

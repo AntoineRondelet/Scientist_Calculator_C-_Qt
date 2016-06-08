@@ -85,30 +85,10 @@
         </property>
        </widget>
       </item>
-      <item row="15" column="6">
-       <widget class="QPushButton" name="pButDelete">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string>DELETE</string>
-        </property>
-       </widget>
-      </item>
       <item row="13" column="4">
        <widget class="QPushButton" name="pushButton_8">
         <property name="text">
          <string>RE</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="6">
-       <widget class="QPushButton" name="pButSto">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string>STO</string>
         </property>
        </widget>
       </item>
@@ -536,16 +516,6 @@
         </property>
        </widget>
       </item>
-      <item row="16" column="5">
-       <widget class="QPushButton" name="pButEdit">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string>EDIT</string>
-        </property>
-       </widget>
-      </item>
       <item row="16" column="0">
        <widget class="QLabel" name="label_4">
         <property name="font">
@@ -594,6 +564,52 @@
         </property>
        </widget>
       </item>
+      <item row="16" column="5">
+       <widget class="QPushButton" name="pButDelete">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>DELETE</string>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="6">
+       <widget class="QPushButton" name="pButSto">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>STO</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="6">
+       <widget class="QPushButton" name="pButEdit">
+        <property name="text">
+         <string>EDIT</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="6">
+       <widget class="QPushButton" name="pButForget">
+        <property name="text">
+         <string>FORGET</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QLabel" name="label_6">
+        <property name="font">
+         <font>
+          <family>Marker Felt</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>Autres</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -610,8 +626,8 @@
    <zorder>lineEditMessage</zorder>
    <zorder>lineEditCommande</zorder>
    <zorder>tableWidgetPile</zorder>
-   <zorder>pButEnter</zorder>
    <zorder></zorder>
+   <zorder>pButEnter</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -626,6 +642,7 @@
     <property name="title">
      <string>Calculator</string>
     </property>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">

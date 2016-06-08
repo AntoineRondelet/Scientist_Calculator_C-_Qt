@@ -11,6 +11,9 @@
 #include <QStringList>
 #include <QKeyEvent>
 
+#include <QMessageBox>
+#include "dialogedit.h"
+
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -297,6 +300,12 @@ void MainWindow::on_pButSto_clicked(){
     Controleur::getInstance().commande(str_list);
 }
 
+void MainWindow::on_pButForget_clicked(){
+    QStringList str_list;
+    str_list.push_back("FORGET");
+    Controleur::getInstance().commande(str_list);
+}
+
 void MainWindow::on_pButEval_clicked(){
     QStringList str_list;
     str_list.push_back("EVAL");
@@ -350,3 +359,14 @@ void MainWindow::on_pButEgal_clicked(){
     str_list.push_back("=");
     Controleur::getInstance().commande(str_list);
 }
+
+
+// -- Operateur EDIT -- //
+
+
+void MainWindow::on_pButEdit_clicked(){
+    DialogEdit edit;
+    edit.setModal(true);
+    edit.exec();
+}
+

@@ -59,7 +59,8 @@ SOURCES += main.cpp\
     swap.cpp \
     and.cpp \
     or.cpp \
-    not.cpp
+    not.cpp \
+    dialogedit.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -107,8 +108,10 @@ HEADERS  += mainwindow.h \
     swap.h \
     and.h \
     or.h \
-    not.h
+    not.h \
+    dialogedit.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dialogedit.ui
 
 

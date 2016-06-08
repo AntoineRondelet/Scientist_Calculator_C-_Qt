@@ -19,6 +19,7 @@
 #include "eval.h"
 #include "dup.h"
 #include "not.h"
+#include "forget.h"
 
 #include "undo.h"
 #include "redo.h"
@@ -104,6 +105,9 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == "NOT") {
         return new Not;
+    }
+    else if(str == "FORGET") {
+        return new Forget;
     }
 
     //---------- Operateurs "Speciaux" -----------//

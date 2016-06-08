@@ -63,7 +63,7 @@ Litterale& Expression::division(const Litterale& lit) const {
 //---------------- TEST -----------------//
 
 bool isOperateurPrioritaire(const QString& str) {
-    if (str == "NEG")
+    if (str == "NEG" || str == "SIN" || str == "COS" || str == "TAN")
         return true;
     else
         return false;

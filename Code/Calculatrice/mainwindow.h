@@ -80,10 +80,15 @@ private slots:
         void on_pButClear_clicked();
         void on_pButUndo_clicked();
         void on_pButRedo_clicked();
+
         void on_pButNeg_clicked();
         void on_pButIft_clicked();
+
         void on_pButSto_clicked();
+        void on_pButForget_clicked();
+
         void on_pButEval_clicked();
+
         void on_pButDen_clicked();
         void on_pButNum_clicked();
 
@@ -101,6 +106,10 @@ private slots:
         void butQuoteAppuye();
         void butDeleteAppuye();
         void butSpaceAppuye();
+
+        // -- Operateur EDIT -- //
+        void on_pButEdit_clicked();
+
 };
 
 

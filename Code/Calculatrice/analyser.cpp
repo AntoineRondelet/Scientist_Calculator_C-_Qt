@@ -57,7 +57,6 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
     const QString str_ops = id_man.strOperateurs();
     QRegularExpression regexOperateur("NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET");
-    //"^(NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET)"
     QRegularExpressionMatch str_match_op = regexOperateur.match(matched);
 
     if(str_match_op.hasMatch()) {
