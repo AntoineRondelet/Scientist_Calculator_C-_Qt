@@ -10,6 +10,7 @@
 #include <QString>
 #include <QStringList>
 #include <QKeyEvent>
+#include <QShortcut>
 
 #include <QMessageBox>
 #include "dialogedit.h"
@@ -22,9 +23,6 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //stack = new StackDialog(this);
-    //stack = new QStackedWidget(this);
-    //StackDialog* stack = new StackDialog(this,5);
 
     // -- On initialise l'apparence de la fenetre principale -- //
     init();
@@ -132,18 +130,19 @@ void MainWindow::connections() {
     // -- Efface le dernier caractere entré dans la QLineEdit -- //
     connect(ui->pButDelete, SIGNAL(clicked()), this, SLOT(butDeleteAppuye()));
 
-    // Mode scientifique
+    // -- Mode scientifique -- //
     connect(ui->checkBoxS, SIGNAL(clicked(bool)), this, SLOT(checkModeScientist(bool)));
-}
 
 
-/*
-void MainWindow::show()
-{
-    stack->show();
-    QWidget::show();
+    // -- Pour associer le ctrl-z au undo -- //
+    QShortcut* shortcutUndo = new QShortcut(QKeySequence("Ctrl+Z"), this);
+    connect(shortcutUndo, SIGNAL(activated()), this, SLOT(on_pButUndo_clicked()));
+
+    // -- Pour associer le ctrl-y au redo -- //
+    QShortcut* shortcutRedo = new QShortcut(QKeySequence("Ctrl+Y"), this);
+    connect(shortcutRedo, SIGNAL(activated()), this, SLOT(on_pButRedo_clicked()));
 }
-*/
+
 
 
 // ------------- LES SLOTS -------------- //
@@ -206,7 +205,7 @@ void MainWindow::butEnterAppuye() {
     ui->lineEditCommande->clear();
 }
 
-//-- J'AI MODIFIE REFRESH j'ai viré les tableWidgetPile
+
 
 // -- Permet d'actualiser la pile quand on fait des changements -- //
 void MainWindow::refresh() {
@@ -472,4 +471,15 @@ void MainWindow::on_spinBoxDimPile_valueChanged(int arg1){
     this->init(arg1);
     Pile::getInstance().setNbAffiche(arg1);
     refresh();
+}
+
+void MainWindow::on_checkBoxSounds_clicked(){
+    if (ui->checkBoxSounds->isChecked())
+        Controleur::getInstance().setSounds(true);
+    else
+        Controleur::getInstance().setSounds(false);
+}
+
+void MainWindow::on_spinBoxSaves_valueChanged(int arg1){
+    PileCaretaker::getInstance().setNbEtatsSave(arg1);
 }

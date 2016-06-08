@@ -55,7 +55,7 @@ void PileCaretaker::restoreDownState(Pile* orig) {
     // -- liste de piles de sauvegardes est vide -- //
     else {
         //orig->setMessage("Vous etes sur la derniere sauvegarde: UNDO impossible");
-        CALCULATRICE_EXCEPTION("Sauvegardes: Impossible de revenir en arrière (undo) car liste piles vide !");
+        CALCULATRICE_EXCEPTION("Sauvegardes: Impossible de revenir en arrière UNDO");
     }
 }
 
@@ -72,6 +72,6 @@ void PileCaretaker::restoreUpState(Pile* orig) {
     // -- liste de piles de sauvegardes est vide -- //
     else {
         //orig->setMessage("Vous etes sur la sauvegarde la plus récente: REDO impossible");
-        CALCULATRICE_EXCEPTION("Sauvegardes: Impossible de revenir en arrière (undo) car liste piles vide !");
+        CALCULATRICE_EXCEPTION("Sauvegardes: Impossible de revenir en avant REDO");
     }
 }

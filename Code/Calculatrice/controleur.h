@@ -17,6 +17,7 @@ class Controleur: public QObject {
     friend class Eval;
 
     Analyser* analyser;
+    bool sounds;
 
     //Debut singleton
     Controleur(const Controleur& p);
@@ -34,7 +35,7 @@ class Controleur: public QObject {
     //Fin singleton
 
 public:
-    Controleur(): analyser(new Analyser()){
+    Controleur(): analyser(new Analyser()), sounds(true){
         //On initialise la map qui contient nos regex et nos fonctions de construction
         analyser->init();
     }
@@ -42,6 +43,7 @@ public:
     void boucleExcecution();
     void commande(QStringList& list_src);
 
+    void setSounds(bool settings){sounds=settings;}
 
 
     // -- Singleton -- //

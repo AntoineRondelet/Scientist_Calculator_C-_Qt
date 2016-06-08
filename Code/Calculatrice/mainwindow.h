@@ -119,6 +119,8 @@ private slots:
 
         void checkModeScientist(bool);
         void on_spinBoxDimPile_valueChanged(int arg1);
+        void on_checkBoxSounds_clicked();
+        void on_spinBoxSaves_valueChanged(int arg1);
 };
 
 
