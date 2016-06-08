@@ -39,9 +39,6 @@
           <item>
            <widget class="QTableWidget" name="tableWidgetPile"/>
           </item>
-          <item>
-           <widget class="QSpinBox" name="spinBox_2"/>
-          </item>
          </layout>
         </item>
         <item>
@@ -419,13 +416,6 @@
             </property>
            </widget>
           </item>
-          <item row="13" column="3">
-           <widget class="QCheckBox" name="checkBoxS">
-            <property name="text">
-             <string>Scientist Mode</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item>
@@ -441,107 +431,108 @@
        <attribute name="title">
         <string>Reglages</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="geometry">
-         <rect>
-          <x>560</x>
-          <y>520</y>
-          <width>113</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Appliquer</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="geometry">
-         <rect>
-          <x>560</x>
-          <y>450</y>
-          <width>113</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>text</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>30</y>
-          <width>59</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Sons</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>100</y>
-          <width>141</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Gestion des variables</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox">
-        <property name="geometry">
-         <rect>
-          <x>220</x>
-          <y>30</y>
-          <width>86</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Activé</string>
-        </property>
-       </widget>
-       <widget class="QScrollArea" name="scrollArea">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>100</y>
-          <width>381</width>
-          <height>131</height>
-         </rect>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>379</width>
-           <height>129</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QPushButton" name="pushButton">
-        <property name="geometry">
-         <rect>
-          <x>420</x>
-          <y>520</y>
-          <width>113</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Cancel</string>
-        </property>
-       </widget>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="1" column="3">
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>498</width>
+             <height>411</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Cancel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QCheckBox" name="checkBoxS">
+          <property name="text">
+           <string>Activé</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="3">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>Appliquer</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Gestion des variables</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QSpinBox" name="spinBox">
+          <property name="minimum">
+           <number>5</number>
+          </property>
+          <property name="maximum">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Taille de la Pile </string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QSpinBox" name="spinBoxDimPile">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>7</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Mode scientifique</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Nombre de sauvegardes</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Sons</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QCheckBox" name="checkBox">
+          <property name="text">
+           <string>Activé</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">

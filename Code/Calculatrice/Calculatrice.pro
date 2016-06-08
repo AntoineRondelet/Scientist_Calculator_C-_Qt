@@ -61,7 +61,8 @@ SOURCES += main.cpp\
     or.cpp \
     not.cpp \
     dialogedit.cpp \
-    tabdialog.cpp
+    tabdialog.cpp \
+    stackdialog.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -111,10 +112,10 @@ HEADERS  += mainwindow.h \
     or.h \
     not.h \
     dialogedit.h \
-    tabdialog.h
+    tabdialog.h \
+    stackdialog.h
 
 FORMS    += mainwindow.ui \
     dialogedit.ui \
-    tabdialog.ui
-
-
+    tabdialog.ui \
+    stackdialog.ui

@@ -22,6 +22,8 @@
 #include <QTextStream>
 #include <QChar>
 
+#include "stackdialog.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -37,10 +39,12 @@ public:
     ~MainWindow();
     //void show();
     void connections();
-    void init();
+    void init(int dim = 5);
 
 private:
     Ui::MainWindow *ui;
+    //StackDialog* stack;
+
 
 private slots:
         //  -- Chiffres de 0 à 9 -- //
@@ -101,8 +105,10 @@ private slots:
         void on_pButEgal_clicked();
 
         // -- Elements de syntaxe -- //
-        void butCrochetsAppuye();
-        void butParenthAppuye();
+        void butCrochFAppuye();
+        void butCrochOAppuye();
+        void butParenthOAppuye();
+        void butParenthFAppuye();
         void butQuoteAppuye();
         void butDeleteAppuye();
         void butSpaceAppuye();
@@ -112,6 +118,7 @@ private slots:
 
 
         void checkModeScientist(bool);
+        void on_spinBoxDimPile_valueChanged(int arg1);
 };
 
 

@@ -15,12 +15,16 @@
 #include "dialogedit.h"
 
 #include "tabdialog.h"
+#include "stackdialog.h"
 
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //stack = new StackDialog(this);
+    //stack = new QStackedWidget(this);
+    //StackDialog* stack = new StackDialog(this,5);
 
     // -- On initialise l'apparence de la fenetre principale -- //
     init();
@@ -32,23 +36,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow(){delete ui;}
 
 
-void MainWindow::init() {
+void MainWindow::init(int dim) {
     // -- On met le fond de la QLineEdit du message en noir -- //
     ui->lineEditMessage->setStyleSheet("background: black; color: white");
 
     // -- Ne plus pouvoir ecrire dans la zone de texte destinee a afficher des messages a l'utilisateur -- //
     ui->lineEditMessage->setReadOnly(true);
 
-
     // -- On precise le nombre de lignes et le nombre de colonnes (ici 1) qu'on veut afficher -- //
     // -- QTableWidget: c'est juste une coquille. On a des rangées pour mettre ce que l'on veut -- //
     // -- MAIS, on va devoir allouer dynamiquement ce qu'on va mettre dedans: ATTENTION -- //
-    ui->tableWidgetPile->setRowCount(Pile::getInstance().getNbAffiche());
+    ui->tableWidgetPile->setRowCount(dim);
     ui->tableWidgetPile->setColumnCount(1);
 
 
     // -- Allocation des widgets a l'interieur du tableau -- //
-    for(unsigned int i=0; i < Pile::getInstance().getNbAffiche(); i++)
+    for(unsigned int i=0; i < dim; i++)
         //setItem est une methode de la classe QTableWidget
         ui->tableWidgetPile->setItem(i,0,new QTableWidgetItem(""));
 
@@ -63,7 +66,7 @@ void MainWindow::init() {
 
     // -- Changer les labels de chaque ligne -- //
     QStringList liste;
-    for(unsigned int i=Pile::getInstance().getNbAffiche(); i>0; i--) {
+    for(unsigned int i=dim; i>0; i--) {
         QString str = QString::number(i);
         str+=" :";
         liste<<str;
@@ -117,8 +120,12 @@ void MainWindow::connections() {
 
 
     // -- Elements de syntaxe -- //
-    connect(ui->pButCrochO, SIGNAL(clicked()), this, SLOT(butCrochetsAppuye()));
-    connect(ui->pButParF, SIGNAL(clicked()), this, SLOT(butParenthAppuye()));
+    connect(ui->pButCrochO, SIGNAL(clicked()), this, SLOT(butCrochOAppuye()));
+    connect(ui->pButCrochF, SIGNAL(clicked()), this, SLOT(butCrochFAppuye()));
+
+    connect(ui->pButParF, SIGNAL(clicked()), this, SLOT(butParenthFAppuye()));
+    connect(ui->pButParO, SIGNAL(clicked()), this, SLOT(butParenthOAppuye()));
+
     connect(ui->pButQuote, SIGNAL(clicked()), this, SLOT(butQuoteAppuye()));
     connect(ui->pButSpace, SIGNAL(clicked()), this, SLOT(butSpaceAppuye()));
 
@@ -126,9 +133,17 @@ void MainWindow::connections() {
     connect(ui->pButDelete, SIGNAL(clicked()), this, SLOT(butDeleteAppuye()));
 
     // Mode scientifique
-
     connect(ui->checkBoxS, SIGNAL(clicked(bool)), this, SLOT(checkModeScientist(bool)));
 }
+
+
+/*
+void MainWindow::show()
+{
+    stack->show();
+    QWidget::show();
+}
+*/
 
 
 // ------------- LES SLOTS -------------- //
@@ -166,9 +181,11 @@ void MainWindow::butDivAppuye(){ ui->lineEditCommande->setText(ui->lineEditComma
 
 
 // -- Elements de synatxe -- //
-void MainWindow::butCrochetsAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"[  ]"); }
-void MainWindow::butParenthAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"(  )"); }
-void MainWindow::butQuoteAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"'  '"); }
+void MainWindow::butCrochOAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" [ "); }
+void MainWindow::butCrochFAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" ] "); }
+void MainWindow::butParenthOAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" ( "); }
+void MainWindow::butParenthFAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" ) "); }
+void MainWindow::butQuoteAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"'"); }
 void MainWindow::butSpaceAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" "); }
 
 // -- Clear la ligne de saisie -- //
@@ -189,6 +206,7 @@ void MainWindow::butEnterAppuye() {
     ui->lineEditCommande->clear();
 }
 
+//-- J'AI MODIFIE REFRESH j'ai viré les tableWidgetPile
 
 // -- Permet d'actualiser la pile quand on fait des changements -- //
 void MainWindow::refresh() {
@@ -205,6 +223,7 @@ void MainWindow::refresh() {
             nb++;
     }
 }
+
 
 /*
 void MainWindow::keyPressEvent(QKeyEvent *ev){
@@ -447,21 +466,10 @@ void MainWindow::checkModeScientist(bool change) {
     }
 }
 
-/*
 
-void MainWindow::on_pushButton_5_clicked()
-{
-    ui->pButInf->isHidden();
-    ui->pButInfEgal->setEnabled(false);
-    ui->pButSup->setEnabled(false);
-    ui->pButAnd->setEnabled(false);
-    ui->pButOr->setEnabled(false);
-    ui->pButNot->setEnabled(false);
-    ui->pButEval->setEnabled(false);
+void MainWindow::on_spinBoxDimPile_valueChanged(int arg1){
+    ui->tableWidgetPile->clear();
+    this->init(arg1);
+    Pile::getInstance().setNbAffiche(arg1);
+    refresh();
 }
-
-void MainWindow::on_checkBox_clicked(){
-
-}
-
-*/
