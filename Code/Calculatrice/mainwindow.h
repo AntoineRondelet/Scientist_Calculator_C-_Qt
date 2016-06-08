@@ -110,6 +110,8 @@ private slots:
         // -- Operateur EDIT -- //
         void on_pButEdit_clicked();
 
+
+        void checkModeScientist(bool);
 };
 
 

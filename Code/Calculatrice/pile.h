@@ -44,6 +44,8 @@ public:
 
     unsigned int getNbAffiche() const {return nbAffiche;}
 
+    void setNbAffiche(unsigned int i) {nbAffiche = i;}
+
     // -- Singleton -- //
     static Pile& getInstance();
     static void libererInstance();

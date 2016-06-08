@@ -14,6 +14,8 @@
 #include <QMessageBox>
 #include "dialogedit.h"
 
+#include "tabdialog.h"
+
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -115,13 +117,17 @@ void MainWindow::connections() {
 
 
     // -- Elements de syntaxe -- //
-    connect(ui->pButCrochets, SIGNAL(clicked()), this, SLOT(butCrochetsAppuye()));
-    connect(ui->pButParenth, SIGNAL(clicked()), this, SLOT(butParenthAppuye()));
+    connect(ui->pButCrochO, SIGNAL(clicked()), this, SLOT(butCrochetsAppuye()));
+    connect(ui->pButParF, SIGNAL(clicked()), this, SLOT(butParenthAppuye()));
     connect(ui->pButQuote, SIGNAL(clicked()), this, SLOT(butQuoteAppuye()));
     connect(ui->pButSpace, SIGNAL(clicked()), this, SLOT(butSpaceAppuye()));
 
     // -- Efface le dernier caractere entré dans la QLineEdit -- //
     connect(ui->pButDelete, SIGNAL(clicked()), this, SLOT(butDeleteAppuye()));
+
+    // Mode scientifique
+
+    connect(ui->checkBoxS, SIGNAL(clicked(bool)), this, SLOT(checkModeScientist(bool)));
 }
 
 
@@ -365,8 +371,97 @@ void MainWindow::on_pButEgal_clicked(){
 
 
 void MainWindow::on_pButEdit_clicked(){
-    DialogEdit edit;
+    TabDialog edit;
+    /*DialogEdit edit;*/
     edit.setModal(true);
     edit.exec();
 }
 
+
+
+
+
+// -- checkModeScientist -- //
+
+void MainWindow::checkModeScientist(bool change) {
+    if (change == false) {
+        ui->pButInf->setVisible(false);
+        ui->pButInfEgal->setVisible(false);
+        ui->pButSup->setVisible(false);
+        ui->pButAnd->setVisible(false);
+        ui->pButOr->setVisible(false);
+        ui->pButNot->setVisible(false);
+        ui->pButEval->setVisible(false);
+        ui->pButEgal->setVisible(false);
+        ui->pButIft->setVisible(false);
+        ui->pButLastargs->setVisible(false);
+        ui->pButLastops->setVisible(false);
+
+        ui->pButSupEgal->setVisible(false);
+        ui->pButDen->setVisible(false);
+        ui->pButNum->setVisible(false);
+        ui->pButRe->setVisible(false);
+        ui->pButIm->setVisible(false);
+        ui->pButForget->setVisible(false);
+
+        ui->pButEdit->setVisible(false);
+        ui->pButQuote->setVisible(false);
+        ui->pButParO->setVisible(false);
+        ui->pButParF->setVisible(false);
+        ui->pButCrochO->setVisible(false);
+        ui->pButCrochF->setVisible(false);
+        ui->pButSto->setVisible(false);
+
+        ui->pButCplx->setVisible(false);
+
+    }
+    else {
+        ui->pButInf->setVisible(true);
+        ui->pButInfEgal->setVisible(true);
+        ui->pButSup->setVisible(true);
+        ui->pButAnd->setVisible(true);
+        ui->pButOr->setVisible(true);
+        ui->pButNot->setVisible(true);
+        ui->pButEval->setVisible(true);
+        ui->pButEgal->setVisible(true);
+        ui->pButIft->setVisible(true);
+        ui->pButLastargs->setVisible(true);
+        ui->pButLastops->setVisible(true);
+
+        ui->pButSupEgal->setVisible(true);
+        ui->pButDen->setVisible(true);
+        ui->pButNum->setVisible(true);
+        ui->pButRe->setVisible(true);
+        ui->pButIm->setVisible(true);
+        ui->pButForget->setVisible(true);
+
+        ui->pButEdit->setVisible(true);
+        ui->pButQuote->setVisible(true);
+        ui->pButParO->setVisible(true);
+        ui->pButParF->setVisible(true);
+        ui->pButCrochO->setVisible(true);
+        ui->pButCrochF->setVisible(true);
+        ui->pButSto->setVisible(true);
+
+        ui->pButCplx->setVisible(true);
+    }
+}
+
+/*
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    ui->pButInf->isHidden();
+    ui->pButInfEgal->setEnabled(false);
+    ui->pButSup->setEnabled(false);
+    ui->pButAnd->setEnabled(false);
+    ui->pButOr->setEnabled(false);
+    ui->pButNot->setEnabled(false);
+    ui->pButEval->setEnabled(false);
+}
+
+void MainWindow::on_checkBox_clicked(){
+
+}
+
+*/
