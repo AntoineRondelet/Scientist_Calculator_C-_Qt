@@ -20,13 +20,18 @@ void Controleur::commande(QStringList& list_src)
         bool match = analyser->reconnaitre(list_src);
         if (match == true) // -- On a construit quelque chose: on sauvegarde -- //
             PileCaretaker::getInstance().saveState(&Pile::getInstance());
+        // -- L'etat a changé, on a empilé quelque chose -- //
         modificationEtat();
     }
     catch (CalculatriceException& e) {
         Pile::getInstance().setMessage(QString::fromStdString(e.getMsg()));
+        // -- L'etat a changé, on a un message d'erreur -- //
+        modificationEtat();
     }
     catch (...) {
         Pile::getInstance().setMessage("Sorry something went wrong");
+        // -- L'etat a changé, on a un message d'erreur -- //
+        modificationEtat();
     }
 }
 

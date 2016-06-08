@@ -73,11 +73,34 @@ private slots:
         // -- Refresh l'affichage de la pile -- //
         void refresh();
 
-        // -- Manipulation de la pile -- //
-        void butSwapAppuye();
-        void butDropAppuye();
-        void butDupAppuye();
-        void butClearAppuye();
+        // -- Manipulation de la pile et Operateurs -- //
+        void on_pButSwap_clicked();
+        void on_pButDup_clicked();
+        void on_pButDrop_clicked();
+        void on_pButClear_clicked();
+        void on_pButUndo_clicked();
+        void on_pButRedo_clicked();
+        void on_pButNeg_clicked();
+        void on_pButIft_clicked();
+        void on_pButSto_clicked();
+        void on_pButEval_clicked();
+        void on_pButDen_clicked();
+        void on_pButNum_clicked();
+
+        // -- Operateurs logiques -- //
+        void on_pButAnd_clicked();
+        void on_pButOr_clicked();
+        void on_pButNot_clicked();
+        void on_pButInf_clicked();
+        void on_pButSup_clicked();
+        void on_pButEgal_clicked();
+
+        // -- Elements de syntaxe -- //
+        void butCrochetsAppuye();
+        void butParenthAppuye();
+        void butQuoteAppuye();
+        void butDeleteAppuye();
+        void butSpaceAppuye();
 };
 
 

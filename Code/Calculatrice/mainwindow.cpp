@@ -110,11 +110,15 @@ void MainWindow::connections() {
     // -- Connection entre le Controleur et la fenetre pour refresh la pile quand on fait une modif -- //
     connect(&Controleur::getInstance(), SIGNAL(modificationEtat()), this, SLOT(refresh()));
 
-    // -- Manipulation de la pile -- //
-    connect(ui->pButSwap, SIGNAL(clicked()), this, SLOT(butSwapAppuye()));
-    connect(ui->pButClear, SIGNAL(clicked()), this, SLOT(butClearAppuye()));
-    connect(ui->pButDrop, SIGNAL(clicked()), this, SLOT(butDropAppuye()));
-    connect(ui->pButDup, SIGNAL(clicked()), this, SLOT(butDupAppuye()));
+
+    // -- Elements de syntaxe -- //
+    connect(ui->pButCrochets, SIGNAL(clicked()), this, SLOT(butCrochetsAppuye()));
+    connect(ui->pButParenth, SIGNAL(clicked()), this, SLOT(butParenthAppuye()));
+    connect(ui->pButQuote, SIGNAL(clicked()), this, SLOT(butQuoteAppuye()));
+    connect(ui->pButSpace, SIGNAL(clicked()), this, SLOT(butSpaceAppuye()));
+
+    // -- Efface le dernier caractere entré dans la QLineEdit -- //
+    connect(ui->pButDelete, SIGNAL(clicked()), this, SLOT(butDeleteAppuye()));
 }
 
 
@@ -152,11 +156,15 @@ void MainWindow::butMultAppuye(){ ui->lineEditCommande->setText(ui->lineEditComm
 void MainWindow::butDivAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"/"); }
 
 
-// -- Manipulation de la pile -- //
-void MainWindow::butSwapAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" SWAP");}
-void MainWindow::butDropAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" DROP");}
-void MainWindow::butDupAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" DUP");}
-void MainWindow::butClearAppuye(){ui->lineEditCommande->setText(ui->lineEditCommande->text()+" CLEAR");}
+// -- Elements de synatxe -- //
+void MainWindow::butCrochetsAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"[  ]"); }
+void MainWindow::butParenthAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"(  )"); }
+void MainWindow::butQuoteAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"'  '"); }
+void MainWindow::butSpaceAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" "); }
+
+// -- Clear la ligne de saisie -- //
+void MainWindow::butDeleteAppuye(){ ui->lineEditCommande->clear();}
+
 
 
 // -- Lorsque l'on appuie sur le bouton Enter -- //
@@ -229,3 +237,116 @@ connect(ui->actionAnnuler, SIGNAL(triggered()), this, SLOT(annulerEtatPile()));
 connect(ui->actionRetablir, SIGNAL(triggered()), this, SLOT(retablirEtatPile()));
 */
 
+
+// ------------------------------------------------------------------------------------- //
+// ------------------------------------ Les operateurs --------------------------------- //
+// ------------------------------------------------------------------------------------- //
+
+// -- On a fait clic droit sur le bouton: "aller a slot" et ici on definit le comportement de notr slot -- //
+void MainWindow::on_pButSwap_clicked(){
+    QStringList str_list;
+    str_list.push_back("SWAP");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButDup_clicked(){
+    QStringList str_list;
+    str_list.push_back("DUP");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButDrop_clicked(){
+    QStringList str_list;
+    str_list.push_back("DROP");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButClear_clicked(){
+    QStringList str_list;
+    str_list.push_back("CLEAR");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButUndo_clicked(){
+    QStringList str_list;
+    str_list.push_back("UNDO");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButRedo_clicked(){
+    QStringList str_list;
+    str_list.push_back("REDO");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButNeg_clicked(){
+    QStringList str_list;
+    str_list.push_back("NEG");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButIft_clicked(){
+    QStringList str_list;
+    str_list.push_back("IFT");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButSto_clicked(){
+    QStringList str_list;
+    str_list.push_back("STO");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButEval_clicked(){
+    QStringList str_list;
+    str_list.push_back("EVAL");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButAnd_clicked(){
+    QStringList str_list;
+    str_list.push_back("AND");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButOr_clicked(){
+    QStringList str_list;
+    str_list.push_back("OR");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButNot_clicked(){
+    QStringList str_list;
+    str_list.push_back("NOT");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButDen_clicked(){
+    QStringList str_list;
+    str_list.push_back("DEN");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButNum_clicked(){
+    QStringList str_list;
+    str_list.push_back("NUM");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButInf_clicked(){
+    QStringList str_list;
+    str_list.push_back("<");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButSup_clicked(){
+    QStringList str_list;
+    str_list.push_back(">");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButEgal_clicked(){
+    QStringList str_list;
+    str_list.push_back("=");
+    Controleur::getInstance().commande(str_list);
+}
