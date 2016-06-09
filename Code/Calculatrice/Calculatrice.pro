@@ -124,4 +124,5 @@ FORMS    += mainwindow.ui \
 
 QT += xml
 
+CONFIG += console
 

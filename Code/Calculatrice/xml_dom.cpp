@@ -72,11 +72,50 @@ void Xml_Dom::saveXML() {
         }
     }
     xmlWriter.writeEndElement();
-    xmlWriter.writeEndElement();
     // -- Fin de la sauvegarde du contenu de la pile -- //
 
     // -- Sauvegarde du contenu de la table des identifiants -- //
+    xmlWriter.writeStartElement("IDENTIFIANTS");
+    QStack<Litterale*>::iterator it;
+    for (it = stack.begin(); it != stack.end(); ++it) {
+        // -- On recupere notre litterale -- //
+        Litterale *cur_lit = *it;
+        // -- On teste le type de notre litterale -- //
+        Entier* litEnt = dynamic_cast<Entier*>(cur_lit);
+        Reel* litRe = dynamic_cast<Reel*>(cur_lit);
+        Rationnel* litRa = dynamic_cast<Rationnel*>(cur_lit);
+        Complexe* litCpx = dynamic_cast<Complexe*>(cur_lit);
+        Atome* litAt = dynamic_cast<Atome*>(cur_lit);
+        Expression* litExp = dynamic_cast<Expression*>(cur_lit);
+        Programme* litPg = dynamic_cast<Programme*>(cur_lit);
 
+        if(litEnt != nullptr) {
+            xmlWriter.writeTextElement("Entier", litEnt->toString());
+        }
+        else if (litRe !=  nullptr) {
+            xmlWriter.writeTextElement("Reel", litRe->toString());
+        }
+        else if (litRa !=  nullptr) {
+            xmlWriter.writeTextElement("Rationnel", litRa->toString());
+        }
+        else if (litCpx !=  nullptr) {
+            xmlWriter.writeTextElement("Complexe", litCpx->toString());
+        }
+        else if (litAt !=  nullptr) {
+            xmlWriter.writeTextElement("Atome", litAt->toString());
+        }
+        else if (litExp !=  nullptr) {
+            xmlWriter.writeTextElement("Expression", litExp->toString());
+        }
+        else if (litPg !=  nullptr) {
+            xmlWriter.writeTextElement("Programme", litPg->toString());
+
+        }
+        else {
+            CALCULATRICE_EXCEPTION("MEGA BUG SUR LE XML");
+        }
+    }
+    xmlWriter.writeEndElement();
     // -- Fin de la sauvegarde du contenu de la table des identifiants -- //
 
     xmlWriter.writeEndDocument();

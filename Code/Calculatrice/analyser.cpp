@@ -53,12 +53,12 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     cout << "ON EST DANS CREATE ATOME !! " << endl;
     QString matched = matched_exp.captured(0);
 
-    //on refait tourner une regex pour s'assurer que l'atome n'a pas le nom d'un programme deja existant
+    // -- On refait tourner une regex pour s'assurer que l'atome n'a pas le nom d'un programme deja existant -- //
+    // -- Regex générée automatiquement par la classe IdentificateurManager -- //
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
     const QString str_ops = id_man.strOperateurs();
-    QRegularExpression regexOperateur("NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET");
+    QRegularExpression regexOperateur(str_ops);
     QRegularExpressionMatch str_match_op = regexOperateur.match(matched);
-    //"NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET"
 
     if(str_match_op.hasMatch()) {
         return nullptr; //on veut creer un atome qui a le meme identificateur qu'un programme

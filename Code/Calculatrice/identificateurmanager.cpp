@@ -51,6 +51,7 @@ void IdentificateurManager::init() {
 
     m_ops.insert("*", "MEDIUM");
     m_ops.insert("/", "MEDIUM");
+    m_ops.insert("$", "MEDIUM");
 
     m_ops.insert("DROP", "HIGH");
     m_ops.insert("NEG", "HIGH");
@@ -59,7 +60,6 @@ void IdentificateurManager::init() {
     m_ops.insert("REDO", "HIGH");
     m_ops.insert("NUM", "HIGH");
     m_ops.insert("DEN", "HIGH");
-    m_ops.insert("$", "HIGH");
     m_ops.insert("DIV", "HIGH");
     m_ops.insert("MOD", "HIGH");
     m_ops.insert("RE", "HIGH");
@@ -83,7 +83,7 @@ const QString IdentificateurManager::strOperateurs() const {
     QList<QString>::iterator i;
     for (i = op_list.begin(); i != op_list.end(); ++i)
         result+= "|" + *i;
-    result+'\0';
+    result;
 return result.remove(0,1);
 }
 
