@@ -66,11 +66,19 @@ Litterale* createAtome(QRegularExpressionMatch matched_exp) {
     else {
         // -- On a effectivement un atome: On verifie s'il est repertorié dans la table des identificateurs (s'il est affecté a une litterale via un STO) -- //
         Litterale* ptAtome = nullptr;
-        if (id_man.m_names.contains(matched)) { //Le nom de cet atome figure dans la table. On doit construire l'objet auquel il est associé
+        if (id_man.m_names_var.contains(matched)) { //Le nom de cet atome figure dans la table. On doit construire l'objet auquel il est associé
             // -- Cette litterale est UN CLONE de celle contenue dans la QMap car si on la depile, on va la supprimer, mais on veur pouvoir la garder dans le tableau ! -- //
-            ptAtome = id_man.m_names.value(matched)->clone();
+            ptAtome = id_man.m_names_var.value(matched)->clone();
         }
-        else if (!id_man.m_names.contains(matched)) {
+        else if (id_man.m_names_prog.contains(matched)) {
+            Litterale* ptTemp = id_man.m_names_prog.value(matched)->clone();
+            Eval obEval;
+            QVector<Litterale*> vec;
+            vec.push_back(ptTemp);
+            obEval.execute(vec);
+            ptAtome = Pile::getInstance().pop();
+        }
+        else if (!id_man.m_names_prog.contains(matched) && !id_man.m_names_var.contains(matched)) {
             // -- Si l'atome n'est associé a aucune litterale: on le construit -- //
             ptAtome = new Atome(matched);
         }

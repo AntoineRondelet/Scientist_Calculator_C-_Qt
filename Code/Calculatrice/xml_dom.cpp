@@ -6,6 +6,7 @@ using namespace std;
 #include <QFile>
 
 #include "pile.h"
+#include "controleur.h"
 #include "identificateurmanager.h"
 
 
@@ -162,6 +163,56 @@ void Xml_Dom::RestoreXML() {
                 QString str_entier = Rxml.readElementText();
                 stack.push(new Entier(str_entier.toInt()));
             }
+            else if(Rxml.name() == "Reel")
+            {
+                QString str_reel = Rxml.readElementText();
+                stack.push(new Reel(str_reel.toFloat()));
+            }
+            else if(Rxml.name() == "Rationnel")
+            {
+                QString str_rationnel = Rxml.readElementText();
+                QStringList list_str = str_rationnel.split("/");
+                stack.push(new Rationnel(list_str[0].toInt(), list_str[1].toInt()));
+            }
+            else if(Rxml.name() == "Complexe")
+            {
+                QString str_cplx = Rxml.readElementText();
+                QStringList list_str = str_cplx.split("$");
+                list_str << "$";
+                Controleur& ctr = Controleur::getInstance();
+                ctr.commande(list_str);
+            }
+            else if(Rxml.name() == "Expression")
+            {
+                QString str_exp = Rxml.readElementText();
+                stack.push(new Expression(str_exp));
+            }
+            else if(Rxml.name() == "Atome")
+            {
+                QString str_atome = Rxml.readElementText();
+                stack.push(new Atome(str_atome));
+            }
+            else if(Rxml.name() == "Programme")
+            {
+                QString str_prog = Rxml.readElementText();
+                stack.push(new Programme(str_prog));
+            }
+            /*
+            else if(Rxml.name() == "IDENTIFIANTS")
+            {
+                Rxml.readNext();
+            }
+            else if(Rxml.name() == "Idvariables")
+            {
+                QString str_prog = Rxml.readElementText();
+                stack.push(new Programme(str_prog));
+            }
+            else if(Rxml.name() == "Idprogrammes")
+            {
+                QString str_prog = Rxml.readElementText();
+                stack.push(new Programme(str_prog));
+            }
+            */
             else
             {
               Rxml.raiseError(QObject::tr("Not a bookindex file"));

@@ -1,7 +1,7 @@
 #include "dup.h"
 
 void Dup::execute(QVector<Litterale*> litterals) const {
-    LitteraleNombre* operande = dynamic_cast<LitteraleNombre *>(litterals[0]);
+    Litterale* operande = litterals[0];
 
     if (operande!=nullptr){
         Litterale* res = operande->clone(); //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme

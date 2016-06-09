@@ -34,11 +34,11 @@ int main(int argc, char *argv[])
 {
 
 
-    /*QApplication a(argc, argv);
+    QApplication a(argc, argv);
     MainWindow w;
     w.show();
     return a.exec();
-    */
+
 
 /*
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
@@ -48,10 +48,10 @@ int main(int argc, char *argv[])
 */
 
 
-
+/*
     Pile& stack = Pile::getInstance();
     Controleur& controle = Controleur::getInstance();
     controle.boucleExcecution();
-
+*/
 
 }

@@ -24,7 +24,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -446,13 +446,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Gestion des variables</string>
-          </property>
-         </widget>
-        </item>
         <item row="5" column="2">
          <widget class="QSpinBox" name="spinBoxSaves">
           <property name="minimum">
@@ -502,7 +495,58 @@
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QTableWidget" name="tableWidgetIDs"/>
+         <widget class="QTableWidget" name="tableWidgetIDsProg"/>
+        </item>
+        <item row="5" column="3">
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="pButForgetSettings">
+            <property name="text">
+             <string>FORGET</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="pButEditSettings">
+            <property name="text">
+             <string>EDIT</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="3">
+         <widget class="QTableWidget" name="tableWidgetIDsVar"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <family>Arial Black</family>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Gestion des variables</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <family>Arial Black</family>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Gestion des programmes</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

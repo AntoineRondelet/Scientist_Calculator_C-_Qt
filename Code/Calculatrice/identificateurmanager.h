@@ -17,8 +17,9 @@ private:
     // -- 2) On met Analyser en classe amie car elle doit pouvoir avoir un acces direct a la QMap (pour la parcourir etc.) alors que STO et FORGET passent par les methodes ajout et suppression de la classe (pas les mêmes droits) -- //
     friend Litterale* createAtome(QRegularExpressionMatch matched_exp);
 
-    // -- QMap qui associe un nom a une Litterale ayant subit un STO -- //
-    QMap<QString, Litterale*> m_names;
+    // -- QMaps qui associe un nom a une Litterale ayant subit un STO -- //
+    QMap<QString, Litterale*> m_names_var;
+    QMap<QString, Litterale*> m_names_prog;
 
     // -- QMap des noms des opérateurs dans le systeme -- //
     QMap<QString, QString> m_ops;
@@ -40,14 +41,15 @@ private:
 
 
 public:
-    IdentificateurManager(): m_names(QMap<QString, Litterale*>()), m_ops(QMap<QString, QString>()){
+    IdentificateurManager(): m_names_var(QMap<QString, Litterale*>()), m_names_prog(QMap<QString, Litterale*>()), m_ops(QMap<QString, QString>()){
         this->init();
     }
 
     void ajouterIdentificateur(const QString lit_name, Litterale* lit);
     void forgetIdentificateur(const QString lit_name);
 
-    QStringList getEntry() const;
+    QStringList getVarEntries() const;
+    QStringList getProgEntries() const;
 
     void init();
 

@@ -23,21 +23,41 @@ void IdentificateurManager::libererInstance() {
 
 void IdentificateurManager::ajouterIdentificateur(const QString lit_name, Litterale* lit) {
     // -- Utiliser insert() permet, si l'identifiant correspond deja a une variable, de l'écraser -- //
-    if (m_names.contains(lit_name)) {
-        // -- On associe le "meme" atome a une autre Litterale -> On supprime PROPREMENT (on a une QMap de pointers !) l'ancienne entrée présente dans le QMap (et on ne fait pas un -- //
-        // -- simple "insert" qui se contenterai d'ecraser l'ancien pointeru sans relacher la memoire allouée. Puis, on peut mettre dans la table l'identificateur et la nouvelle Litterale associée -- //
-        Litterale* lit_name_suppr = m_names.take(lit_name);
-        delete lit_name_suppr;
+    Programme* litProg = dynamic_cast<Programme*>(lit);
+    LitteraleNombre* litNb = dynamic_cast<LitteraleNombre*>(lit);
+
+    if(litProg != nullptr) {
+        if (m_names_prog.contains(lit_name)) {
+            // -- On associe le "meme" atome a une autre Litterale -> On supprime PROPREMENT (on a une QMap de pointers !) l'ancienne entrée présente dans le QMap (et on ne fait pas un -- //
+            // -- simple "insert" qui se contenterai d'ecraser l'ancien pointeru sans relacher la memoire allouée. Puis, on peut mettre dans la table l'identificateur et la nouvelle Litterale associée -- //
+            Litterale* lit_name_suppr = m_names_prog.take(lit_name);
+            delete lit_name_suppr;
+        }
+        m_names_prog.insert(lit_name, lit);
+        modificationEtatIDs();
     }
-    m_names.insert(lit_name, lit);
-    modificationEtatIDs();
+    else {
+        if (m_names_var.contains(lit_name)) {
+            // -- On associe le "meme" atome a une autre Litterale -> On supprime PROPREMENT (on a une QMap de pointers !) l'ancienne entrée présente dans le QMap (et on ne fait pas un -- //
+            // -- simple "insert" qui se contenterai d'ecraser l'ancien pointeru sans relacher la memoire allouée. Puis, on peut mettre dans la table l'identificateur et la nouvelle Litterale associée -- //
+            Litterale* lit_name_suppr = m_names_var.take(lit_name);
+            delete lit_name_suppr;
+        }
+        m_names_var.insert(lit_name, lit);
+        modificationEtatIDs();
+    }
 }
 
 
 void IdentificateurManager::forgetIdentificateur(const QString lit_name) {
     // -- Utiliser insert() permet, si l'identifiant correspond deja a une variable, de l'écraser -- //
-    if (m_names.contains(lit_name)) {
-        Litterale* lit_name_suppr = m_names.take(lit_name);
+    if(m_names_var.contains(lit_name)) {
+        Litterale* lit_name_suppr = m_names_var.take(lit_name);
+        delete lit_name_suppr;
+        modificationEtatIDs();
+    }
+    else if (m_names_prog.contains(lit_name)) {
+        Litterale* lit_name_suppr = m_names_prog.take(lit_name);
         delete lit_name_suppr;
         modificationEtatIDs();
     }
@@ -46,6 +66,7 @@ void IdentificateurManager::forgetIdentificateur(const QString lit_name) {
 
 
 void IdentificateurManager::init() {
+    // -- Operator - Priority -- //
     m_ops.insert("+", "LOW");
     m_ops.insert("-", "LOW");
 
@@ -73,8 +94,6 @@ void IdentificateurManager::init() {
     m_ops.insert("AND", "HIGH");
 }
 
-//NEG|NUM|DEN|DIV|MOD|RE|IM|ARG|NORM|AND|OR|NOT|DUP|DROP|UNDO|REDO|STO|FORGET
-
 
 // -- Utile pour construire une chaine de caracteres pour faire la regex sur les operateurs dans la fonction "createAtome"  -- //
 const QString IdentificateurManager::strOperateurs() const {
@@ -83,13 +102,18 @@ const QString IdentificateurManager::strOperateurs() const {
     QList<QString>::iterator i;
     for (i = op_list.begin(); i != op_list.end(); ++i)
         result+= "|" + *i;
-    result;
 return result.remove(0,1);
 }
 
 
-QStringList IdentificateurManager::getEntry() const {
+QStringList IdentificateurManager::getVarEntries() const {
     QString result;
-    QList<QString> ids_list = m_names.keys();
+    QList<QString> ids_list = m_names_var.keys();
+    return ids_list;
+}
+
+QStringList IdentificateurManager::getProgEntries() const {
+    QString result;
+    QList<QString> ids_list = m_names_prog.keys();
     return ids_list;
 }

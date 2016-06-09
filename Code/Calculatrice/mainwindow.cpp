@@ -41,6 +41,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // -- On initialise les identificateurs a partir de la sauvegarde -- //
     initIDs();
+
+    // -- quelques reglages par defaut -- //
+    ui->pButForgetSettings->setEnabled(false);
+    ui->pButEditSettings->setEnabled(false);
 }
 
 
@@ -103,29 +107,42 @@ void MainWindow::init(int dim) {
 
 
 void MainWindow::initIDs(){
-        // -- On precise le nombre de lignes et le nombre de colonnes (ici 1) qu'on veut afficher -- //
-        // -- QTableWidget: c'est juste une coquille. On a des rangées pour mettre ce que l'on veut -- //
-        // -- MAIS, on va devoir allouer dynamiquement ce qu'on va mettre dedans: ATTENTION -- //
-    QStringList list_ids = IdentificateurManager::getInstance().getEntry();
-        ui->tableWidgetIDs->setRowCount(list_ids.size());
-        ui->tableWidgetPile->setColumnCount(1);
+    // -- Table des variables -- //
+    QStringList list_var_ids = IdentificateurManager::getInstance().getVarEntries();
+    ui->tableWidgetIDsVar->setRowCount(list_var_ids.size());
+    ui->tableWidgetIDsVar->setColumnCount(1);
+
+    // -- Table des programmes -- //
+    QStringList list_prog_ids = IdentificateurManager::getInstance().getProgEntries();
+    ui->tableWidgetIDsProg->setRowCount(list_prog_ids.size());
+    ui->tableWidgetIDsProg->setColumnCount(1);
+
+    // -- Allocation des widgets a l'interieur du tableau des variables -- //
+    for(unsigned int i=0; i < list_var_ids.size(); i++)
+        ui->tableWidgetIDsVar->setItem(i,0,new QTableWidgetItem(list_var_ids[i]));
+
+    // -- Allocation des widgets a l'interieur du tableau des programmes -- //
+    for(unsigned int i=0; i < list_prog_ids.size(); i++)
+        ui->tableWidgetIDsProg->setItem(i,0,new QTableWidgetItem(list_prog_ids[i]));
+
+    // -- Rendre invisible le header horizontal -- //
+    ui->tableWidgetIDsVar->horizontalHeader()->setVisible(false);
+    ui->tableWidgetIDsProg->horizontalHeader()->setVisible(false);
+
+    // -- Ajuster la largeur de la derniere colonne (ici on en a qu'une) automatiquement -- //
+    ui->tableWidgetIDsVar->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidgetIDsProg->horizontalHeader()->setStretchLastSection(true);
+
+    // -- Empecher l'edition du QTableWidget: on ne peut que voir les valeurs dans les champs et pas les modifier directement -- //
+    ui->tableWidgetIDsVar->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidgetIDsProg->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
 
 
-        // -- Allocation des widgets a l'interieur du tableau -- //
-        for(unsigned int i=0; i < list_ids.size(); i++)
-            //setItem est une methode de la classe QTableWidget
-            ui->tableWidgetPile->setItem(i,0,new QTableWidgetItem("test"));
-
-        // -- Rendre invisible le header horizontal -- //
-        ui->tableWidgetPile->horizontalHeader()->setVisible(false);
-
-        // -- Ajuster la largeur de la derniere colonne (ici on en a qu'une) automatiquement -- //
-        ui->tableWidgetPile->horizontalHeader()->setStretchLastSection(true);
-
-        //ui->tableWidgetPile->setVerticalHeaderLabels(liste);
-
-        // -- Empecher l'edition du QTableWidget: on ne peut que voir les valeurs dans les champs et pas les modifier directement -- //
-        //ui->tableWidgetPile->setEditTriggers(QAbstractItemView::NoEditTriggers);
+void MainWindow::refreshIDs(){
+    ui->tableWidgetIDsVar->clear();
+    ui->tableWidgetIDsProg->clear();
+    initIDs();
 }
 
 
@@ -198,8 +215,7 @@ void MainWindow::connections() {
     // -- Connection entre le Controleur et la fenetre pour refresh la pile quand on fait une modif -- //
     connect(&IdentificateurManager::getInstance(), SIGNAL(modificationEtatIDs()), this, SLOT(refreshIDs()));
 
-    // -- Sauvegardes des données quand on ferme l'appli -- //
-    //connect(MainWindow.centralwidget, SIGNAL(destroyed()), this, SLOT(close()));
+    //connect(ui->tableWidgetIDsProg, SIGNAL(modificationEtatIDs()), this, SLOT(refreshIDs()));
 }
 
 
@@ -275,16 +291,11 @@ void MainWindow::refresh() {
         ui->tableWidgetPile->item(i,0)->setText("");
     }
     // -- Affichage -- //
-    unsigned int nb=0;
+    unsigned int nb=0; //nb = Pile::getInstance().getNbAffiche()-1;
     for(Pile::iterator it=Pile::getInstance().begin(); it!=Pile::getInstance().end() && nb<Pile::getInstance().getNbAffiche(); ++it) {
             ui->tableWidgetPile->item(Pile::getInstance().getNbAffiche()-nb-1,0)->setText((*it)->toString());
-            nb++;
+            nb++; //nb--;
     }
-}
-
-void MainWindow::refreshIDs(){
-    ui->tableWidgetIDs->clear();
-    this->initIDs();
 }
 
 
@@ -546,4 +557,54 @@ void MainWindow::on_checkBoxSounds_clicked(){
 
 void MainWindow::on_spinBoxSaves_valueChanged(int arg1){
     PileCaretaker::getInstance().setNbEtatsSave(arg1);
+}
+
+void MainWindow::on_tableWidgetIDsProg_itemClicked(QTableWidgetItem *item){
+    ui->pButForgetSettings->setEnabled(true);
+    ui->pButEditSettings->setEnabled(true);
+}
+
+void MainWindow::on_tableWidgetIDsVar_itemClicked(QTableWidgetItem *item){
+    ui->pButForgetSettings->setEnabled(true);
+    ui->pButEditSettings->setEnabled(true);
+}
+
+void MainWindow::on_pButForgetSettings_clicked(){
+    IdentificateurManager& id_man = IdentificateurManager::getInstance();
+
+    QList<QTableWidgetItem*> items = ui->tableWidgetIDsVar->selectedItems();
+    QList<QTableWidgetItem*> items_p = ui->tableWidgetIDsProg->selectedItems();
+
+    if (!items.empty()) {
+        QString str_item = items[0]->text();
+        id_man.forgetIdentificateur(str_item);
+    }
+    else if (!items_p.empty()) {
+        QString str_item_prog = items_p[0]->text();
+        id_man.forgetIdentificateur(str_item_prog);
+    }
+
+    refreshIDs();
+}
+
+// A FINIR !!
+void MainWindow::on_pButEditSettings_clicked(){
+    IdentificateurManager& id_man = IdentificateurManager::getInstance();
+
+    QList<QTableWidgetItem*> items = ui->tableWidgetIDsVar->selectedItems();
+    QList<QTableWidgetItem*> items_p = ui->tableWidgetIDsProg->selectedItems();
+    DialogEdit* edit = new DialogEdit();
+
+    if (!items.empty()) {
+        QString str_item = items[0]->text();
+        id_man.forgetIdentificateur(str_item);
+
+
+    }
+    else if (!items_p.empty()) {
+        QString str_item_prog = items_p[0]->text();
+        id_man.forgetIdentificateur(str_item_prog);
+    }
+
+    refreshIDs();
 }

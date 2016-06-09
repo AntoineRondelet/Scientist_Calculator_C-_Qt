@@ -23,7 +23,9 @@
 #include <QChar>
 #include <QCloseEvent>
 
-#include "stackdialog.h"
+#include <QTableWidgetItem>
+
+#include "dialogedit.h"
 
 
 
@@ -127,6 +129,10 @@ private slots:
         void on_checkBoxSounds_clicked();
         void on_spinBoxSaves_valueChanged(int arg1);
         void refreshIDs();
+        void on_tableWidgetIDsProg_itemClicked(QTableWidgetItem *item);
+        void on_tableWidgetIDsVar_itemClicked(QTableWidgetItem *item);
+        void on_pButForgetSettings_clicked();
+        void on_pButEditSettings_clicked();
 };
 
 
