@@ -8,11 +8,13 @@ using namespace std;
 #include "pile.h"
 #include "identificateurmanager.h"
 
+
 Xml_Dom::Xml_Dom() : QWidget(){}
 
 Xml_Dom::~Xml_Dom(){}
 
 
+// -- Fonction de sauvegarde des données XML -- //
 void Xml_Dom::saveXML() {
     QString filename = QFileDialog::getSaveFileName(this,tr("Save Xml"), ".",tr("Xml files (*.xml)"));
     QFile file(filename);
@@ -26,12 +28,10 @@ void Xml_Dom::saveXML() {
 
     xmlWriter.writeStartDocument();
 
-    xmlWriter.writeStartElement("SAVE");
+    xmlWriter.writeStartElement("Save");
 
-    xmlWriter.writeStartElement("STACK");
-
-    xmlWriter.writeStartElement("Litterale");
-
+    // -- On sauvegarde le contenu de la pile -- //
+    xmlWriter.writeStartElement("Stack");
     QStack<Litterale*>::iterator i;
     for (i = stack.begin(); i != stack.end(); ++i) {
         // -- On recupere notre litterale -- //
@@ -65,28 +65,19 @@ void Xml_Dom::saveXML() {
         }
         else if (litPg !=  nullptr) {
             xmlWriter.writeTextElement("Programme", litPg->toString());
+
         }
         else {
             CALCULATRICE_EXCEPTION("MEGA BUG SUR LE XML");
         }
     }
-
     xmlWriter.writeEndElement();
     xmlWriter.writeEndElement();
-/*
-    xmlWriter.writeTextElement("Entier", "lit3value");
-    xmlWriter.writeTextElement("Reel", "lit3value");
-    xmlWriter.writeTextElement("Litterale", "lit3value");
-    xmlWriter.writeEndElement();
+    // -- Fin de la sauvegarde du contenu de la pile -- //
 
-    xmlWriter.writeEndElement();
+    // -- Sauvegarde du contenu de la table des identifiants -- //
 
-    xmlWriter.writeStartElement("IDs");
-
-    xmlWriter.writeTextElement("Identifiant", "id1value" );
-    xmlWriter.writeTextElement("Identifiant", "id2value");
-    xmlWriter.writeTextElement("Identifiant", "id3value");
-    xmlWriter.writeEndElement();*/
+    // -- Fin de la sauvegarde du contenu de la table des identifiants -- //
 
     xmlWriter.writeEndDocument();
 
@@ -94,36 +85,69 @@ void Xml_Dom::saveXML() {
 }
 
 
-/*
-void Xml_Dom::SaveXML()
-{
-  QString filename = QFileDialog::getSaveFileName(this,
-                                       tr("Save Xml"), ".",
-                                       tr("Xml files (*.xml)"));
+// -- Fonction de lecture et restauration des données a partir du fichier XML -- //
 
-  QFile file(filename);
-  file.open(QIODevice::WriteOnly);
+void Xml_Dom::RestoreXML() {
 
-  QXmlStreamWriter xmlWriter(&file);
-  xmlWriter.setAutoFormatting(true);
-  xmlWriter.writeStartDocument();
+    Pile& stack = Pile::getInstance();
 
-  xmlWriter.writeStartElement("LAMPS");
+    QXmlStreamReader Rxml;
 
-  xmlWriter.writeStartElement("LIGHT1");
-  xmlWriter.writeTextElement("State", ui.pushButton1->isChecked()?"Off":"On" );
-  xmlWriter.writeTextElement("Room",ui.comboBox1->currentText());
-  xmlWriter.writeTextElement("Potencial",QString::number(ui.spinBox1->value()));
+    QString filename = QFileDialog::getOpenFileName(this,tr("Open Xml"), ".",tr("Xml files (*.xml)"));
 
-  xmlWriter.writeStartElement("LIGHT4");
-  xmlWriter.writeTextElement("State", ui.pushButton4->isChecked()?"Off":"On" );
-  xmlWriter.writeTextElement("Room",ui.comboBox4->currentText());
-  xmlWriter.writeTextElement("Potencial",QString::number(ui.spinBox4->value()));
+    QFile file(filename);
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        std::cerr << "Error: Cannot read file " << qPrintable(filename)
+                  << ": " << qPrintable(file.errorString())
+                  << std::endl;
+    }
 
-  file.close();
-  ShowXmlOnScreen();
-  statusBar()->showMessage(tr("Xml Saved"));
+    Rxml.setDevice(&file);
+    Rxml.readNext();
+
+    while(!Rxml.atEnd())
+    {
+        if(Rxml.isStartElement())
+        {
+            if(Rxml.name() == "SAVE")
+            {
+               Rxml.readNext();
+            }
+            else if (Rxml.name() == "STACK")
+            {
+                Rxml.readNext();
+            }
+            else if(Rxml.name() == "Entier")
+            {
+                QString str_entier = Rxml.readElementText();
+                stack.push(new Entier(str_entier.toInt()));
+            }
+            else
+            {
+              Rxml.raiseError(QObject::tr("Not a bookindex file"));
+            }
+        }
+        else
+        {
+            Rxml.readNext();
+        }
+   }
+
+   file.close();
+
+   if (Rxml.hasError())
+   {
+          std::cerr << "Error: Failed to parse file "
+                    << qPrintable(filename) << ": "
+                    << qPrintable(Rxml.errorString()) << std::endl;
+   }
+   else if (file.error() != QFile::NoError)
+   {
+      std::cerr << "Error: Cannot read file " << qPrintable(filename)
+                << ": " << qPrintable(file.errorString())
+                << std::endl;
+   }
 }
-*/
 
 

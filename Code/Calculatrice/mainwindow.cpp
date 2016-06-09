@@ -32,6 +32,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     init();
     // -- On établit les connections entre les boutons -- //
     connections();
+    // -- Retablie la sauvegarde choisie -- //
+    Xml_Dom monXml;
+    monXml.RestoreXML();
+
+    refresh();
     // -- On initialise les identificateurs a partir de la sauvegarde -- //
     initIDs();
 }
@@ -46,6 +51,7 @@ void MainWindow::closeEvent(QCloseEvent *event){
     Xml_Dom monXml;
     monXml.saveXML();
 }
+
 
 
 void MainWindow::init(int dim) {

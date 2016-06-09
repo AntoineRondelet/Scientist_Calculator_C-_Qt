@@ -16,6 +16,7 @@ class Xml_Dom : public QWidget{
 
 public slots:
     void saveXML();
+    void RestoreXML();
 };
 
 #endif // XML_DOM_H

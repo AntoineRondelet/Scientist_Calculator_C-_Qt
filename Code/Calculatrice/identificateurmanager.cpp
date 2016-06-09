@@ -83,6 +83,7 @@ const QString IdentificateurManager::strOperateurs() const {
     QList<QString>::iterator i;
     for (i = op_list.begin(); i != op_list.end(); ++i)
         result+= "|" + *i;
+    result+'\0';
 return result.remove(0,1);
 }
 

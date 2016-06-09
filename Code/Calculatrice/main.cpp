@@ -47,13 +47,15 @@ int main(int argc, char *argv[])
 
     cout << " ----> Res : " << res.toStdString() << endl;
 */
+    /*
     Xml_Dom monXml;
     monXml.saveXML();
+    */
 
-
-    //Pile& stack = Pile::getInstance();
-    //Controleur& controle = Controleur::getInstance();
-    //controle.boucleExcecution();
-
+/*
+    Pile& stack = Pile::getInstance();
+    Controleur& controle = Controleur::getInstance();
+    controle.boucleExcecution();
+*/
     return a.exec();
 }
