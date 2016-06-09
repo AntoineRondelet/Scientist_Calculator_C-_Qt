@@ -99,6 +99,10 @@ public:
 
 
     Pile* clone() const;
+
+    // -- Pour la sauvegarde XML -- //
+    void saveData() const;
+    void restoreData();
 };
 
 

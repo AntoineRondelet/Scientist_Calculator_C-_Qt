@@ -18,20 +18,34 @@
 #include "tabdialog.h"
 #include "stackdialog.h"
 
+#include "xml_dom.h"
+
+#include <QFileDialog>
+
+
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     // -- On initialise l'apparence de la fenetre principale -- //
     init();
-    // on établit les connections entre les boutons
+    // -- On établit les connections entre les boutons -- //
     connections();
+    // -- On initialise les identificateurs a partir de la sauvegarde -- //
+    initIDs();
 }
 
 
-MainWindow::~MainWindow(){delete ui;}
+MainWindow::~MainWindow(){
+    delete ui;
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *event){
+    Xml_Dom monXml;
+    monXml.saveXML();
+}
 
 
 void MainWindow::init(int dim) {
@@ -76,6 +90,37 @@ void MainWindow::init(int dim) {
 
     this->setWindowTitle("CALCULATRICE LO21"); //Donner un titre a sa fenetre
 }
+
+
+
+
+void MainWindow::initIDs(){
+        // -- On precise le nombre de lignes et le nombre de colonnes (ici 1) qu'on veut afficher -- //
+        // -- QTableWidget: c'est juste une coquille. On a des rangées pour mettre ce que l'on veut -- //
+        // -- MAIS, on va devoir allouer dynamiquement ce qu'on va mettre dedans: ATTENTION -- //
+    QStringList list_ids = IdentificateurManager::getInstance().getEntry();
+        ui->tableWidgetIDs->setRowCount(list_ids.size());
+        ui->tableWidgetPile->setColumnCount(1);
+
+
+        // -- Allocation des widgets a l'interieur du tableau -- //
+        for(unsigned int i=0; i < list_ids.size(); i++)
+            //setItem est une methode de la classe QTableWidget
+            ui->tableWidgetPile->setItem(i,0,new QTableWidgetItem("test"));
+
+        // -- Rendre invisible le header horizontal -- //
+        ui->tableWidgetPile->horizontalHeader()->setVisible(false);
+
+        // -- Ajuster la largeur de la derniere colonne (ici on en a qu'une) automatiquement -- //
+        ui->tableWidgetPile->horizontalHeader()->setStretchLastSection(true);
+
+        //ui->tableWidgetPile->setVerticalHeaderLabels(liste);
+
+        // -- Empecher l'edition du QTableWidget: on ne peut que voir les valeurs dans les champs et pas les modifier directement -- //
+        //ui->tableWidgetPile->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
+
 
 
 // connection
@@ -141,6 +186,12 @@ void MainWindow::connections() {
     // -- Pour associer le ctrl-y au redo -- //
     QShortcut* shortcutRedo = new QShortcut(QKeySequence("Ctrl+Y"), this);
     connect(shortcutRedo, SIGNAL(activated()), this, SLOT(on_pButRedo_clicked()));
+
+    // -- Connection entre le Controleur et la fenetre pour refresh la pile quand on fait une modif -- //
+    connect(&IdentificateurManager::getInstance(), SIGNAL(modificationEtatIDs()), this, SLOT(refreshIDs()));
+
+    // -- Sauvegardes des données quand on ferme l'appli -- //
+    //connect(MainWindow.centralwidget, SIGNAL(destroyed()), this, SLOT(close()));
 }
 
 
@@ -221,6 +272,11 @@ void MainWindow::refresh() {
             ui->tableWidgetPile->item(Pile::getInstance().getNbAffiche()-nb-1,0)->setText((*it)->toString());
             nb++;
     }
+}
+
+void MainWindow::refreshIDs(){
+    ui->tableWidgetIDs->clear();
+    this->initIDs();
 }
 
 

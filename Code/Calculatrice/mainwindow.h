@@ -21,8 +21,10 @@
 #include <QList>
 #include <QTextStream>
 #include <QChar>
+#include <QCloseEvent>
 
 #include "stackdialog.h"
+
 
 
 namespace Ui {
@@ -40,11 +42,14 @@ public:
     //void show();
     void connections();
     void init(int dim = 5);
+    void initIDs();
 
 private:
     Ui::MainWindow *ui;
     //StackDialog* stack;
 
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private slots:
         //  -- Chiffres de 0 à 9 -- //
@@ -116,11 +121,12 @@ private slots:
         // -- Operateur EDIT -- //
         void on_pButEdit_clicked();
 
-
+        // -- Settings -- //
         void checkModeScientist(bool);
         void on_spinBoxDimPile_valueChanged(int arg1);
         void on_checkBoxSounds_clicked();
         void on_spinBoxSaves_valueChanged(int arg1);
+        void refreshIDs();
 };
 
 

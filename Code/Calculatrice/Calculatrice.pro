@@ -62,7 +62,8 @@ SOURCES += main.cpp\
     not.cpp \
     dialogedit.cpp \
     tabdialog.cpp \
-    stackdialog.cpp
+    stackdialog.cpp \
+    xml_dom.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -113,9 +114,13 @@ HEADERS  += mainwindow.h \
     not.h \
     dialogedit.h \
     tabdialog.h \
-    stackdialog.h
+    stackdialog.h \
+    xml_dom.h
 
 FORMS    += mainwindow.ui \
     dialogedit.ui \
     tabdialog.ui \
     stackdialog.ui
+
+QT += xml
+

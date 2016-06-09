@@ -19,16 +19,27 @@
 #include <QRegularExpressionMatchIterator>
 #include <QStringList>
 
+#include "xml_dom.h"
+
 #include <iostream>
+
+#include <QtXml>
+#include "xml_dom.h"
+#include <QMessageBox>
+
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
 
+
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
+
+    //Xml_Dom *Dom = new Xml_Dom();
+    //Dom->show();
 
 /*
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
@@ -36,6 +47,10 @@ int main(int argc, char *argv[])
 
     cout << " ----> Res : " << res.toStdString() << endl;
 */
+    Xml_Dom monXml;
+    monXml.saveXML();
+
+
     //Pile& stack = Pile::getInstance();
     //Controleur& controle = Controleur::getInstance();
     //controle.boucleExcecution();

@@ -432,24 +432,17 @@
         <string>Reglages</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="6" column="0">
-         <widget class="QPushButton" name="pushButton">
-          <property name="text">
-           <string>Cancel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
+        <item row="4" column="2">
          <widget class="QCheckBox" name="checkBoxS">
           <property name="text">
            <string>Activé</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="3">
-         <widget class="QPushButton" name="pushButton_2">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Appliquer</string>
+           <string>Sounds</string>
           </property>
          </widget>
         </item>
@@ -460,7 +453,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="5" column="2">
          <widget class="QSpinBox" name="spinBoxSaves">
           <property name="minimum">
            <number>5</number>
@@ -470,14 +463,14 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
            <string>Taille de la Pile </string>
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
+        <item row="6" column="2">
          <widget class="QSpinBox" name="spinBoxDimPile">
           <property name="minimum">
            <number>1</number>
@@ -487,24 +480,17 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Mode scientifique</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
            <string>Nombre de sauvegardes</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Sounds</string>
           </property>
          </widget>
         </item>
@@ -516,7 +502,7 @@
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QTableView" name="tableViewIDs"/>
+         <widget class="QTableWidget" name="tableWidgetIDs"/>
         </item>
        </layout>
       </widget>

@@ -30,6 +30,7 @@ void IdentificateurManager::ajouterIdentificateur(const QString lit_name, Litter
         delete lit_name_suppr;
     }
     m_names.insert(lit_name, lit);
+    modificationEtatIDs();
 }
 
 
@@ -38,6 +39,7 @@ void IdentificateurManager::forgetIdentificateur(const QString lit_name) {
     if (m_names.contains(lit_name)) {
         Litterale* lit_name_suppr = m_names.take(lit_name);
         delete lit_name_suppr;
+        modificationEtatIDs();
     }
 }
 
@@ -82,4 +84,11 @@ const QString IdentificateurManager::strOperateurs() const {
     for (i = op_list.begin(); i != op_list.end(); ++i)
         result+= "|" + *i;
 return result.remove(0,1);
+}
+
+
+QStringList IdentificateurManager::getEntry() const {
+    QString result;
+    QList<QString> ids_list = m_names.keys();
+    return ids_list;
 }

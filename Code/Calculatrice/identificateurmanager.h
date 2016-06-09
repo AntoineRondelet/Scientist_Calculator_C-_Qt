@@ -6,9 +6,11 @@
 #include <QString>
 #include "analyser.h"
 
+#include <QObject>
 
 // -- Cette classe vise a recenser les litterales qui sont associées a un nom via STO: elle est composée par l'analyseur -- //
-class IdentificateurManager {
+class IdentificateurManager: public QObject {
+    Q_OBJECT
 private:
     // -- On decide de mettre analyser en classe amie et de NE PAS faire de composition car: -- //
     // -- 1) Certains opérateurs (STO/FORGET) doivent acceder a cette classe, donc on la considère un peu comme un ressource partagée -- //
@@ -45,6 +47,8 @@ public:
     void ajouterIdentificateur(const QString lit_name, Litterale* lit);
     void forgetIdentificateur(const QString lit_name);
 
+    QStringList getEntry() const;
+
     void init();
 
     // -- On choisit de ne pas faire de methode d'ajout d'operateur car les operateurs sont buit-in. Donc a priori, seul un programmeur pourra en ajouter, et pas l'utilisateur (il pourra cependant faire des programmes !) -- //
@@ -55,6 +59,9 @@ public:
     // -- Singleton -- //
     static IdentificateurManager& getInstance();
     static void libererInstance();
+
+signals:
+    void modificationEtatIDs();
 };
 
 #endif // IDENTIFICATEURMANAGER_H

@@ -47,4 +47,16 @@ Pile* Pile::clone() const {
 }
 
 
+// -- Pour la sauvegarde XML -- //
+
+void Pile::saveData() const {
+
+}
+
+
+void restoreData() {
+
+}
+
+
 
