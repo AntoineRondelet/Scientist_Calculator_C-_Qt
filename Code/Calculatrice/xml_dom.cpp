@@ -28,10 +28,10 @@ void Xml_Dom::saveXML() {
 
     xmlWriter.writeStartDocument();
 
-    xmlWriter.writeStartElement("Save");
+    xmlWriter.writeStartElement("SAVE");
 
     // -- On sauvegarde le contenu de la pile -- //
-    xmlWriter.writeStartElement("Stack");
+    xmlWriter.writeStartElement("STACK");
     QStack<Litterale*>::iterator i;
     for (i = stack.begin(); i != stack.end(); ++i) {
         // -- On recupere notre litterale -- //

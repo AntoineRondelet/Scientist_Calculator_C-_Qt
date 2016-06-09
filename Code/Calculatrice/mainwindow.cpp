@@ -30,13 +30,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     // -- On initialise l'apparence de la fenetre principale -- //
     init();
+
     // -- On établit les connections entre les boutons -- //
     connections();
+
     // -- Retablie la sauvegarde choisie -- //
     Xml_Dom monXml;
     monXml.RestoreXML();
-
     refresh();
+
     // -- On initialise les identificateurs a partir de la sauvegarde -- //
     initIDs();
 }
