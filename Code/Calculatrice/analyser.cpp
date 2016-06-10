@@ -182,7 +182,7 @@ void Analyser::init() {
     QString reel = "^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$";
     QString rationnel = "^(?<numerateur>(-?)[[:digit:]]+)/(?<denominateur>(-?)[[:digit:]]+)$";
     QString atome = "^[A-Z]([A-Z0-9]*)$";
-    QString complexe = "^(?<partRE>[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)[\\$](?<partIM>[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)$";
+    QString complexe = "^(?<partRE>(-?)[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)[\\$](?<partIM>(-?)[[:digit:]]+(([\\.]|[\\/])[[:digit:]]+)?)$";
     QString expression = "(?:'[^']+')";
     QString programme = "\\[(.)*\\]";
 

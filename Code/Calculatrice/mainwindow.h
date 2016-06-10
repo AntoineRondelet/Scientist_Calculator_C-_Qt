@@ -46,9 +46,12 @@ public:
     void init(int dim = 5);
     void initIDs();
 
+    const QList<QTableWidgetItem*> getClickedTableWidgetIDsVar() const;
+    const QList<QTableWidgetItem*> getClickedTableWidgetIDsProg() const;
+
 private:
     Ui::MainWindow *ui;
-    //StackDialog* stack;
+    //DialogEdit* fenetreEdit;
 
 protected:
     void closeEvent(QCloseEvent *event);

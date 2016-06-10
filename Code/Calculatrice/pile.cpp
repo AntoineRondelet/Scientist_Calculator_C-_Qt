@@ -16,6 +16,9 @@ void Pile::affiche() const{
 }
 
 
+//QVector<Litterale*> argsHistory;
+//QString lastOpname = "";
+
 // -- Singleton -- //
 
 Pile::Handler Pile::handler;

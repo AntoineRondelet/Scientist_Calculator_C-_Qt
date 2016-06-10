@@ -92,6 +92,8 @@ void IdentificateurManager::init() {
     m_ops.insert("NOT", "HIGH");
     m_ops.insert("OR", "HIGH");
     m_ops.insert("AND", "HIGH");
+    m_ops.insert("LASTOP", "HIGH");
+    m_ops.insert("LASTARGS", "HIGH");
 }
 
 
@@ -116,4 +118,15 @@ QStringList IdentificateurManager::getProgEntries() const {
     QString result;
     QList<QString> ids_list = m_names_prog.keys();
     return ids_list;
+}
+
+
+QString IdentificateurManager::getLitteraleVar(const QString& cle) const {
+    Litterale* lit = m_names_var.value(cle);
+    return lit->toString();
+}
+
+QString IdentificateurManager::getLitteraleProg(const QString& cle) const {
+    Litterale* lit = m_names_prog.value(cle);
+    return lit->toString();
 }

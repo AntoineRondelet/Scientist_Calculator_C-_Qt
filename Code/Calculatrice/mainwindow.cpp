@@ -14,6 +14,7 @@
 
 #include <QMessageBox>
 #include "dialogedit.h"
+#include "ui_dialogedit.h"
 
 #include "tabdialog.h"
 #include "stackdialog.h"
@@ -215,9 +216,15 @@ void MainWindow::connections() {
     // -- Connection entre le Controleur et la fenetre pour refresh la pile quand on fait une modif -- //
     connect(&IdentificateurManager::getInstance(), SIGNAL(modificationEtatIDs()), this, SLOT(refreshIDs()));
 
-    //connect(ui->tableWidgetIDsProg, SIGNAL(modificationEtatIDs()), this, SLOT(refreshIDs()));
+    //connect(ui->tableWidgetIDsProg, SIGNAL(modificationEtatIDs()), this, SLOT(fenetreEdit::settextSaisie()));
 }
 
+
+/*
+void MainWindow::setTextTextEdit(const QString& str) {
+    ui->lineEditCommande->setText(str);
+}
+*/
 
 
 // ------------- LES SLOTS -------------- //
@@ -587,24 +594,38 @@ void MainWindow::on_pButForgetSettings_clicked(){
     refreshIDs();
 }
 
+const QList<QTableWidgetItem*> MainWindow::getClickedTableWidgetIDsVar() const {
+    QList<QTableWidgetItem*> items = ui->tableWidgetIDsVar->selectedItems();
+    return items;
+}
+
+const QList<QTableWidgetItem*> MainWindow::getClickedTableWidgetIDsProg() const {
+    QList<QTableWidgetItem*> items_p = ui->tableWidgetIDsProg->selectedItems();
+    return items_p;
+}
+
 // A FINIR !!
 void MainWindow::on_pButEditSettings_clicked(){
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
 
     QList<QTableWidgetItem*> items = ui->tableWidgetIDsVar->selectedItems();
     QList<QTableWidgetItem*> items_p = ui->tableWidgetIDsProg->selectedItems();
-    DialogEdit* edit = new DialogEdit();
+
 
     if (!items.empty()) {
         QString str_item = items[0]->text();
-        id_man.forgetIdentificateur(str_item);
-
-
+        DialogEdit* fenetreEdit = new DialogEdit(this, str_item);
+        fenetreEdit->setTextSaisie(id_man.getLitteraleVar(str_item));
+        fenetreEdit->exec();
     }
     else if (!items_p.empty()) {
         QString str_item_prog = items_p[0]->text();
-        id_man.forgetIdentificateur(str_item_prog);
+        DialogEdit* fenetreEdit = new DialogEdit(this, str_item_prog);
+        fenetreEdit->setTextSaisie(id_man.getLitteraleProg(str_item_prog));
+        fenetreEdit->exec();
     }
-
+    else {
+        QApplication::beep();
+    }
     refreshIDs();
 }

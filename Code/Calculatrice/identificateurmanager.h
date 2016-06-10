@@ -57,6 +57,9 @@ public:
 
     const QString strOperateurs() const;
 
+    QString getLitteraleVar(const QString& cle) const;
+    QString getLitteraleProg(const QString& cle) const;
+
 
     // -- Singleton -- //
     static IdentificateurManager& getInstance();

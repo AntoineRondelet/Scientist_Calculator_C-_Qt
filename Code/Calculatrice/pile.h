@@ -35,6 +35,9 @@ class Pile: public QStack<Litterale*> {
     //Attributs
     unsigned int nbAffiche;
     QString message;
+
+    //static QVector<Litterale*> argsHistory;
+    //static QString lastOpname;
 public:
 
     Pile(): QStack<Litterale*>(), nbAffiche(5){}
