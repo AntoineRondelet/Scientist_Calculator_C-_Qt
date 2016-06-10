@@ -21,8 +21,8 @@ void Controleur::commande(QStringList& list_src)
         if (match == true) // -- On a construit quelque chose: on sauvegarde -- //
             PileCaretaker::getInstance().saveState(&Pile::getInstance());
             // -- L'etat a changé, on a empilé quelque chose -- //
-        else
-            CALCULATRICE_EXCEPTION("Erreur: Entrée invalide")
+        //else
+            //CALCULATRICE_EXCEPTION("Erreur: Entrée invalide")
         modificationEtat();
     }
     catch (CalculatriceException& e) {

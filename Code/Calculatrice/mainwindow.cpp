@@ -15,6 +15,7 @@
 #include <QMessageBox>
 #include "dialogedit.h"
 #include "ui_dialogedit.h"
+#include "dialogeditpile.h"
 
 #include "tabdialog.h"
 #include "stackdialog.h"
@@ -471,10 +472,22 @@ void MainWindow::on_pButEgal_clicked(){
 
 
 void MainWindow::on_pButEdit_clicked(){
-    TabDialog edit;
-    /*DialogEdit edit;*/
-    edit.setModal(true);
-    edit.exec();
+    IdentificateurManager& id_man = IdentificateurManager::getInstance();
+    Pile& stack =  Pile::getInstance();
+
+    Litterale* lit_a_edit = stack.pop();
+
+    Programme* ptr_prog= dynamic_cast<Programme*>(lit_a_edit);
+
+    if(ptr_prog != nullptr) {
+        DialogEditPile* fenetreEdit = new DialogEditPile(this);
+        fenetreEdit->setTextSaisie(ptr_prog->toString());
+        fenetreEdit->exec();
+    }
+    else {
+        QApplication::beep();
+    }
+    refreshIDs();
 }
 
 

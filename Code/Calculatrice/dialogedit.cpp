@@ -1,6 +1,8 @@
 #include "dialogedit.h"
 #include "ui_dialogedit.h"
 
+#include <QMessageBox>
+
 #include "identificateurmanager.h"
 #include "controleur.h"
 
@@ -26,7 +28,6 @@ void DialogEdit::setTextSaisie(const QString& name) {
 void DialogEdit::on_buttonBox_accepted(){
     IdentificateurManager& id_man = IdentificateurManager::getInstance();
     QString str_value = ui->textSaisie->toPlainText();
-    id_man.forgetIdentificateur(str);
 
     QString entier = "^-?[[:digit:]]+$";
     QString reel = "^(-?)[[:digit:]]*(\\.)([[:digit:]]*)$";
@@ -42,14 +43,16 @@ void DialogEdit::on_buttonBox_accepted(){
     QRegularExpressionMatch str_match_var = regexNb.match(str_value);
     QRegularExpressionMatch str_match_prog = regexPg.match(str_value);
     if(str_match_var.hasMatch() || str_match_prog.hasMatch()) {
+        id_man.forgetIdentificateur(str);
         QStringList list_str;
         list_str << str_value << "'"+str+"'" << "STO";
         Controleur::getInstance().commande(list_str);
     }
     else {
         QApplication::beep();
+        QMessageBox msg;
+        msg.setText("Erreur de saisie, le changement n'a pas eu lieu");
+        msg.exec();
     }
-
-
 }
 
