@@ -11,6 +11,8 @@
 #include "swap.h"
 #include "and.h"
 #include "or.h"
+#include "mod.h"
+#include "diventiere.h"
 
 #include "neg.h"
 #include "num.h"
@@ -20,6 +22,8 @@
 #include "dup.h"
 #include "not.h"
 #include "forget.h"
+#include "re.h"
+#include "im.h"
 
 #include "undo.h"
 #include "redo.h"
@@ -81,6 +85,12 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     else if(str == "OR") {
         return new Or;
     }
+    else if(str == "DIV") {
+        return new Diventiere;
+    }
+    else if(str == "MOD") {
+        return new Mod;
+    }
 
 
 
@@ -108,6 +118,12 @@ Operator* getOperateur(const string& str){ //Ici c'est une factory en quelque so
     }
     else if(str == "FORGET") {
         return new Forget;
+    }
+    else if(str == "RE") {
+        return new Re;
+    }
+    else if(str == "IM") {
+        return new Im;
     }
 
     //---------- Operateurs "Speciaux" -----------//

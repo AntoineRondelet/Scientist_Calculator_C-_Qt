@@ -65,7 +65,11 @@ SOURCES += main.cpp\
     stackdialog.cpp \
     xml_dom.cpp \
     lastop.cpp \
-    dialogeditpile.cpp
+    dialogeditpile.cpp \
+    im.cpp \
+    re.cpp \
+    mod.cpp \
+    diventiere.cpp
 
 HEADERS  += mainwindow.h \
     entier.h \
@@ -119,7 +123,11 @@ HEADERS  += mainwindow.h \
     stackdialog.h \
     xml_dom.h \
     lastop.h \
-    dialogeditpile.h
+    dialogeditpile.h \
+    im.h \
+    re.h \
+    mod.h \
+    diventiere.h
 
 FORMS    += mainwindow.ui \
     dialogedit.ui \
@@ -128,9 +136,6 @@ FORMS    += mainwindow.ui \
     dialogeditpile.ui
 
 QT += xml
-
-
-
 
 
 

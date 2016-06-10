@@ -218,15 +218,11 @@ void MainWindow::connections() {
     // -- Connection entre le Controleur et la fenetre pour refresh la pile quand on fait une modif -- //
     connect(&IdentificateurManager::getInstance(), SIGNAL(modificationEtatIDs()), this, SLOT(refreshIDs()));
 
-    //connect(ui->tableWidgetIDsProg, SIGNAL(modificationEtatIDs()), this, SLOT(fenetreEdit::settextSaisie()));
+    // -- Pouvoir utiliser la touche clavier Enter -- //
+    connect(ui->lineEditCommande, SIGNAL(returnPressed()), this, SLOT(butEnterAppuye()));
 }
 
 
-/*
-void MainWindow::setTextTextEdit(const QString& str) {
-    ui->lineEditCommande->setText(str);
-}
-*/
 
 
 // ------------- LES SLOTS -------------- //
@@ -627,4 +623,40 @@ void MainWindow::on_pButLastargs_clicked(){
     while(!Pile::argsHistory.empty()){
         Pile::getInstance().push(Pile::argsHistory.takeFirst());
     }
+}
+
+void MainWindow::on_pButRe_clicked(){
+    QStringList str_list;
+    str_list.push_back("RE");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButIm_clicked(){
+    QStringList str_list;
+    str_list.push_back("IM");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButDivEnt_clicked(){
+    QStringList str_list;
+    str_list.push_back("DIV");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButMod_clicked(){
+    QStringList str_list;
+    str_list.push_back("MOD");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButSupEgal_clicked(){
+    QStringList str_list;
+    str_list.push_back(">=");
+    Controleur::getInstance().commande(str_list);
+}
+
+void MainWindow::on_pButInfEgal_clicked(){
+    QStringList str_list;
+    str_list.push_back("<=");
+    Controleur::getInstance().commande(str_list);
 }

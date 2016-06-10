@@ -138,6 +138,12 @@ private slots:
         void on_pButEditSettings_clicked();
         void on_pButLastops_clicked();
         void on_pButLastargs_clicked();
+        void on_pButRe_clicked();
+        void on_pButIm_clicked();
+        void on_pButDivEnt_clicked();
+        void on_pButMod_clicked();
+        void on_pButSupEgal_clicked();
+        void on_pButInfEgal_clicked();
 };
 
 
