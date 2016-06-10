@@ -12,6 +12,7 @@ void Not::execute(QVector<Litterale*> litterals) const {
             res = new Entier(1);
 
         Pile::getInstance().push(res);
+        Pile::lastOpname = "NOT";
     }
     else {
         this->reChargerOperande(litterals);

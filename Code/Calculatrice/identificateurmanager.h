@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QString>
 #include "analyser.h"
+#include "xml_dom.h"
 
 #include <QObject>
 
@@ -16,6 +17,7 @@ private:
     // -- 1) Certains opérateurs (STO/FORGET) doivent acceder a cette classe, donc on la considère un peu comme un ressource partagée -- //
     // -- 2) On met Analyser en classe amie car elle doit pouvoir avoir un acces direct a la QMap (pour la parcourir etc.) alors que STO et FORGET passent par les methodes ajout et suppression de la classe (pas les mêmes droits) -- //
     friend Litterale* createAtome(QRegularExpressionMatch matched_exp);
+    friend class Xml_Dom;
 
     // -- QMaps qui associe un nom a une Litterale ayant subit un STO -- //
     QMap<QString, Litterale*> m_names_var;

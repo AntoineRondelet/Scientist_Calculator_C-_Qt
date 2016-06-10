@@ -16,8 +16,8 @@ void Pile::affiche() const{
 }
 
 
-//QVector<Litterale*> argsHistory;
-//QString lastOpname = "";
+QVector<Litterale*> Pile::argsHistory;
+QString Pile::lastOpname = "";
 
 // -- Singleton -- //
 
@@ -49,17 +49,13 @@ Pile* Pile::clone() const {
     return pClone;
 }
 
-
-// -- Pour la sauvegarde XML -- //
-
-void Pile::saveData() const {
-
-}
-
-
-void restoreData() {
-
-}
+ void Pile::clean(QVector<Litterale*> vec){
+     unsigned int i = 0;
+     while(!vec.empty()) {
+         delete vec[i];
+         i++;
+     }
+ }
 
 
 

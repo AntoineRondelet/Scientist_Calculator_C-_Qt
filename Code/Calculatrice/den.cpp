@@ -12,12 +12,14 @@ void Den::execute(QVector<Litterale*> litterals) const {
         Entier* res= new Entier(operande_rationnelle->getDenominateur());
         //LitteraleNombre& ref = *res;
         stack.push(res);
+        Pile::lastOpname = "DEN";
         delete litterals[0];
     }
     else if (operandeEntier){
         Entier* res= new Entier(1);
         //LitteraleNombre& ref = *res;
         stack.push(res);
+        Pile::lastOpname = "DEN";
         delete litterals[0];
     }
     else {

@@ -21,6 +21,7 @@ void Div::execute(QVector<Litterale*> litterals) const {
         }
         //On empilele resultat
         Pile::getInstance().push(&res);
+        Pile::lastOpname = "/";
     }
     else if (operande1bis!=nullptr && operande2!=nullptr)  {
         Litterale& res = operande2->division(*operande1bis);
@@ -30,6 +31,7 @@ void Div::execute(QVector<Litterale*> litterals) const {
         }
         //On empilele resultat
         Pile::getInstance().push(&res);
+        Pile::lastOpname = "/";
     }
     else {
         LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
@@ -41,6 +43,7 @@ void Div::execute(QVector<Litterale*> litterals) const {
 
                 //On empilele resultat
                 Pile::getInstance().push(&res);
+                Pile::lastOpname = "/";
 
                 //On delete le tableau qu'on a récupéré en argument
                 for (unsigned int i = 0; i < Nb_a_depiler; i++) {

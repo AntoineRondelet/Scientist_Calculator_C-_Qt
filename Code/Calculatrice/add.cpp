@@ -12,6 +12,8 @@ void Add::execute(QVector<Litterale*> litterals) const {
     Expression* operande1bis = dynamic_cast<Expression*>(litterals[0]);
     if(operande1!=nullptr && operande2!=nullptr) {
         Litterale& res = operande2->addition(*operande1);
+        Pile::lastOpname = "+";
+
         //On delete le tableau qu'on a récupéré en argument
         for (unsigned int i = 0; i < Nb_a_depiler; i++) {
             delete litterals[i];
@@ -21,6 +23,8 @@ void Add::execute(QVector<Litterale*> litterals) const {
     }
     else if (operande1bis!=nullptr && operande2!=nullptr)  {
         Litterale& res = operande2->addition(*operande1bis);
+        Pile::lastOpname = "+";
+
         //On delete le tableau qu'on a récupéré en argument
         for (unsigned int i = 0; i < Nb_a_depiler; i++) {
             delete litterals[i];
@@ -41,6 +45,7 @@ void Add::execute(QVector<Litterale*> litterals) const {
             }
             //On empilele resultat
             Pile::getInstance().push(&res);
+            Pile::lastOpname = "+";
         }
         else {
             this->reChargerOperande(litterals);

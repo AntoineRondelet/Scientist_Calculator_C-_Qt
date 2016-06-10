@@ -36,9 +36,12 @@ class Pile: public QStack<Litterale*> {
     unsigned int nbAffiche;
     QString message;
 
+public:
+
     static QVector<Litterale*> argsHistory;
     static QString lastOpname;
-public:
+
+    void clean(QVector<Litterale*> vec);
 
     Pile(): QStack<Litterale*>(), nbAffiche(5){}
     void affiche() const;
@@ -102,10 +105,6 @@ public:
 
 
     Pile* clone() const;
-
-    // -- Pour la sauvegarde XML -- //
-    void saveData() const;
-    void restoreData();
 };
 
 

@@ -18,6 +18,7 @@ void Sous::execute(QVector<Litterale*> litterals) const {
         }
         //On empilele resultat
         Pile::getInstance().push(&res);
+        Pile::lastOpname = "-";
     }
     else if (operande1bis!=nullptr && operande2!=nullptr)  {
         Litterale& res = operande2->soustraction(*operande1bis);
@@ -27,6 +28,7 @@ void Sous::execute(QVector<Litterale*> litterals) const {
         }
         //On empilele resultat
         Pile::getInstance().push(&res);
+        Pile::lastOpname = "-";
     }
     else {
         LitteraleNombre* operande1 = dynamic_cast<LitteraleNombre *>(litterals[0]);
@@ -41,6 +43,7 @@ void Sous::execute(QVector<Litterale*> litterals) const {
             }
             //On empilele resultat
             Pile::getInstance().push(&res);
+            Pile::lastOpname = "-";
         }
         else {
             this->reChargerOperande(litterals);

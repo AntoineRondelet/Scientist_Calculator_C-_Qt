@@ -77,47 +77,71 @@ void Xml_Dom::saveXML() {
 
     // -- Sauvegarde du contenu de la table des identifiants -- //
     xmlWriter.writeStartElement("IDENTIFIANTS");
-    QStack<Litterale*>::iterator it;
-    for (it = stack.begin(); it != stack.end(); ++it) {
+    xmlWriter.writeStartElement("VARIABLES");
+    QMap<QString, Litterale*>::iterator it;
+    for (it = IdentificateurManager::getInstance().m_names_var.begin(); it != IdentificateurManager::getInstance().m_names_var.end(); ++it){
+        //cout << it.key() << ": " << it.value() << endl;
         // -- On recupere notre litterale -- //
-        Litterale *cur_lit = *it;
+        Litterale* cur_lit_var = it.value();
+        QString cur_str = it.key();
         // -- On teste le type de notre litterale -- //
-        Entier* litEnt = dynamic_cast<Entier*>(cur_lit);
-        Reel* litRe = dynamic_cast<Reel*>(cur_lit);
-        Rationnel* litRa = dynamic_cast<Rationnel*>(cur_lit);
-        Complexe* litCpx = dynamic_cast<Complexe*>(cur_lit);
-        Atome* litAt = dynamic_cast<Atome*>(cur_lit);
-        Expression* litExp = dynamic_cast<Expression*>(cur_lit);
-        Programme* litPg = dynamic_cast<Programme*>(cur_lit);
+        Entier* litEntv = dynamic_cast<Entier*>(cur_lit_var);
+        Reel* litRev = dynamic_cast<Reel*>(cur_lit_var);
+        Rationnel* litRav = dynamic_cast<Rationnel*>(cur_lit_var);
+        Complexe* litCpxv = dynamic_cast<Complexe*>(cur_lit_var);
 
-        if(litEnt != nullptr) {
-            xmlWriter.writeTextElement("Entier", litEnt->toString());
+        if(litEntv != nullptr) {
+            xmlWriter.writeStartElement("EntierVar");
+                /*add one attribute and its value*/
+                xmlWriter.writeAttribute("name",cur_str);
+                /*add character data to tag student */
+                xmlWriter.writeCharacters (cur_lit_var->toString());
+                /*close tag student  */
+            xmlWriter.writeEndElement();
         }
-        else if (litRe !=  nullptr) {
-            xmlWriter.writeTextElement("Reel", litRe->toString());
+        else if (litRev !=  nullptr) {
+            xmlWriter.writeStartElement("ReelVar");
+                xmlWriter.writeAttribute("name",cur_str);
+                xmlWriter.writeCharacters (cur_lit_var->toString());
+            xmlWriter.writeEndElement();
         }
-        else if (litRa !=  nullptr) {
-            xmlWriter.writeTextElement("Rationnel", litRa->toString());
+        else if (litRav !=  nullptr) {
+            xmlWriter.writeStartElement("RationnelVar");
+                xmlWriter.writeAttribute("name",cur_str);
+                xmlWriter.writeCharacters (cur_lit_var->toString());
+            xmlWriter.writeEndElement();
         }
-        else if (litCpx !=  nullptr) {
-            xmlWriter.writeTextElement("Complexe", litCpx->toString());
-        }
-        else if (litAt !=  nullptr) {
-            xmlWriter.writeTextElement("Atome", litAt->toString());
-        }
-        else if (litExp !=  nullptr) {
-            xmlWriter.writeTextElement("Expression", litExp->toString());
-        }
-        else if (litPg !=  nullptr) {
-            xmlWriter.writeTextElement("Programme", litPg->toString());
-
+        else if (litCpxv !=  nullptr) {
+            xmlWriter.writeStartElement("ComplexeVar");
+                xmlWriter.writeAttribute("name",cur_str);
+                xmlWriter.writeCharacters (cur_lit_var->toString());
+            xmlWriter.writeEndElement();
         }
         else {
             CALCULATRICE_EXCEPTION("MEGA BUG SUR LE XML");
         }
     }
-    xmlWriter.writeEndElement();
     // -- Fin de la sauvegarde du contenu de la table des identifiants -- //
+
+    xmlWriter.writeEndElement(); //IDENTIFIANTS
+    xmlWriter.writeEndElement(); //VARIABLES
+
+    // -- sauvegarde des programmes -- //
+
+    xmlWriter.writeStartElement("PROGRAMMES");
+    QMap<QString, Litterale*>::iterator itp;
+    for (itp = IdentificateurManager::getInstance().m_names_prog.begin(); itp != IdentificateurManager::getInstance().m_names_prog.end(); ++itp){
+        // -- On recupere notre litterale -- //
+        Litterale* cur_lit_prog = itp.value();
+        QString cur_str_prog = itp.key();
+        xmlWriter.writeStartElement("Prog");
+        xmlWriter.writeAttribute("name",cur_str_prog);
+        xmlWriter.writeCharacters (cur_lit_prog->toString());
+        xmlWriter.writeEndElement();
+    }
+    // -- Fin de la sauvegarde du contenu de la table des programmes -- //
+
+    xmlWriter.writeEndElement(); //PROGRAMMES
 
     xmlWriter.writeEndDocument();
 
@@ -197,22 +221,77 @@ void Xml_Dom::RestoreXML() {
                 QString str_prog = Rxml.readElementText();
                 stack.push(new Programme(str_prog));
             }
-            /*
             else if(Rxml.name() == "IDENTIFIANTS")
             {
                 Rxml.readNext();
             }
-            else if(Rxml.name() == "Idvariables")
+            else if(Rxml.name() == "VARIABLES")
             {
-                QString str_prog = Rxml.readElementText();
-                stack.push(new Programme(str_prog));
+                Rxml.readNext();
             }
-            else if(Rxml.name() == "Idprogrammes")
+            else if(Rxml.name() == "EntierVar")
             {
-                QString str_prog = Rxml.readElementText();
-                stack.push(new Programme(str_prog));
+                QString nom;
+                QString value;
+                QXmlStreamAttributes attributes = Rxml.attributes();
+                if(attributes.hasAttribute("name"))
+                    nom = attributes.value("name").toString();
+                value = Rxml.readElementText();
+                Entier* ptr_lit = new Entier(value.toInt());
+                IdentificateurManager::getInstance().m_names_var.insert(nom, ptr_lit);
             }
-            */
+            else if(Rxml.name() == "ReelVar")
+            {
+                QString nom;
+                QString value;
+                QXmlStreamAttributes attributes = Rxml.attributes();
+                if(attributes.hasAttribute("name"))
+                    nom = attributes.value("name").toString();
+                value = Rxml.readElementText();
+                Reel* ptr_lit = new Reel(value.toFloat());
+                IdentificateurManager::getInstance().m_names_var.insert(nom, ptr_lit);
+            }
+            else if(Rxml.name() == "RationnelVar")
+            {
+                QString nom;
+                QString value;
+                QXmlStreamAttributes attributes = Rxml.attributes();
+                if(attributes.hasAttribute("name"))
+                    nom = attributes.value("name").toString();
+
+                value = Rxml.readElementText();
+                QStringList list_str = value.split("/");
+                Rationnel* ptr_lit = new Rationnel(list_str[0].toInt(), list_str[1].toInt());
+                IdentificateurManager::getInstance().m_names_var.insert(nom, ptr_lit);
+            }
+            /*else if(Rxml.name() == "ComplexeVar")
+            {
+                QString nom;
+                QString value;
+                QXmlStreamAttributes attributes = Rxml.attributes();
+                if(attributes.hasAttribute("name"))
+                    nom = attributes.value("name").toString();
+
+                QStringList list_str = value.split("$");
+                list_str << "$" << "'"+nom+"'" << "STO";
+                Controleur& ctr = Controleur::getInstance();
+                ctr.commande(list_str);
+            }*/
+            else if(Rxml.name() == "PROGRAMMES")
+            {
+                Rxml.readNext();
+            }
+            else if(Rxml.name() == "Prog")
+            {
+                QString nom;
+                QString value;
+                QXmlStreamAttributes attributes = Rxml.attributes();
+                if(attributes.hasAttribute("name"))
+                    nom = attributes.value("name").toString();
+                value = Rxml.readElementText();
+                Programme* ptr_lit = new Programme(value);
+                IdentificateurManager::getInstance().m_names_prog.insert(nom, ptr_lit);
+            }
             else
             {
               Rxml.raiseError(QObject::tr("Not a bookindex file"));

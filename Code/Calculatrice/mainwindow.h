@@ -136,6 +136,8 @@ private slots:
         void on_tableWidgetIDsVar_itemClicked(QTableWidgetItem *item);
         void on_pButForgetSettings_clicked();
         void on_pButEditSettings_clicked();
+        void on_pButLastops_clicked();
+        void on_pButLastargs_clicked();
 };
 
 

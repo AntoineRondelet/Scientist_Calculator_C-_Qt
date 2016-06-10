@@ -41,6 +41,7 @@ void Sto::execute(QVector<Litterale*> litterals) const {
             else
                 id_man.ajouterIdentificateur(matched, operande2Prog->clone());
 
+            Pile::lastOpname = "STO";
             for (unsigned int i = 0; i < Nb_a_depiler; i++) {
                 delete litterals[i];
             }

@@ -24,6 +24,7 @@ void Eval::execute(QVector<Litterale*> litterals) const {
         }
         else {
             delete litterals[0];
+            Pile::lastOpname = "EVAL";
         }
     }
     else if (operandeProg!=nullptr) {
@@ -39,6 +40,7 @@ void Eval::execute(QVector<Litterale*> litterals) const {
         }
         else {
             delete litterals[0];
+            Pile::lastOpname = "EVAL";
         }
     }
     else {

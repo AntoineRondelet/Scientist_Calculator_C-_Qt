@@ -23,6 +23,7 @@ void OperateurComplexe::execute(QVector<Litterale*> litterals) const {
         //On empilele resultat
         Pile& stack = Pile::getInstance();
         stack.push(res);
+        Pile::lastOpname = "$";
     }
     else {
         this->reChargerOperande(litterals);

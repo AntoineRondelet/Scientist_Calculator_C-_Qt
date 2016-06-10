@@ -13,6 +13,7 @@ void Num::execute(QVector<Litterale*> litterals) const {
         Entier* res= new Entier(operande_rationnelle->getNumerateur());
         stack.push(res);
         delete litterals[0];
+        Pile::lastOpname = "NUM";
     }
     else {
         if (!operandeEntier)

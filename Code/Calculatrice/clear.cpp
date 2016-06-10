@@ -8,4 +8,5 @@ void Clear::execute(QVector<Litterale*> litterals) const {
         QVector<Litterale*> vec = objDrop.chargerOperande();
         objDrop.execute(vec);
     }
+    Pile::lastOpname = "CLEAR";
 }

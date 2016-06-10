@@ -19,6 +19,7 @@ void Forget::execute(QVector<Litterale*> litterals) const {
         if(str_match.hasMatch()) {
             IdentificateurManager& id_man = IdentificateurManager::getInstance();
             id_man.forgetIdentificateur(stringAMatcher);
+            Pile::lastOpname = "FORGET";
         }
         else {
             CALCULATRICE_EXCEPTION("L'expression ne doit comporter qu'un atome !")

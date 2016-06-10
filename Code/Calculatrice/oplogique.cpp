@@ -44,6 +44,7 @@ void OpLogiqueEgal::execute(QVector<Litterale*> litterals) const {
 
         //On empile le resultat
         Pile::getInstance().push(res);
+        Pile::lastOpname = "=";
     }
 }
 
@@ -89,6 +90,7 @@ void OpLogiqueDiffEgal::execute(QVector<Litterale*> litterals) const {
 
         //On empile le resultat
         Pile::getInstance().push(res);
+        Pile::lastOpname = "!=";
     }
 }
 
@@ -136,6 +138,7 @@ void OpLogiqueInf::execute(QVector<Litterale*> litterals) const {
 
         //On empile le resultat
         Pile::getInstance().push(res);
+        Pile::lastOpname = "<";
     }
     else {
         this->reChargerOperande(litterals);
@@ -183,6 +186,7 @@ void OpLogiqueSup::execute(QVector<Litterale*> litterals) const {
 
         //On empile le resultat
         Pile::getInstance().push(res);
+        Pile::lastOpname = ">";
     }
     else {
         this->reChargerOperande(litterals);
@@ -230,6 +234,7 @@ void OpLogiqueInfEgal::execute(QVector<Litterale*> litterals) const {
 
         //On empile le resultat
         Pile::getInstance().push(res);
+        Pile::lastOpname = "<=";
     }
     else {
         this->reChargerOperande(litterals);
@@ -277,6 +282,7 @@ void OpLogiqueSupEgal::execute(QVector<Litterale*> litterals) const {
 
         //On empile le resultat
         Pile::getInstance().push(res);
+        Pile::lastOpname = ">=";
     }
     else {
         this->reChargerOperande(litterals);

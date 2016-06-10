@@ -7,4 +7,5 @@ void Swap::execute(QVector<Litterale*> litterals) const {
     // -- On remet les litterales dans la pile dans le sens inverse -- //
     Pile::getInstance().push(operande1);
     Pile::getInstance().push(operande2);
+    Pile::lastOpname = "SWAP";
 }

@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // -- Retablie la sauvegarde choisie -- //
     Xml_Dom monXml;
     monXml.RestoreXML();
+
     refresh();
 
     // -- On initialise les identificateurs a partir de la sauvegarde -- //
@@ -299,12 +300,14 @@ void MainWindow::refresh() {
         ui->tableWidgetPile->item(i,0)->setText("");
     }
     // -- Affichage -- //
-    unsigned int nb=0; //nb = Pile::getInstance().getNbAffiche()-1;
-    for(Pile::iterator it=Pile::getInstance().begin(); it!=Pile::getInstance().end() && nb<Pile::getInstance().getNbAffiche(); ++it) {
-            ui->tableWidgetPile->item(Pile::getInstance().getNbAffiche()-nb-1,0)->setText((*it)->toString());
-            nb++; //nb--;
+    unsigned int nb = Pile::getInstance().getNbAffiche();
+    for(int i=Pile::getInstance().getNbAffiche(); i>0; i--) {
+        //A changer ! ici on affiche des std::string -> il faudra supprimer le .toStdString() et affciher des QString dans l'appli
+        if (i<= Pile::getInstance().size())
+            ui->tableWidgetPile->item(Pile::getInstance().getNbAffiche()-i,0)->setText(Pile::getInstance().value(Pile::getInstance().size()-i)->toString());
     }
 }
+
 
 
 /*
@@ -316,35 +319,6 @@ void MainWindow::keyPressEvent(QKeyEvent *ev){
         QMainWindow::keyPressEvent(ev);
     }
 }
-*/
-
-/* Pour fair ele ctrl-z et le undo etc
-QShortcut* shortcut = new QShortcut(QKeySequence("Ctrl+W"), this);
-QObject::connect(shortcut, SIGNAL(activated()), tonObject, SLOT(tonSlot()));
-*/
-
-
-
-
-/*
-
-// enter et eval
-connect(ui->butenter, SIGNAL(clicked()), this, SLOT(butEnterAppuye()));
-connect(ui->buteval, SIGNAL(clicked()), this, SLOT(butEvalAppuye()));
-
-// delete
-connect(ui->butdel, SIGNAL(clicked()), this, SLOT(butDelAppuye()));
-
-
-// checkbox mode complex = annuler qq boutons
-connect(ui->checkBoxComplex, SIGNAL(clicked(bool)), this, SLOT(checkModeComplex(bool)));
-
-// boutton backspace
-connect(ui->butBackspace, SIGNAL(clicked()), this, SLOT(butBackspace()));
-
-// Edition : actions Undo et Redo
-connect(ui->actionAnnuler, SIGNAL(triggered()), this, SLOT(annulerEtatPile()));
-connect(ui->actionRetablir, SIGNAL(triggered()), this, SLOT(retablirEtatPile()));
 */
 
 
@@ -641,4 +615,16 @@ void MainWindow::on_pButEditSettings_clicked(){
         QApplication::beep();
     }
     refreshIDs();
+}
+
+void MainWindow::on_pButLastops_clicked(){
+    QStringList list_str;
+    list_str << Pile::lastOpname;
+    Controleur::getInstance().commande(list_str);
+}
+
+void MainWindow::on_pButLastargs_clicked(){
+    while(!Pile::argsHistory.empty()){
+        Pile::getInstance().push(Pile::argsHistory.takeFirst());
+    }
 }

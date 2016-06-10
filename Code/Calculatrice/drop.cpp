@@ -4,6 +4,7 @@
 
 void Drop::execute(QVector<Litterale*> litterals) const{
     delete litterals[0];
+    Pile::lastOpname = "DROP";
 }
 
 

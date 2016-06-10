@@ -13,6 +13,7 @@ void And::execute(QVector<Litterale*> litterals) const {
             res = new Entier(0);
 
         Pile::getInstance().push(res);
+        Pile::lastOpname = "AND";
     }
     else {
         this->reChargerOperande(litterals);

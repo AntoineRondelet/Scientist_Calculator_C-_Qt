@@ -14,6 +14,7 @@ void Or::execute(QVector<Litterale*> litterals) const {
             res = new Entier(0);
 
         Pile::getInstance().push(res);
+        Pile::lastOpname = "OR";
     }
     else {
         this->reChargerOperande(litterals);

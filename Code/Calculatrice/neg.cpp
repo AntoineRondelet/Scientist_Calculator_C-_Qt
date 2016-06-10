@@ -15,6 +15,7 @@ void Neg::execute(QVector<Litterale*> litterals) const {
         //On empilele resultat
         Pile& stack = Pile::getInstance();
         stack.push(&res);
+        Pile::lastOpname = "NEG";
     }
     else {
         this->reChargerOperande(litterals);

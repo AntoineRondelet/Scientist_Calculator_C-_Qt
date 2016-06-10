@@ -9,6 +9,7 @@ void Dup::execute(QVector<Litterale*> litterals) const {
         //On empile notre operande et notre resultat
         Pile::getInstance().push(operande);
         Pile::getInstance().push(res);
+        Pile::lastOpname = "DUP";
     }
     else {
         this->reChargerOperande(litterals);

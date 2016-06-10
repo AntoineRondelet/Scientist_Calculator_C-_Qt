@@ -22,6 +22,7 @@ void Ift::execute(QVector<Litterale*> litterals) const {
             vec.push_back(litterals[0]);
             objEval.execute(vec);
             delete operande2;
+            Pile::lastOpname = "IFT";
         }
         else{
             for (unsigned int i = 0; i < Nb_a_depiler; i++) {
