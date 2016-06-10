@@ -24,7 +24,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -430,6 +430,9 @@
           <property name="text">
            <string>Activé</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
@@ -464,6 +467,12 @@
           <property name="maximum">
            <number>7</number>
           </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
          </widget>
         </item>
         <item row="4" column="0">
@@ -484,6 +493,9 @@
          <widget class="QCheckBox" name="checkBoxSounds">
           <property name="text">
            <string>Activé</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

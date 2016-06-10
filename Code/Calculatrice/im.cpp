@@ -20,6 +20,7 @@ try{
         Pile& stack = Pile::getInstance();
         LitteraleNombre& res = dynamic_cast<LitteraleNombre &>(*temp->clone());
         stack.push(&res);
+        Pile::lastOpname = "IM";
     }
     else{
         CALCULATRICE_EXCEPTION("Erreur : La litterale n'est pas un complexe");

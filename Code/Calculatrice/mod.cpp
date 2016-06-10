@@ -17,6 +17,7 @@ void Mod::execute(QVector<Litterale*> litterals) const {
     //On oublie pas de delete le tableau qu'on a récupéré en argument
             Pile& p = Pile::getInstance();
             p.push_back(&res);
+            Pile::lastOpname = "MOD";
         }
         else{
             if (operande1 == nullptr || operande2 == nullptr){

@@ -39,6 +39,8 @@ void Add::execute(QVector<Litterale*> litterals) const {
         if (operande1!=nullptr && operande2!=nullptr){
             Litterale& res = (*operande2) + (*operande1); //On a des operandes qui sont des ptr sur des LitteralesNombre -> l'operateur + y est defini -> polymorphisme
 
+            Pile::argsHistory.push_back(litterals[0]->clone());
+            Pile::argsHistory.push_back(litterals[1]->clone());
             //On delete le tableau qu'on a récupéré en argument
             for (unsigned int i = 0; i < Nb_a_depiler; i++) {
                 delete litterals[i];

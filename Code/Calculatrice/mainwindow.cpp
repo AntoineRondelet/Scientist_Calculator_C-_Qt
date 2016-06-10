@@ -260,10 +260,10 @@ void MainWindow::butDivAppuye(){ ui->lineEditCommande->setText(ui->lineEditComma
 
 
 // -- Elements de synatxe -- //
-void MainWindow::butCrochOAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" [ "); }
-void MainWindow::butCrochFAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" ] "); }
-void MainWindow::butParenthOAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" ( "); }
-void MainWindow::butParenthFAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" ) "); }
+void MainWindow::butCrochOAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"["); }
+void MainWindow::butCrochFAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"]"); }
+void MainWindow::butParenthOAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"("); }
+void MainWindow::butParenthFAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+")"); }
 void MainWindow::butQuoteAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+"'"); }
 void MainWindow::butSpaceAppuye(){ ui->lineEditCommande->setText(ui->lineEditCommande->text()+" "); }
 
