@@ -1,3 +1,3 @@
-Scientist calculator using polish reverse notation
+'''Scientist calculator using polish reverse notation'''
 
-Thsi project was carried out as part of an object oriented course. 
+This project was carried out as part of an object oriented course. 
