@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SAVE>
+    <STACK>
+        <Reel>2.34</Reel>
+        <Reel>-7.54</Reel>
+        <Rationnel>1/4</Rationnel>
+        <Rationnel>-3/8</Rationnel>
+        <Entier>4</Entier>
+        <Atome>ATO</Atome>
+        <Expression>'3+-4'</Expression>
+    </STACK>
+    <IDENTIFIANTS>
+        <VARIABLES>
+            <ReelVar name="EULER">2.71828</ReelVar>
+            <ReelVar name="FIBO">3.35988</ReelVar>
+            <EntierVar name="NBFETICHE">7</EntierVar>
+            <ReelVar name="PI">3.14159</ReelVar>
+            <ReelVar name="PLASTIQUE">1.32471</ReelVar>
+        </VARIABLES>
+    </IDENTIFIANTS>
+    <PROGRAMMES>
+        <Prog name="ABS">[ DUP 0 &lt; [ NEG ] IFT ]</Prog>
+        <Prog name="DECREMENTE">[ 1 - ]</Prog>
+        <Prog name="INCREMENTE">[ 1 + ]</Prog>
+        <Prog name="NEGATIF">[ NEG ]</Prog>
+    </PROGRAMMES>
+</SAVE>
